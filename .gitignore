@@ -1,0 +1,10 @@
+.DS_Store
+frontend/target
+ir/target
+backend/target
+util/target
+x86_64sim/target
+irsim/target
+*.tmp
+.idea/
+*.iml

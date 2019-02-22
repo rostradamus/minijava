@@ -1,0 +1,157 @@
+MethodFragment {
+   X86_64Frame { label = _Test$do
+      nextLocalOffset = -8
+      formals = List {
+         t1738
+      }
+   }
+   List {
+      LABEL _L_1116
+      MOVE(
+         t1743 <-
+         %rbx:%rbx)
+      MOVE(
+         t1744 <-
+         %r12:%r12)
+      MOVE(
+         t1745 <-
+         %r13:%r13)
+      MOVE(
+         t1746 <-
+         %r14:%r14)
+      MOVE(
+         t1747 <-
+         %r15:%r15)
+      MOVE(
+         t1738 <-
+         %rdi:%rdi)
+      MOVE(
+         t1739 <-
+         CONST 0)
+      MOVE(
+         t1740 <-
+         CONST 6)
+      MOVE(
+         t1741 <-
+         BINOP(PLUS,
+            t1740, 
+            CONST 1))
+      MOVE(
+         t1741 <-
+         BINOP(MINUS,
+            t1740, 
+            CONST 1))
+      MOVE(
+         t1742 <-
+         BINOP(PLUS,
+            t1739, 
+            t1740))
+      MOVE(
+         t1740 <-
+         BINOP(PLUS,
+            t1740, 
+            CONST 1))
+      CJUMP(GE,
+         t1739,
+         CONST 10,
+         _loopend_1112, _loopbody_1113)
+      LABEL _loopbody_1113
+      MOVE(
+         t1739 <-
+         BINOP(PLUS,
+            t1739, 
+            CONST 1))
+      MOVE(
+         t1741 <-
+         BINOP(MUL,
+            t1739, 
+            t1739))
+      LABEL _looptest_1114
+      CJUMP(LT,
+         t1739,
+         CONST 10,
+         _loopbody_1113, _loopend_1112)
+      LABEL _loopend_1112
+      MOVE(
+         %rax:%rax <-
+         BINOP(PLUS,
+            BINOP(MINUS,
+               t1740, 
+               BINOP(MUL,
+                  t1742, 
+                  t1740)), 
+            t1742))
+      LABEL _bail_1111
+      MOVE(
+         %rbx:%rbx <-
+         t1743)
+      MOVE(
+         %r12:%r12 <-
+         t1744)
+      MOVE(
+         %r13:%r13 <-
+         t1745)
+      MOVE(
+         %r14:%r14 <-
+         t1746)
+      MOVE(
+         %r15:%r15 <-
+         t1747)
+      LABEL _DONE_1117
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _cs411main
+      nextLocalOffset = -8
+      formals = List {
+      }
+   }
+   List {
+      LABEL _L_1118
+      MOVE(
+         t1748 <-
+         %rbx:%rbx)
+      MOVE(
+         t1749 <-
+         %r12:%r12)
+      MOVE(
+         t1750 <-
+         %r13:%r13)
+      MOVE(
+         t1751 <-
+         %r14:%r14)
+      MOVE(
+         t1752 <-
+         %r15:%r15)
+      MOVE(
+         t1754 <-
+         CALL(
+            NAME(_cs411newobject),
+            CONST 0))
+      MOVE(
+         t1753 <-
+         CALL(
+            NAME(_Test$do),
+            t1754))
+      EXP(CALL(
+         NAME(_cs411println),
+         t1753))
+      LABEL _bail_1115
+      MOVE(
+         %rbx:%rbx <-
+         t1748)
+      MOVE(
+         %r12:%r12 <-
+         t1749)
+      MOVE(
+         %r13:%r13 <-
+         t1750)
+      MOVE(
+         %r14:%r14 <-
+         t1751)
+      MOVE(
+         %r15:%r15 <-
+         t1752)
+      LABEL _DONE_1119
+   }
+}

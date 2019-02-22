@@ -1,0 +1,127 @@
+MethodFragment {
+   X86_64Frame { label = _Test$do
+      nextLocalOffset = -8
+      formals = List {
+         t1553
+      }
+   }
+   List {
+      LABEL _L_1000
+      MOVE(
+         t1556 <-
+         %rbx:%rbx)
+      MOVE(
+         t1557 <-
+         %r12:%r12)
+      MOVE(
+         t1558 <-
+         %r13:%r13)
+      MOVE(
+         t1559 <-
+         %r14:%r14)
+      MOVE(
+         t1560 <-
+         %r15:%r15)
+      MOVE(
+         t1553 <-
+         %rdi:%rdi)
+      MOVE(
+         t1555 <-
+         CONST 23)
+      MOVE(
+         t1555 <-
+         BINOP(MUL,
+            t1555, 
+            t1555))
+      MOVE(
+         t1554 <-
+         CONST 1)
+      CJUMP(EQ,
+         t1554,
+         CONST 0,
+         _L_997, _L_996)
+      LABEL _L_996
+      EXP(CALL(
+         NAME(_cs411println),
+         CONST 1))
+      LABEL _L_998
+      MOVE(
+         %rax:%rax <-
+         t1555)
+      LABEL _bail_995
+      MOVE(
+         %rbx:%rbx <-
+         t1556)
+      MOVE(
+         %r12:%r12 <-
+         t1557)
+      MOVE(
+         %r13:%r13 <-
+         t1558)
+      MOVE(
+         %r14:%r14 <-
+         t1559)
+      MOVE(
+         %r15:%r15 <-
+         t1560)
+      JUMP(NAME(_DONE_1001))
+      LABEL _L_997
+      JUMP(NAME(_L_998))
+      LABEL _DONE_1001
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _cs411main
+      nextLocalOffset = -8
+      formals = List {
+      }
+   }
+   List {
+      LABEL _L_1002
+      MOVE(
+         t1561 <-
+         %rbx:%rbx)
+      MOVE(
+         t1562 <-
+         %r12:%r12)
+      MOVE(
+         t1563 <-
+         %r13:%r13)
+      MOVE(
+         t1564 <-
+         %r14:%r14)
+      MOVE(
+         t1565 <-
+         %r15:%r15)
+      MOVE(
+         t1567 <-
+         CALL(
+            NAME(_cs411newobject),
+            CONST 0))
+      MOVE(
+         t1566 <-
+         CALL(
+            NAME(_Test$do),
+            t1567))
+      EXP(CALL(
+         NAME(_cs411println),
+         t1566))
+      LABEL _bail_999
+      MOVE(
+         %rbx:%rbx <-
+         t1561)
+      MOVE(
+         %r12:%r12 <-
+         t1562)
+      MOVE(
+         %r13:%r13 <-
+         t1563)
+      MOVE(
+         %r14:%r14 <-
+         t1564)
+      MOVE(
+         %r15:%r15 <-
+         t1565)
+      LABEL _DONE_1003
+   }
+}

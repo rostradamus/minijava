@@ -1,0 +1,233 @@
+MethodFragment {
+   X86_64Frame { label = _Foo$doit
+      nextLocalOffset = -8
+      formals = List {
+         t1264
+      }
+   }
+   List {
+      LABEL _L_807
+      MOVE(
+         t1266 <-
+         %rbx:%rbx)
+      MOVE(
+         t1267 <-
+         %r12:%r12)
+      MOVE(
+         t1268 <-
+         %r13:%r13)
+      MOVE(
+         t1269 <-
+         %r14:%r14)
+      MOVE(
+         t1270 <-
+         %r15:%r15)
+      MOVE(
+         t1264 <-
+         %rdi:%rdi)
+      MOVE(
+         MEM(t1264) <-
+         CONST 10)
+      MOVE(
+         t1265 <-
+         CALL(
+            NAME(_Foo$ident),
+            t1264,
+            t1264))
+      CJUMP(EQ,
+         t1265,
+         CONST 0,
+         _invokebad_803, _invokeok_802)
+      LABEL _invokeok_802
+      MOVE(
+         t1289 <-
+         CALL(
+            NAME(_Foo$getField),
+            t1265))
+      MOVE(
+         %rax:%rax <-
+         t1289)
+      LABEL _bail_801
+      MOVE(
+         %rbx:%rbx <-
+         t1266)
+      MOVE(
+         %r12:%r12 <-
+         t1267)
+      MOVE(
+         %r13:%r13 <-
+         t1268)
+      MOVE(
+         %r14:%r14 <-
+         t1269)
+      MOVE(
+         %r15:%r15 <-
+         t1270)
+      JUMP(NAME(_DONE_808))
+      LABEL _invokebad_803
+      MOVE(
+         %rax:%rax <-
+         CALL(
+            NAME(_cs411error),
+            CONST 2))
+      JUMP(NAME(_bail_801))
+      LABEL _DONE_808
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Foo$ident
+      nextLocalOffset = -8
+      formals = List {
+         t1271
+         t1272
+      }
+   }
+   List {
+      LABEL _L_809
+      MOVE(
+         t1273 <-
+         %rbx:%rbx)
+      MOVE(
+         t1274 <-
+         %r12:%r12)
+      MOVE(
+         t1275 <-
+         %r13:%r13)
+      MOVE(
+         t1276 <-
+         %r14:%r14)
+      MOVE(
+         t1277 <-
+         %r15:%r15)
+      MOVE(
+         t1271 <-
+         %rdi:%rdi)
+      MOVE(
+         t1272 <-
+         %rsi:%rsi)
+      MOVE(
+         %rax:%rax <-
+         t1272)
+      LABEL _bail_804
+      MOVE(
+         %rbx:%rbx <-
+         t1273)
+      MOVE(
+         %r12:%r12 <-
+         t1274)
+      MOVE(
+         %r13:%r13 <-
+         t1275)
+      MOVE(
+         %r14:%r14 <-
+         t1276)
+      MOVE(
+         %r15:%r15 <-
+         t1277)
+      LABEL _DONE_810
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Foo$getField
+      nextLocalOffset = -8
+      formals = List {
+         t1278
+      }
+   }
+   List {
+      LABEL _L_811
+      MOVE(
+         t1279 <-
+         %rbx:%rbx)
+      MOVE(
+         t1280 <-
+         %r12:%r12)
+      MOVE(
+         t1281 <-
+         %r13:%r13)
+      MOVE(
+         t1282 <-
+         %r14:%r14)
+      MOVE(
+         t1283 <-
+         %r15:%r15)
+      MOVE(
+         t1278 <-
+         %rdi:%rdi)
+      MOVE(
+         %rax:%rax <-
+         MEM(t1278))
+      LABEL _bail_805
+      MOVE(
+         %rbx:%rbx <-
+         t1279)
+      MOVE(
+         %r12:%r12 <-
+         t1280)
+      MOVE(
+         %r13:%r13 <-
+         t1281)
+      MOVE(
+         %r14:%r14 <-
+         t1282)
+      MOVE(
+         %r15:%r15 <-
+         t1283)
+      LABEL _DONE_812
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _cs411main
+      nextLocalOffset = -8
+      formals = List {
+      }
+   }
+   List {
+      LABEL _L_813
+      MOVE(
+         t1284 <-
+         %rbx:%rbx)
+      MOVE(
+         t1285 <-
+         %r12:%r12)
+      MOVE(
+         t1286 <-
+         %r13:%r13)
+      MOVE(
+         t1287 <-
+         %r14:%r14)
+      MOVE(
+         t1288 <-
+         %r15:%r15)
+      MOVE(
+         t1291 <-
+         CALL(
+            NAME(_cs411newobject),
+            CONST 8))
+      MOVE(
+         t1290 <-
+         CALL(
+            NAME(_Foo$doit),
+            t1291))
+      EXP(CALL(
+         NAME(_cs411println),
+         t1290))
+      LABEL _bail_806
+      MOVE(
+         %rbx:%rbx <-
+         t1284)
+      MOVE(
+         %r12:%r12 <-
+         t1285)
+      MOVE(
+         %r13:%r13 <-
+         t1286)
+      MOVE(
+         %r14:%r14 <-
+         t1287)
+      MOVE(
+         %r15:%r15 <-
+         t1288)
+      LABEL _DONE_814
+   }
+}

@@ -1,0 +1,2795 @@
+MethodFragment {
+   X86_64Frame { label = _BT$Start
+      nextLocalOffset = -8
+      formals = List {
+         t558
+      }
+   }
+   List {
+      LABEL _L_516
+      MOVE(
+         t581 <-
+         %rbx:%rbx)
+      MOVE(
+         t582 <-
+         %r12:%r12)
+      MOVE(
+         t583 <-
+         %r13:%r13)
+      MOVE(
+         t584 <-
+         %r14:%r14)
+      MOVE(
+         t585 <-
+         %r15:%r15)
+      MOVE(
+         t558 <-
+         %rdi:%rdi)
+      MOVE(
+         t559 <-
+         CONST 0)
+      MOVE(
+         t559 <-
+         CALL(
+            NAME(_cs411newobject),
+            CONST 48))
+      MOVE(
+         t562 <-
+         t559)
+      CJUMP(EQ,
+         t562,
+         CONST 0,
+         _invokebad_341, _invokeok_340)
+      LABEL _invokeok_340
+      MOVE(
+         t807 <-
+         CALL(
+            NAME(_Tree$Init),
+            t562,
+            CONST 16))
+      MOVE(
+         t560 <-
+         t807)
+      MOVE(
+         t563 <-
+         t559)
+      CJUMP(EQ,
+         t563,
+         CONST 0,
+         _invokebad_341, _invokeok_342)
+      LABEL _invokeok_342
+      MOVE(
+         t808 <-
+         CALL(
+            NAME(_Tree$Print),
+            t563))
+      MOVE(
+         t560 <-
+         t808)
+      EXP(CALL(
+         NAME(_cs411println),
+         CONST 100000000))
+      MOVE(
+         t564 <-
+         t559)
+      CJUMP(EQ,
+         t564,
+         CONST 0,
+         _invokebad_341, _invokeok_343)
+      LABEL _invokeok_343
+      MOVE(
+         t809 <-
+         CALL(
+            NAME(_Tree$Insert),
+            t564,
+            CONST 8))
+      MOVE(
+         t560 <-
+         t809)
+      MOVE(
+         t565 <-
+         t559)
+      CJUMP(EQ,
+         t565,
+         CONST 0,
+         _invokebad_341, _invokeok_344)
+      LABEL _invokeok_344
+      MOVE(
+         t810 <-
+         CALL(
+            NAME(_Tree$Print),
+            t565))
+      MOVE(
+         t560 <-
+         t810)
+      MOVE(
+         t566 <-
+         t559)
+      CJUMP(EQ,
+         t566,
+         CONST 0,
+         _invokebad_341, _invokeok_345)
+      LABEL _invokeok_345
+      MOVE(
+         t811 <-
+         CALL(
+            NAME(_Tree$Insert),
+            t566,
+            CONST 24))
+      MOVE(
+         t560 <-
+         t811)
+      MOVE(
+         t567 <-
+         t559)
+      CJUMP(EQ,
+         t567,
+         CONST 0,
+         _invokebad_341, _invokeok_346)
+      LABEL _invokeok_346
+      MOVE(
+         t812 <-
+         CALL(
+            NAME(_Tree$Insert),
+            t567,
+            CONST 4))
+      MOVE(
+         t560 <-
+         t812)
+      MOVE(
+         t568 <-
+         t559)
+      CJUMP(EQ,
+         t568,
+         CONST 0,
+         _invokebad_341, _invokeok_347)
+      LABEL _invokeok_347
+      MOVE(
+         t813 <-
+         CALL(
+            NAME(_Tree$Insert),
+            t568,
+            CONST 12))
+      MOVE(
+         t560 <-
+         t813)
+      MOVE(
+         t569 <-
+         t559)
+      CJUMP(EQ,
+         t569,
+         CONST 0,
+         _invokebad_341, _invokeok_348)
+      LABEL _invokeok_348
+      MOVE(
+         t814 <-
+         CALL(
+            NAME(_Tree$Insert),
+            t569,
+            CONST 20))
+      MOVE(
+         t560 <-
+         t814)
+      MOVE(
+         t570 <-
+         t559)
+      CJUMP(EQ,
+         t570,
+         CONST 0,
+         _invokebad_341, _invokeok_349)
+      LABEL _invokeok_349
+      MOVE(
+         t815 <-
+         CALL(
+            NAME(_Tree$Insert),
+            t570,
+            CONST 28))
+      MOVE(
+         t560 <-
+         t815)
+      MOVE(
+         t571 <-
+         t559)
+      CJUMP(EQ,
+         t571,
+         CONST 0,
+         _invokebad_341, _invokeok_350)
+      LABEL _invokeok_350
+      MOVE(
+         t816 <-
+         CALL(
+            NAME(_Tree$Insert),
+            t571,
+            CONST 14))
+      MOVE(
+         t560 <-
+         t816)
+      MOVE(
+         t572 <-
+         t559)
+      CJUMP(EQ,
+         t572,
+         CONST 0,
+         _invokebad_341, _invokeok_351)
+      LABEL _invokeok_351
+      MOVE(
+         t817 <-
+         CALL(
+            NAME(_Tree$Print),
+            t572))
+      MOVE(
+         t560 <-
+         t817)
+      MOVE(
+         t573 <-
+         t559)
+      CJUMP(EQ,
+         t573,
+         CONST 0,
+         _invokebad_341, _invokeok_352)
+      LABEL _invokeok_352
+      MOVE(
+         t818 <-
+         CALL(
+            NAME(_Tree$Search),
+            t573,
+            CONST 24))
+      EXP(CALL(
+         NAME(_cs411println),
+         t818))
+      MOVE(
+         t574 <-
+         t559)
+      CJUMP(EQ,
+         t574,
+         CONST 0,
+         _invokebad_341, _invokeok_353)
+      LABEL _invokeok_353
+      MOVE(
+         t819 <-
+         CALL(
+            NAME(_Tree$Search),
+            t574,
+            CONST 12))
+      EXP(CALL(
+         NAME(_cs411println),
+         t819))
+      MOVE(
+         t575 <-
+         t559)
+      CJUMP(EQ,
+         t575,
+         CONST 0,
+         _invokebad_341, _invokeok_354)
+      LABEL _invokeok_354
+      MOVE(
+         t820 <-
+         CALL(
+            NAME(_Tree$Search),
+            t575,
+            CONST 16))
+      EXP(CALL(
+         NAME(_cs411println),
+         t820))
+      MOVE(
+         t576 <-
+         t559)
+      CJUMP(EQ,
+         t576,
+         CONST 0,
+         _invokebad_341, _invokeok_355)
+      LABEL _invokeok_355
+      MOVE(
+         t821 <-
+         CALL(
+            NAME(_Tree$Search),
+            t576,
+            CONST 50))
+      EXP(CALL(
+         NAME(_cs411println),
+         t821))
+      MOVE(
+         t577 <-
+         t559)
+      CJUMP(EQ,
+         t577,
+         CONST 0,
+         _invokebad_341, _invokeok_356)
+      LABEL _invokeok_356
+      MOVE(
+         t822 <-
+         CALL(
+            NAME(_Tree$Search),
+            t577,
+            CONST 12))
+      EXP(CALL(
+         NAME(_cs411println),
+         t822))
+      MOVE(
+         t578 <-
+         t559)
+      CJUMP(EQ,
+         t578,
+         CONST 0,
+         _invokebad_341, _invokeok_357)
+      LABEL _invokeok_357
+      MOVE(
+         t823 <-
+         CALL(
+            NAME(_Tree$Delete),
+            t578,
+            CONST 12))
+      MOVE(
+         t560 <-
+         t823)
+      MOVE(
+         t579 <-
+         t559)
+      CJUMP(EQ,
+         t579,
+         CONST 0,
+         _invokebad_341, _invokeok_358)
+      LABEL _invokeok_358
+      MOVE(
+         t824 <-
+         CALL(
+            NAME(_Tree$Print),
+            t579))
+      MOVE(
+         t560 <-
+         t824)
+      MOVE(
+         t580 <-
+         t559)
+      CJUMP(EQ,
+         t580,
+         CONST 0,
+         _invokebad_341, _invokeok_359)
+      LABEL _invokeok_359
+      MOVE(
+         t825 <-
+         CALL(
+            NAME(_Tree$Search),
+            t580,
+            CONST 12))
+      EXP(CALL(
+         NAME(_cs411println),
+         t825))
+      MOVE(
+         %rax:%rax <-
+         CONST 0)
+      LABEL _bail_339
+      MOVE(
+         %rbx:%rbx <-
+         t581)
+      MOVE(
+         %r12:%r12 <-
+         t582)
+      MOVE(
+         %r13:%r13 <-
+         t583)
+      MOVE(
+         %r14:%r14 <-
+         t584)
+      MOVE(
+         %r15:%r15 <-
+         t585)
+      JUMP(NAME(_DONE_517))
+      LABEL _invokebad_341
+      MOVE(
+         %rax:%rax <-
+         CALL(
+            NAME(_cs411error),
+            CONST 2))
+      JUMP(NAME(_bail_339))
+      LABEL _DONE_517
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$Init
+      nextLocalOffset = -8
+      formals = List {
+         t586
+         t587
+      }
+   }
+   List {
+      LABEL _L_518
+      MOVE(
+         t588 <-
+         %rbx:%rbx)
+      MOVE(
+         t589 <-
+         %r12:%r12)
+      MOVE(
+         t590 <-
+         %r13:%r13)
+      MOVE(
+         t591 <-
+         %r14:%r14)
+      MOVE(
+         t592 <-
+         %r15:%r15)
+      MOVE(
+         t586 <-
+         %rdi:%rdi)
+      MOVE(
+         t587 <-
+         %rsi:%rsi)
+      MOVE(
+         MEM(BINOP(PLUS,
+            t586, 
+            CONST 16)) <-
+         t587)
+      MOVE(
+         MEM(BINOP(PLUS,
+            t586, 
+            CONST 24)) <-
+         CONST 0)
+      MOVE(
+         MEM(BINOP(PLUS,
+            t586, 
+            CONST 32)) <-
+         CONST 0)
+      MOVE(
+         %rax:%rax <-
+         CONST 1)
+      LABEL _bail_360
+      MOVE(
+         %rbx:%rbx <-
+         t588)
+      MOVE(
+         %r12:%r12 <-
+         t589)
+      MOVE(
+         %r13:%r13 <-
+         t590)
+      MOVE(
+         %r14:%r14 <-
+         t591)
+      MOVE(
+         %r15:%r15 <-
+         t592)
+      LABEL _DONE_519
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$SetRight
+      nextLocalOffset = -8
+      formals = List {
+         t593
+         t594
+      }
+   }
+   List {
+      LABEL _L_520
+      MOVE(
+         t595 <-
+         %rbx:%rbx)
+      MOVE(
+         t596 <-
+         %r12:%r12)
+      MOVE(
+         t597 <-
+         %r13:%r13)
+      MOVE(
+         t598 <-
+         %r14:%r14)
+      MOVE(
+         t599 <-
+         %r15:%r15)
+      MOVE(
+         t593 <-
+         %rdi:%rdi)
+      MOVE(
+         t594 <-
+         %rsi:%rsi)
+      MOVE(
+         MEM(BINOP(PLUS,
+            t593, 
+            CONST 8)) <-
+         t594)
+      MOVE(
+         %rax:%rax <-
+         CONST 1)
+      LABEL _bail_361
+      MOVE(
+         %rbx:%rbx <-
+         t595)
+      MOVE(
+         %r12:%r12 <-
+         t596)
+      MOVE(
+         %r13:%r13 <-
+         t597)
+      MOVE(
+         %r14:%r14 <-
+         t598)
+      MOVE(
+         %r15:%r15 <-
+         t599)
+      LABEL _DONE_521
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$SetLeft
+      nextLocalOffset = -8
+      formals = List {
+         t600
+         t601
+      }
+   }
+   List {
+      LABEL _L_522
+      MOVE(
+         t602 <-
+         %rbx:%rbx)
+      MOVE(
+         t603 <-
+         %r12:%r12)
+      MOVE(
+         t604 <-
+         %r13:%r13)
+      MOVE(
+         t605 <-
+         %r14:%r14)
+      MOVE(
+         t606 <-
+         %r15:%r15)
+      MOVE(
+         t600 <-
+         %rdi:%rdi)
+      MOVE(
+         t601 <-
+         %rsi:%rsi)
+      MOVE(
+         MEM(t600) <-
+         t601)
+      MOVE(
+         %rax:%rax <-
+         CONST 1)
+      LABEL _bail_362
+      MOVE(
+         %rbx:%rbx <-
+         t602)
+      MOVE(
+         %r12:%r12 <-
+         t603)
+      MOVE(
+         %r13:%r13 <-
+         t604)
+      MOVE(
+         %r14:%r14 <-
+         t605)
+      MOVE(
+         %r15:%r15 <-
+         t606)
+      LABEL _DONE_523
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$GetRight
+      nextLocalOffset = -8
+      formals = List {
+         t607
+      }
+   }
+   List {
+      LABEL _L_524
+      MOVE(
+         t608 <-
+         %rbx:%rbx)
+      MOVE(
+         t609 <-
+         %r12:%r12)
+      MOVE(
+         t610 <-
+         %r13:%r13)
+      MOVE(
+         t611 <-
+         %r14:%r14)
+      MOVE(
+         t612 <-
+         %r15:%r15)
+      MOVE(
+         t607 <-
+         %rdi:%rdi)
+      MOVE(
+         %rax:%rax <-
+         MEM(BINOP(PLUS,
+            t607, 
+            CONST 8)))
+      LABEL _bail_363
+      MOVE(
+         %rbx:%rbx <-
+         t608)
+      MOVE(
+         %r12:%r12 <-
+         t609)
+      MOVE(
+         %r13:%r13 <-
+         t610)
+      MOVE(
+         %r14:%r14 <-
+         t611)
+      MOVE(
+         %r15:%r15 <-
+         t612)
+      LABEL _DONE_525
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$GetLeft
+      nextLocalOffset = -8
+      formals = List {
+         t613
+      }
+   }
+   List {
+      LABEL _L_526
+      MOVE(
+         t614 <-
+         %rbx:%rbx)
+      MOVE(
+         t615 <-
+         %r12:%r12)
+      MOVE(
+         t616 <-
+         %r13:%r13)
+      MOVE(
+         t617 <-
+         %r14:%r14)
+      MOVE(
+         t618 <-
+         %r15:%r15)
+      MOVE(
+         t613 <-
+         %rdi:%rdi)
+      MOVE(
+         %rax:%rax <-
+         MEM(t613))
+      LABEL _bail_364
+      MOVE(
+         %rbx:%rbx <-
+         t614)
+      MOVE(
+         %r12:%r12 <-
+         t615)
+      MOVE(
+         %r13:%r13 <-
+         t616)
+      MOVE(
+         %r14:%r14 <-
+         t617)
+      MOVE(
+         %r15:%r15 <-
+         t618)
+      LABEL _DONE_527
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$GetKey
+      nextLocalOffset = -8
+      formals = List {
+         t619
+      }
+   }
+   List {
+      LABEL _L_528
+      MOVE(
+         t620 <-
+         %rbx:%rbx)
+      MOVE(
+         t621 <-
+         %r12:%r12)
+      MOVE(
+         t622 <-
+         %r13:%r13)
+      MOVE(
+         t623 <-
+         %r14:%r14)
+      MOVE(
+         t624 <-
+         %r15:%r15)
+      MOVE(
+         t619 <-
+         %rdi:%rdi)
+      MOVE(
+         %rax:%rax <-
+         MEM(BINOP(PLUS,
+            t619, 
+            CONST 16)))
+      LABEL _bail_365
+      MOVE(
+         %rbx:%rbx <-
+         t620)
+      MOVE(
+         %r12:%r12 <-
+         t621)
+      MOVE(
+         %r13:%r13 <-
+         t622)
+      MOVE(
+         %r14:%r14 <-
+         t623)
+      MOVE(
+         %r15:%r15 <-
+         t624)
+      LABEL _DONE_529
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$SetKey
+      nextLocalOffset = -8
+      formals = List {
+         t625
+         t626
+      }
+   }
+   List {
+      LABEL _L_530
+      MOVE(
+         t627 <-
+         %rbx:%rbx)
+      MOVE(
+         t628 <-
+         %r12:%r12)
+      MOVE(
+         t629 <-
+         %r13:%r13)
+      MOVE(
+         t630 <-
+         %r14:%r14)
+      MOVE(
+         t631 <-
+         %r15:%r15)
+      MOVE(
+         t625 <-
+         %rdi:%rdi)
+      MOVE(
+         t626 <-
+         %rsi:%rsi)
+      MOVE(
+         MEM(BINOP(PLUS,
+            t625, 
+            CONST 16)) <-
+         t626)
+      MOVE(
+         %rax:%rax <-
+         CONST 1)
+      LABEL _bail_366
+      MOVE(
+         %rbx:%rbx <-
+         t627)
+      MOVE(
+         %r12:%r12 <-
+         t628)
+      MOVE(
+         %r13:%r13 <-
+         t629)
+      MOVE(
+         %r14:%r14 <-
+         t630)
+      MOVE(
+         %r15:%r15 <-
+         t631)
+      LABEL _DONE_531
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$GetHas_Right
+      nextLocalOffset = -8
+      formals = List {
+         t632
+      }
+   }
+   List {
+      LABEL _L_532
+      MOVE(
+         t633 <-
+         %rbx:%rbx)
+      MOVE(
+         t634 <-
+         %r12:%r12)
+      MOVE(
+         t635 <-
+         %r13:%r13)
+      MOVE(
+         t636 <-
+         %r14:%r14)
+      MOVE(
+         t637 <-
+         %r15:%r15)
+      MOVE(
+         t632 <-
+         %rdi:%rdi)
+      MOVE(
+         %rax:%rax <-
+         MEM(BINOP(PLUS,
+            t632, 
+            CONST 32)))
+      LABEL _bail_367
+      MOVE(
+         %rbx:%rbx <-
+         t633)
+      MOVE(
+         %r12:%r12 <-
+         t634)
+      MOVE(
+         %r13:%r13 <-
+         t635)
+      MOVE(
+         %r14:%r14 <-
+         t636)
+      MOVE(
+         %r15:%r15 <-
+         t637)
+      LABEL _DONE_533
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$GetHas_Left
+      nextLocalOffset = -8
+      formals = List {
+         t638
+      }
+   }
+   List {
+      LABEL _L_534
+      MOVE(
+         t639 <-
+         %rbx:%rbx)
+      MOVE(
+         t640 <-
+         %r12:%r12)
+      MOVE(
+         t641 <-
+         %r13:%r13)
+      MOVE(
+         t642 <-
+         %r14:%r14)
+      MOVE(
+         t643 <-
+         %r15:%r15)
+      MOVE(
+         t638 <-
+         %rdi:%rdi)
+      MOVE(
+         %rax:%rax <-
+         MEM(BINOP(PLUS,
+            t638, 
+            CONST 24)))
+      LABEL _bail_368
+      MOVE(
+         %rbx:%rbx <-
+         t639)
+      MOVE(
+         %r12:%r12 <-
+         t640)
+      MOVE(
+         %r13:%r13 <-
+         t641)
+      MOVE(
+         %r14:%r14 <-
+         t642)
+      MOVE(
+         %r15:%r15 <-
+         t643)
+      LABEL _DONE_535
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$SetHas_Left
+      nextLocalOffset = -8
+      formals = List {
+         t644
+         t645
+      }
+   }
+   List {
+      LABEL _L_536
+      MOVE(
+         t646 <-
+         %rbx:%rbx)
+      MOVE(
+         t647 <-
+         %r12:%r12)
+      MOVE(
+         t648 <-
+         %r13:%r13)
+      MOVE(
+         t649 <-
+         %r14:%r14)
+      MOVE(
+         t650 <-
+         %r15:%r15)
+      MOVE(
+         t644 <-
+         %rdi:%rdi)
+      MOVE(
+         t645 <-
+         %rsi:%rsi)
+      MOVE(
+         MEM(BINOP(PLUS,
+            t644, 
+            CONST 24)) <-
+         t645)
+      MOVE(
+         %rax:%rax <-
+         CONST 1)
+      LABEL _bail_369
+      MOVE(
+         %rbx:%rbx <-
+         t646)
+      MOVE(
+         %r12:%r12 <-
+         t647)
+      MOVE(
+         %r13:%r13 <-
+         t648)
+      MOVE(
+         %r14:%r14 <-
+         t649)
+      MOVE(
+         %r15:%r15 <-
+         t650)
+      LABEL _DONE_537
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$SetHas_Right
+      nextLocalOffset = -8
+      formals = List {
+         t651
+         t652
+      }
+   }
+   List {
+      LABEL _L_538
+      MOVE(
+         t653 <-
+         %rbx:%rbx)
+      MOVE(
+         t654 <-
+         %r12:%r12)
+      MOVE(
+         t655 <-
+         %r13:%r13)
+      MOVE(
+         t656 <-
+         %r14:%r14)
+      MOVE(
+         t657 <-
+         %r15:%r15)
+      MOVE(
+         t651 <-
+         %rdi:%rdi)
+      MOVE(
+         t652 <-
+         %rsi:%rsi)
+      MOVE(
+         MEM(BINOP(PLUS,
+            t651, 
+            CONST 32)) <-
+         t652)
+      MOVE(
+         %rax:%rax <-
+         CONST 1)
+      LABEL _bail_370
+      MOVE(
+         %rbx:%rbx <-
+         t653)
+      MOVE(
+         %r12:%r12 <-
+         t654)
+      MOVE(
+         %r13:%r13 <-
+         t655)
+      MOVE(
+         %r14:%r14 <-
+         t656)
+      MOVE(
+         %r15:%r15 <-
+         t657)
+      LABEL _DONE_539
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$Compare
+      nextLocalOffset = -8
+      formals = List {
+         t658
+         t659
+         t660
+      }
+   }
+   List {
+      LABEL _L_540
+      MOVE(
+         t663 <-
+         %rbx:%rbx)
+      MOVE(
+         t664 <-
+         %r12:%r12)
+      MOVE(
+         t665 <-
+         %r13:%r13)
+      MOVE(
+         t666 <-
+         %r14:%r14)
+      MOVE(
+         t667 <-
+         %r15:%r15)
+      MOVE(
+         t658 <-
+         %rdi:%rdi)
+      MOVE(
+         t659 <-
+         %rsi:%rsi)
+      MOVE(
+         t660 <-
+         %rdx:%rdx)
+      MOVE(
+         t661 <-
+         CONST 0)
+      MOVE(
+         t662 <-
+         BINOP(PLUS,
+            t660, 
+            CONST 1))
+      CJUMP(GE,
+         t659,
+         t660,
+         _L_373, _L_372)
+      LABEL _L_372
+      MOVE(
+         t661 <-
+         CONST 0)
+      LABEL _L_374
+      MOVE(
+         %rax:%rax <-
+         t661)
+      LABEL _bail_371
+      MOVE(
+         %rbx:%rbx <-
+         t663)
+      MOVE(
+         %r12:%r12 <-
+         t664)
+      MOVE(
+         %r13:%r13 <-
+         t665)
+      MOVE(
+         %r14:%r14 <-
+         t666)
+      MOVE(
+         %r15:%r15 <-
+         t667)
+      JUMP(NAME(_DONE_541))
+      LABEL _L_373
+      CJUMP(GE,
+         t659,
+         t662,
+         _L_375, _L_376)
+      LABEL _L_376
+      MOVE(
+         t661 <-
+         CONST 1)
+      LABEL _L_377
+      JUMP(NAME(_L_374))
+      LABEL _L_375
+      MOVE(
+         t661 <-
+         CONST 0)
+      JUMP(NAME(_L_377))
+      LABEL _DONE_541
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$Insert
+      nextLocalOffset = -8
+      formals = List {
+         t668
+         t669
+      }
+   }
+   List {
+      LABEL _L_542
+      MOVE(
+         t685 <-
+         %rbx:%rbx)
+      MOVE(
+         t686 <-
+         %r12:%r12)
+      MOVE(
+         t687 <-
+         %r13:%r13)
+      MOVE(
+         t688 <-
+         %r14:%r14)
+      MOVE(
+         t689 <-
+         %r15:%r15)
+      MOVE(
+         t668 <-
+         %rdi:%rdi)
+      MOVE(
+         t669 <-
+         %rsi:%rsi)
+      MOVE(
+         t670 <-
+         CONST 0)
+      MOVE(
+         t674 <-
+         CONST 0)
+      MOVE(
+         t670 <-
+         CALL(
+            NAME(_cs411newobject),
+            CONST 48))
+      MOVE(
+         t675 <-
+         t670)
+      CJUMP(EQ,
+         t675,
+         CONST 0,
+         _invokebad_380, _invokeok_379)
+      LABEL _invokeok_379
+      MOVE(
+         t826 <-
+         CALL(
+            NAME(_Tree$Init),
+            t675,
+            t669))
+      MOVE(
+         t671 <-
+         t826)
+      MOVE(
+         t674 <-
+         t668)
+      MOVE(
+         t672 <-
+         CONST 1)
+      CJUMP(EQ,
+         t672,
+         CONST 0,
+         _loopend_381, _loopbody_382)
+      LABEL _loopbody_382
+      MOVE(
+         t676 <-
+         t674)
+      CJUMP(EQ,
+         t676,
+         CONST 0,
+         _invokebad_380, _invokeok_384)
+      LABEL _invokeok_384
+      MOVE(
+         t827 <-
+         CALL(
+            NAME(_Tree$GetKey),
+            t676))
+      MOVE(
+         t673 <-
+         t827)
+      CJUMP(GE,
+         t669,
+         t673,
+         _L_386, _L_385)
+      LABEL _L_385
+      MOVE(
+         t677 <-
+         t674)
+      CJUMP(EQ,
+         t677,
+         CONST 0,
+         _invokebad_380, _invokeok_391)
+      LABEL _invokeok_391
+      MOVE(
+         t828 <-
+         CALL(
+            NAME(_Tree$GetHas_Left),
+            t677))
+      CJUMP(EQ,
+         t828,
+         CONST 0,
+         _L_389, _L_388)
+      LABEL _L_388
+      MOVE(
+         t678 <-
+         t674)
+      CJUMP(EQ,
+         t678,
+         CONST 0,
+         _invokebad_380, _invokeok_392)
+      LABEL _invokeok_392
+      MOVE(
+         t829 <-
+         CALL(
+            NAME(_Tree$GetLeft),
+            t678))
+      MOVE(
+         t674 <-
+         t829)
+      LABEL _L_390
+      LABEL _L_387
+      LABEL _looptest_383
+      CJUMP(NE,
+         t672,
+         CONST 0,
+         _loopbody_382, _loopend_381)
+      LABEL _loopend_381
+      MOVE(
+         %rax:%rax <-
+         CONST 1)
+      LABEL _bail_378
+      MOVE(
+         %rbx:%rbx <-
+         t685)
+      MOVE(
+         %r12:%r12 <-
+         t686)
+      MOVE(
+         %r13:%r13 <-
+         t687)
+      MOVE(
+         %r14:%r14 <-
+         t688)
+      MOVE(
+         %r15:%r15 <-
+         t689)
+      JUMP(NAME(_DONE_543))
+      LABEL _invokebad_380
+      MOVE(
+         %rax:%rax <-
+         CALL(
+            NAME(_cs411error),
+            CONST 2))
+      JUMP(NAME(_bail_378))
+      LABEL _L_389
+      MOVE(
+         t672 <-
+         CONST 0)
+      MOVE(
+         t679 <-
+         t674)
+      CJUMP(EQ,
+         t679,
+         CONST 0,
+         _invokebad_380, _invokeok_393)
+      LABEL _invokeok_393
+      MOVE(
+         t830 <-
+         CALL(
+            NAME(_Tree$SetHas_Left),
+            t679,
+            CONST 1))
+      MOVE(
+         t671 <-
+         t830)
+      MOVE(
+         t680 <-
+         t674)
+      CJUMP(EQ,
+         t680,
+         CONST 0,
+         _invokebad_380, _invokeok_394)
+      LABEL _invokeok_394
+      MOVE(
+         t831 <-
+         CALL(
+            NAME(_Tree$SetLeft),
+            t680,
+            t670))
+      MOVE(
+         t671 <-
+         t831)
+      JUMP(NAME(_L_390))
+      LABEL _L_386
+      MOVE(
+         t681 <-
+         t674)
+      CJUMP(EQ,
+         t681,
+         CONST 0,
+         _invokebad_380, _invokeok_398)
+      LABEL _invokeok_398
+      MOVE(
+         t832 <-
+         CALL(
+            NAME(_Tree$GetHas_Right),
+            t681))
+      CJUMP(EQ,
+         t832,
+         CONST 0,
+         _L_396, _L_395)
+      LABEL _L_395
+      MOVE(
+         t682 <-
+         t674)
+      CJUMP(EQ,
+         t682,
+         CONST 0,
+         _invokebad_380, _invokeok_399)
+      LABEL _invokeok_399
+      MOVE(
+         t833 <-
+         CALL(
+            NAME(_Tree$GetRight),
+            t682))
+      MOVE(
+         t674 <-
+         t833)
+      LABEL _L_397
+      JUMP(NAME(_L_387))
+      LABEL _L_396
+      MOVE(
+         t672 <-
+         CONST 0)
+      MOVE(
+         t683 <-
+         t674)
+      CJUMP(EQ,
+         t683,
+         CONST 0,
+         _invokebad_380, _invokeok_400)
+      LABEL _invokeok_400
+      MOVE(
+         t834 <-
+         CALL(
+            NAME(_Tree$SetHas_Right),
+            t683,
+            CONST 1))
+      MOVE(
+         t671 <-
+         t834)
+      MOVE(
+         t684 <-
+         t674)
+      CJUMP(EQ,
+         t684,
+         CONST 0,
+         _invokebad_380, _invokeok_401)
+      LABEL _invokeok_401
+      MOVE(
+         t835 <-
+         CALL(
+            NAME(_Tree$SetRight),
+            t684,
+            t670))
+      MOVE(
+         t671 <-
+         t835)
+      JUMP(NAME(_L_397))
+      LABEL _DONE_543
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$Delete
+      nextLocalOffset = -8
+      formals = List {
+         t690
+         t691
+      }
+   }
+   List {
+      LABEL _L_544
+      MOVE(
+         t706 <-
+         %rbx:%rbx)
+      MOVE(
+         t707 <-
+         %r12:%r12)
+      MOVE(
+         t708 <-
+         %r13:%r13)
+      MOVE(
+         t709 <-
+         %r14:%r14)
+      MOVE(
+         t710 <-
+         %r15:%r15)
+      MOVE(
+         t690 <-
+         %rdi:%rdi)
+      MOVE(
+         t691 <-
+         %rsi:%rsi)
+      MOVE(
+         t692 <-
+         CONST 0)
+      MOVE(
+         t693 <-
+         CONST 0)
+      MOVE(
+         t692 <-
+         t690)
+      MOVE(
+         t693 <-
+         t690)
+      MOVE(
+         t694 <-
+         CONST 1)
+      MOVE(
+         t695 <-
+         CONST 0)
+      MOVE(
+         t696 <-
+         CONST 1)
+      CJUMP(EQ,
+         t694,
+         CONST 0,
+         _loopend_403, _loopbody_404)
+      LABEL _loopbody_404
+      MOVE(
+         t699 <-
+         t692)
+      CJUMP(EQ,
+         t699,
+         CONST 0,
+         _invokebad_407, _invokeok_406)
+      LABEL _invokeok_406
+      MOVE(
+         t836 <-
+         CALL(
+            NAME(_Tree$GetKey),
+            t699))
+      MOVE(
+         t697 <-
+         t836)
+      CJUMP(GE,
+         t691,
+         t697,
+         _L_409, _L_408)
+      LABEL _L_408
+      MOVE(
+         t700 <-
+         t692)
+      CJUMP(EQ,
+         t700,
+         CONST 0,
+         _invokebad_407, _invokeok_414)
+      LABEL _invokeok_414
+      MOVE(
+         t837 <-
+         CALL(
+            NAME(_Tree$GetHas_Left),
+            t700))
+      CJUMP(EQ,
+         t837,
+         CONST 0,
+         _L_412, _L_411)
+      LABEL _L_411
+      MOVE(
+         t693 <-
+         t692)
+      MOVE(
+         t701 <-
+         t692)
+      CJUMP(EQ,
+         t701,
+         CONST 0,
+         _invokebad_407, _invokeok_415)
+      LABEL _invokeok_415
+      MOVE(
+         t838 <-
+         CALL(
+            NAME(_Tree$GetLeft),
+            t701))
+      MOVE(
+         t692 <-
+         t838)
+      LABEL _L_413
+      LABEL _L_410
+      MOVE(
+         t696 <-
+         CONST 0)
+      LABEL _looptest_405
+      CJUMP(NE,
+         t694,
+         CONST 0,
+         _loopbody_404, _loopend_403)
+      LABEL _loopend_403
+      MOVE(
+         %rax:%rax <-
+         t695)
+      LABEL _bail_402
+      MOVE(
+         %rbx:%rbx <-
+         t706)
+      MOVE(
+         %r12:%r12 <-
+         t707)
+      MOVE(
+         %r13:%r13 <-
+         t708)
+      MOVE(
+         %r14:%r14 <-
+         t709)
+      MOVE(
+         %r15:%r15 <-
+         t710)
+      JUMP(NAME(_DONE_545))
+      LABEL _invokebad_407
+      MOVE(
+         %rax:%rax <-
+         CALL(
+            NAME(_cs411error),
+            CONST 2))
+      JUMP(NAME(_bail_402))
+      LABEL _L_412
+      MOVE(
+         t694 <-
+         CONST 0)
+      JUMP(NAME(_L_413))
+      LABEL _L_409
+      CJUMP(GE,
+         t697,
+         t691,
+         _L_417, _L_416)
+      LABEL _L_416
+      MOVE(
+         t702 <-
+         t692)
+      CJUMP(EQ,
+         t702,
+         CONST 0,
+         _invokebad_407, _invokeok_422)
+      LABEL _invokeok_422
+      MOVE(
+         t839 <-
+         CALL(
+            NAME(_Tree$GetHas_Right),
+            t702))
+      CJUMP(EQ,
+         t839,
+         CONST 0,
+         _L_420, _L_419)
+      LABEL _L_419
+      MOVE(
+         t693 <-
+         t692)
+      MOVE(
+         t703 <-
+         t692)
+      CJUMP(EQ,
+         t703,
+         CONST 0,
+         _invokebad_407, _invokeok_423)
+      LABEL _invokeok_423
+      MOVE(
+         t840 <-
+         CALL(
+            NAME(_Tree$GetRight),
+            t703))
+      MOVE(
+         t692 <-
+         t840)
+      LABEL _L_421
+      LABEL _L_418
+      JUMP(NAME(_L_410))
+      LABEL _L_420
+      MOVE(
+         t694 <-
+         CONST 0)
+      JUMP(NAME(_L_421))
+      LABEL _L_417
+      CJUMP(EQ,
+         t696,
+         CONST 0,
+         _L_425, _L_424)
+      LABEL _L_424
+      MOVE(
+         t704 <-
+         t692)
+      CJUMP(EQ,
+         t704,
+         CONST 0,
+         _invokebad_407, _invokeok_430)
+      LABEL _invokeok_430
+      MOVE(
+         t841 <-
+         CALL(
+            NAME(_Tree$GetHas_Right),
+            t704))
+      CJUMP(EQ,
+         t841,
+         CONST 0,
+         _L_432, _L_428)
+      LABEL _L_428
+      MOVE(
+         t698 <-
+         CALL(
+            NAME(_Tree$Remove),
+            t690,
+            t693,
+            t692))
+      LABEL _L_429
+      LABEL _L_426
+      MOVE(
+         t695 <-
+         CONST 1)
+      MOVE(
+         t694 <-
+         CONST 0)
+      JUMP(NAME(_L_418))
+      LABEL _L_432
+      MOVE(
+         t705 <-
+         t692)
+      CJUMP(EQ,
+         t705,
+         CONST 0,
+         _invokebad_407, _invokeok_431)
+      LABEL _invokeok_431
+      MOVE(
+         t842 <-
+         CALL(
+            NAME(_Tree$GetHas_Left),
+            t705))
+      CJUMP(NE,
+         t842,
+         CONST 0,
+         _L_428, _L_427)
+      LABEL _L_427
+      MOVE(
+         t698 <-
+         CONST 1)
+      JUMP(NAME(_L_429))
+      LABEL _L_425
+      MOVE(
+         t698 <-
+         CALL(
+            NAME(_Tree$Remove),
+            t690,
+            t693,
+            t692))
+      JUMP(NAME(_L_426))
+      LABEL _DONE_545
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$Remove
+      nextLocalOffset = -8
+      formals = List {
+         t711
+         t712
+         t713
+      }
+   }
+   List {
+      LABEL _L_546
+      MOVE(
+         t726 <-
+         %rbx:%rbx)
+      MOVE(
+         t727 <-
+         %r12:%r12)
+      MOVE(
+         t728 <-
+         %r13:%r13)
+      MOVE(
+         t729 <-
+         %r14:%r14)
+      MOVE(
+         t730 <-
+         %r15:%r15)
+      MOVE(
+         t711 <-
+         %rdi:%rdi)
+      MOVE(
+         t712 <-
+         %rsi:%rsi)
+      MOVE(
+         t713 <-
+         %rdx:%rdx)
+      MOVE(
+         t717 <-
+         t713)
+      CJUMP(EQ,
+         t717,
+         CONST 0,
+         _invokebad_438, _invokeok_437)
+      LABEL _invokeok_437
+      MOVE(
+         t843 <-
+         CALL(
+            NAME(_Tree$GetHas_Left),
+            t717))
+      CJUMP(EQ,
+         t843,
+         CONST 0,
+         _L_435, _L_434)
+      LABEL _L_434
+      MOVE(
+         t714 <-
+         CALL(
+            NAME(_Tree$RemoveLeft),
+            t711,
+            t712,
+            t713))
+      LABEL _L_436
+      MOVE(
+         %rax:%rax <-
+         CONST 1)
+      LABEL _bail_433
+      MOVE(
+         %rbx:%rbx <-
+         t726)
+      MOVE(
+         %r12:%r12 <-
+         t727)
+      MOVE(
+         %r13:%r13 <-
+         t728)
+      MOVE(
+         %r14:%r14 <-
+         t729)
+      MOVE(
+         %r15:%r15 <-
+         t730)
+      JUMP(NAME(_DONE_547))
+      LABEL _invokebad_438
+      MOVE(
+         %rax:%rax <-
+         CALL(
+            NAME(_cs411error),
+            CONST 2))
+      JUMP(NAME(_bail_433))
+      LABEL _L_435
+      MOVE(
+         t718 <-
+         t713)
+      CJUMP(EQ,
+         t718,
+         CONST 0,
+         _invokebad_438, _invokeok_442)
+      LABEL _invokeok_442
+      MOVE(
+         t844 <-
+         CALL(
+            NAME(_Tree$GetHas_Right),
+            t718))
+      CJUMP(EQ,
+         t844,
+         CONST 0,
+         _L_440, _L_439)
+      LABEL _L_439
+      MOVE(
+         t714 <-
+         CALL(
+            NAME(_Tree$RemoveRight),
+            t711,
+            t712,
+            t713))
+      LABEL _L_441
+      JUMP(NAME(_L_436))
+      LABEL _L_440
+      MOVE(
+         t719 <-
+         t713)
+      CJUMP(EQ,
+         t719,
+         CONST 0,
+         _invokebad_438, _invokeok_443)
+      LABEL _invokeok_443
+      MOVE(
+         t845 <-
+         CALL(
+            NAME(_Tree$GetKey),
+            t719))
+      MOVE(
+         t715 <-
+         t845)
+      MOVE(
+         t720 <-
+         t712)
+      CJUMP(EQ,
+         t720,
+         CONST 0,
+         _invokebad_438, _invokeok_444)
+      LABEL _invokeok_444
+      MOVE(
+         t846 <-
+         CALL(
+            NAME(_Tree$GetLeft),
+            t720))
+      MOVE(
+         t721 <-
+         t846)
+      CJUMP(EQ,
+         t721,
+         CONST 0,
+         _invokebad_438, _invokeok_445)
+      LABEL _invokeok_445
+      MOVE(
+         t847 <-
+         CALL(
+            NAME(_Tree$GetKey),
+            t721))
+      MOVE(
+         t716 <-
+         t847)
+      MOVE(
+         t848 <-
+         CALL(
+            NAME(_Tree$Compare),
+            t711,
+            t715,
+            t716))
+      CJUMP(EQ,
+         t848,
+         CONST 0,
+         _L_447, _L_446)
+      LABEL _L_446
+      MOVE(
+         t722 <-
+         t712)
+      CJUMP(EQ,
+         t722,
+         CONST 0,
+         _invokebad_438, _invokeok_449)
+      LABEL _invokeok_449
+      MOVE(
+         t849 <-
+         CALL(
+            NAME(_Tree$SetLeft),
+            t722,
+            MEM(BINOP(PLUS,
+               t711, 
+               CONST 40))))
+      MOVE(
+         t714 <-
+         t849)
+      MOVE(
+         t723 <-
+         t712)
+      CJUMP(EQ,
+         t723,
+         CONST 0,
+         _invokebad_438, _invokeok_450)
+      LABEL _invokeok_450
+      MOVE(
+         t850 <-
+         CALL(
+            NAME(_Tree$SetHas_Left),
+            t723,
+            CONST 0))
+      MOVE(
+         t714 <-
+         t850)
+      LABEL _L_448
+      JUMP(NAME(_L_441))
+      LABEL _L_447
+      MOVE(
+         t724 <-
+         t712)
+      CJUMP(EQ,
+         t724,
+         CONST 0,
+         _invokebad_438, _invokeok_451)
+      LABEL _invokeok_451
+      MOVE(
+         t851 <-
+         CALL(
+            NAME(_Tree$SetRight),
+            t724,
+            MEM(BINOP(PLUS,
+               t711, 
+               CONST 40))))
+      MOVE(
+         t714 <-
+         t851)
+      MOVE(
+         t725 <-
+         t712)
+      CJUMP(EQ,
+         t725,
+         CONST 0,
+         _invokebad_438, _invokeok_452)
+      LABEL _invokeok_452
+      MOVE(
+         t852 <-
+         CALL(
+            NAME(_Tree$SetHas_Right),
+            t725,
+            CONST 0))
+      MOVE(
+         t714 <-
+         t852)
+      JUMP(NAME(_L_448))
+      LABEL _DONE_547
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$RemoveRight
+      nextLocalOffset = -8
+      formals = List {
+         t731
+         t732
+         t733
+      }
+   }
+   List {
+      LABEL _L_548
+      MOVE(
+         t743 <-
+         %rbx:%rbx)
+      MOVE(
+         t744 <-
+         %r12:%r12)
+      MOVE(
+         t745 <-
+         %r13:%r13)
+      MOVE(
+         t746 <-
+         %r14:%r14)
+      MOVE(
+         t747 <-
+         %r15:%r15)
+      MOVE(
+         t731 <-
+         %rdi:%rdi)
+      MOVE(
+         t732 <-
+         %rsi:%rsi)
+      MOVE(
+         t733 <-
+         %rdx:%rdx)
+      MOVE(
+         t735 <-
+         t733)
+      CJUMP(EQ,
+         t735,
+         CONST 0,
+         _invokebad_458, _invokeok_457)
+      LABEL _invokeok_457
+      MOVE(
+         t853 <-
+         CALL(
+            NAME(_Tree$GetHas_Right),
+            t735))
+      CJUMP(EQ,
+         t853,
+         CONST 0,
+         _loopend_454, _loopbody_455)
+      LABEL _loopbody_455
+      MOVE(
+         t736 <-
+         t733)
+      CJUMP(EQ,
+         t736,
+         CONST 0,
+         _invokebad_458, _invokeok_459)
+      LABEL _invokeok_459
+      MOVE(
+         t857 <-
+         t736)
+      MOVE(
+         t737 <-
+         t733)
+      CJUMP(EQ,
+         t737,
+         CONST 0,
+         _invokebad_458, _invokeok_460)
+      LABEL _invokeok_460
+      MOVE(
+         t855 <-
+         CALL(
+            NAME(_Tree$GetRight),
+            t737))
+      MOVE(
+         t738 <-
+         t855)
+      CJUMP(EQ,
+         t738,
+         CONST 0,
+         _invokebad_458, _invokeok_461)
+      LABEL _invokeok_461
+      MOVE(
+         t856 <-
+         CALL(
+            NAME(_Tree$GetKey),
+            t738))
+      MOVE(
+         t854 <-
+         CALL(
+            NAME(_Tree$SetKey),
+            t857,
+            t856))
+      MOVE(
+         t734 <-
+         t854)
+      MOVE(
+         t732 <-
+         t733)
+      MOVE(
+         t739 <-
+         t733)
+      CJUMP(EQ,
+         t739,
+         CONST 0,
+         _invokebad_458, _invokeok_462)
+      LABEL _invokeok_462
+      MOVE(
+         t858 <-
+         CALL(
+            NAME(_Tree$GetRight),
+            t739))
+      MOVE(
+         t733 <-
+         t858)
+      LABEL _looptest_456
+      MOVE(
+         t740 <-
+         t733)
+      CJUMP(EQ,
+         t740,
+         CONST 0,
+         _invokebad_458, _invokeok_463)
+      LABEL _invokeok_463
+      MOVE(
+         t859 <-
+         CALL(
+            NAME(_Tree$GetHas_Right),
+            t740))
+      CJUMP(NE,
+         t859,
+         CONST 0,
+         _loopbody_455, _loopend_454)
+      LABEL _loopend_454
+      MOVE(
+         t741 <-
+         t732)
+      CJUMP(EQ,
+         t741,
+         CONST 0,
+         _invokebad_458, _invokeok_464)
+      LABEL _invokeok_464
+      MOVE(
+         t860 <-
+         CALL(
+            NAME(_Tree$SetRight),
+            t741,
+            MEM(BINOP(PLUS,
+               t731, 
+               CONST 40))))
+      MOVE(
+         t734 <-
+         t860)
+      MOVE(
+         t742 <-
+         t732)
+      CJUMP(EQ,
+         t742,
+         CONST 0,
+         _invokebad_458, _invokeok_465)
+      LABEL _invokeok_465
+      MOVE(
+         t861 <-
+         CALL(
+            NAME(_Tree$SetHas_Right),
+            t742,
+            CONST 0))
+      MOVE(
+         t734 <-
+         t861)
+      MOVE(
+         %rax:%rax <-
+         CONST 1)
+      LABEL _bail_453
+      MOVE(
+         %rbx:%rbx <-
+         t743)
+      MOVE(
+         %r12:%r12 <-
+         t744)
+      MOVE(
+         %r13:%r13 <-
+         t745)
+      MOVE(
+         %r14:%r14 <-
+         t746)
+      MOVE(
+         %r15:%r15 <-
+         t747)
+      JUMP(NAME(_DONE_549))
+      LABEL _invokebad_458
+      MOVE(
+         %rax:%rax <-
+         CALL(
+            NAME(_cs411error),
+            CONST 2))
+      JUMP(NAME(_bail_453))
+      LABEL _DONE_549
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$RemoveLeft
+      nextLocalOffset = -8
+      formals = List {
+         t748
+         t749
+         t750
+      }
+   }
+   List {
+      LABEL _L_550
+      MOVE(
+         t760 <-
+         %rbx:%rbx)
+      MOVE(
+         t761 <-
+         %r12:%r12)
+      MOVE(
+         t762 <-
+         %r13:%r13)
+      MOVE(
+         t763 <-
+         %r14:%r14)
+      MOVE(
+         t764 <-
+         %r15:%r15)
+      MOVE(
+         t748 <-
+         %rdi:%rdi)
+      MOVE(
+         t749 <-
+         %rsi:%rsi)
+      MOVE(
+         t750 <-
+         %rdx:%rdx)
+      MOVE(
+         t752 <-
+         t750)
+      CJUMP(EQ,
+         t752,
+         CONST 0,
+         _invokebad_471, _invokeok_470)
+      LABEL _invokeok_470
+      MOVE(
+         t862 <-
+         CALL(
+            NAME(_Tree$GetHas_Left),
+            t752))
+      CJUMP(EQ,
+         t862,
+         CONST 0,
+         _loopend_467, _loopbody_468)
+      LABEL _loopbody_468
+      MOVE(
+         t753 <-
+         t750)
+      CJUMP(EQ,
+         t753,
+         CONST 0,
+         _invokebad_471, _invokeok_472)
+      LABEL _invokeok_472
+      MOVE(
+         t866 <-
+         t753)
+      MOVE(
+         t754 <-
+         t750)
+      CJUMP(EQ,
+         t754,
+         CONST 0,
+         _invokebad_471, _invokeok_473)
+      LABEL _invokeok_473
+      MOVE(
+         t864 <-
+         CALL(
+            NAME(_Tree$GetLeft),
+            t754))
+      MOVE(
+         t755 <-
+         t864)
+      CJUMP(EQ,
+         t755,
+         CONST 0,
+         _invokebad_471, _invokeok_474)
+      LABEL _invokeok_474
+      MOVE(
+         t865 <-
+         CALL(
+            NAME(_Tree$GetKey),
+            t755))
+      MOVE(
+         t863 <-
+         CALL(
+            NAME(_Tree$SetKey),
+            t866,
+            t865))
+      MOVE(
+         t751 <-
+         t863)
+      MOVE(
+         t749 <-
+         t750)
+      MOVE(
+         t756 <-
+         t750)
+      CJUMP(EQ,
+         t756,
+         CONST 0,
+         _invokebad_471, _invokeok_475)
+      LABEL _invokeok_475
+      MOVE(
+         t867 <-
+         CALL(
+            NAME(_Tree$GetLeft),
+            t756))
+      MOVE(
+         t750 <-
+         t867)
+      LABEL _looptest_469
+      MOVE(
+         t757 <-
+         t750)
+      CJUMP(EQ,
+         t757,
+         CONST 0,
+         _invokebad_471, _invokeok_476)
+      LABEL _invokeok_476
+      MOVE(
+         t868 <-
+         CALL(
+            NAME(_Tree$GetHas_Left),
+            t757))
+      CJUMP(NE,
+         t868,
+         CONST 0,
+         _loopbody_468, _loopend_467)
+      LABEL _loopend_467
+      MOVE(
+         t758 <-
+         t749)
+      CJUMP(EQ,
+         t758,
+         CONST 0,
+         _invokebad_471, _invokeok_477)
+      LABEL _invokeok_477
+      MOVE(
+         t869 <-
+         CALL(
+            NAME(_Tree$SetLeft),
+            t758,
+            MEM(BINOP(PLUS,
+               t748, 
+               CONST 40))))
+      MOVE(
+         t751 <-
+         t869)
+      MOVE(
+         t759 <-
+         t749)
+      CJUMP(EQ,
+         t759,
+         CONST 0,
+         _invokebad_471, _invokeok_478)
+      LABEL _invokeok_478
+      MOVE(
+         t870 <-
+         CALL(
+            NAME(_Tree$SetHas_Left),
+            t759,
+            CONST 0))
+      MOVE(
+         t751 <-
+         t870)
+      MOVE(
+         %rax:%rax <-
+         CONST 1)
+      LABEL _bail_466
+      MOVE(
+         %rbx:%rbx <-
+         t760)
+      MOVE(
+         %r12:%r12 <-
+         t761)
+      MOVE(
+         %r13:%r13 <-
+         t762)
+      MOVE(
+         %r14:%r14 <-
+         t763)
+      MOVE(
+         %r15:%r15 <-
+         t764)
+      JUMP(NAME(_DONE_551))
+      LABEL _invokebad_471
+      MOVE(
+         %rax:%rax <-
+         CALL(
+            NAME(_cs411error),
+            CONST 2))
+      JUMP(NAME(_bail_466))
+      LABEL _DONE_551
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$Search
+      nextLocalOffset = -8
+      formals = List {
+         t765
+         t766
+      }
+   }
+   List {
+      LABEL _L_552
+      MOVE(
+         t776 <-
+         %rbx:%rbx)
+      MOVE(
+         t777 <-
+         %r12:%r12)
+      MOVE(
+         t778 <-
+         %r13:%r13)
+      MOVE(
+         t779 <-
+         %r14:%r14)
+      MOVE(
+         t780 <-
+         %r15:%r15)
+      MOVE(
+         t765 <-
+         %rdi:%rdi)
+      MOVE(
+         t766 <-
+         %rsi:%rsi)
+      MOVE(
+         t769 <-
+         CONST 0)
+      MOVE(
+         t769 <-
+         t765)
+      MOVE(
+         t767 <-
+         CONST 1)
+      MOVE(
+         t768 <-
+         CONST 0)
+      CJUMP(EQ,
+         t767,
+         CONST 0,
+         _loopend_480, _loopbody_481)
+      LABEL _loopbody_481
+      MOVE(
+         t771 <-
+         t769)
+      CJUMP(EQ,
+         t771,
+         CONST 0,
+         _invokebad_484, _invokeok_483)
+      LABEL _invokeok_483
+      MOVE(
+         t871 <-
+         CALL(
+            NAME(_Tree$GetKey),
+            t771))
+      MOVE(
+         t770 <-
+         t871)
+      CJUMP(GE,
+         t766,
+         t770,
+         _L_486, _L_485)
+      LABEL _L_485
+      MOVE(
+         t772 <-
+         t769)
+      CJUMP(EQ,
+         t772,
+         CONST 0,
+         _invokebad_484, _invokeok_491)
+      LABEL _invokeok_491
+      MOVE(
+         t872 <-
+         CALL(
+            NAME(_Tree$GetHas_Left),
+            t772))
+      CJUMP(EQ,
+         t872,
+         CONST 0,
+         _L_489, _L_488)
+      LABEL _L_488
+      MOVE(
+         t773 <-
+         t769)
+      CJUMP(EQ,
+         t773,
+         CONST 0,
+         _invokebad_484, _invokeok_492)
+      LABEL _invokeok_492
+      MOVE(
+         t873 <-
+         CALL(
+            NAME(_Tree$GetLeft),
+            t773))
+      MOVE(
+         t769 <-
+         t873)
+      LABEL _L_490
+      LABEL _L_487
+      LABEL _looptest_482
+      CJUMP(NE,
+         t767,
+         CONST 0,
+         _loopbody_481, _loopend_480)
+      LABEL _loopend_480
+      MOVE(
+         %rax:%rax <-
+         t768)
+      LABEL _bail_479
+      MOVE(
+         %rbx:%rbx <-
+         t776)
+      MOVE(
+         %r12:%r12 <-
+         t777)
+      MOVE(
+         %r13:%r13 <-
+         t778)
+      MOVE(
+         %r14:%r14 <-
+         t779)
+      MOVE(
+         %r15:%r15 <-
+         t780)
+      JUMP(NAME(_DONE_553))
+      LABEL _invokebad_484
+      MOVE(
+         %rax:%rax <-
+         CALL(
+            NAME(_cs411error),
+            CONST 2))
+      JUMP(NAME(_bail_479))
+      LABEL _L_489
+      MOVE(
+         t767 <-
+         CONST 0)
+      JUMP(NAME(_L_490))
+      LABEL _L_486
+      CJUMP(GE,
+         t770,
+         t766,
+         _L_494, _L_493)
+      LABEL _L_493
+      MOVE(
+         t774 <-
+         t769)
+      CJUMP(EQ,
+         t774,
+         CONST 0,
+         _invokebad_484, _invokeok_499)
+      LABEL _invokeok_499
+      MOVE(
+         t874 <-
+         CALL(
+            NAME(_Tree$GetHas_Right),
+            t774))
+      CJUMP(EQ,
+         t874,
+         CONST 0,
+         _L_497, _L_496)
+      LABEL _L_496
+      MOVE(
+         t775 <-
+         t769)
+      CJUMP(EQ,
+         t775,
+         CONST 0,
+         _invokebad_484, _invokeok_500)
+      LABEL _invokeok_500
+      MOVE(
+         t875 <-
+         CALL(
+            NAME(_Tree$GetRight),
+            t775))
+      MOVE(
+         t769 <-
+         t875)
+      LABEL _L_498
+      LABEL _L_495
+      JUMP(NAME(_L_487))
+      LABEL _L_497
+      MOVE(
+         t767 <-
+         CONST 0)
+      JUMP(NAME(_L_498))
+      LABEL _L_494
+      MOVE(
+         t768 <-
+         CONST 1)
+      MOVE(
+         t767 <-
+         CONST 0)
+      JUMP(NAME(_L_495))
+      LABEL _DONE_553
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$Print
+      nextLocalOffset = -8
+      formals = List {
+         t781
+      }
+   }
+   List {
+      LABEL _L_554
+      MOVE(
+         t784 <-
+         %rbx:%rbx)
+      MOVE(
+         t785 <-
+         %r12:%r12)
+      MOVE(
+         t786 <-
+         %r13:%r13)
+      MOVE(
+         t787 <-
+         %r14:%r14)
+      MOVE(
+         t788 <-
+         %r15:%r15)
+      MOVE(
+         t781 <-
+         %rdi:%rdi)
+      MOVE(
+         t782 <-
+         CONST 0)
+      MOVE(
+         t782 <-
+         t781)
+      MOVE(
+         t783 <-
+         CALL(
+            NAME(_Tree$RecPrint),
+            t781,
+            t782))
+      MOVE(
+         %rax:%rax <-
+         CONST 1)
+      LABEL _bail_501
+      MOVE(
+         %rbx:%rbx <-
+         t784)
+      MOVE(
+         %r12:%r12 <-
+         t785)
+      MOVE(
+         %r13:%r13 <-
+         t786)
+      MOVE(
+         %r14:%r14 <-
+         t787)
+      MOVE(
+         %r15:%r15 <-
+         t788)
+      LABEL _DONE_555
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Tree$RecPrint
+      nextLocalOffset = -8
+      formals = List {
+         t789
+         t790
+      }
+   }
+   List {
+      LABEL _L_556
+      MOVE(
+         t797 <-
+         %rbx:%rbx)
+      MOVE(
+         t798 <-
+         %r12:%r12)
+      MOVE(
+         t799 <-
+         %r13:%r13)
+      MOVE(
+         t800 <-
+         %r14:%r14)
+      MOVE(
+         t801 <-
+         %r15:%r15)
+      MOVE(
+         t789 <-
+         %rdi:%rdi)
+      MOVE(
+         t790 <-
+         %rsi:%rsi)
+      MOVE(
+         t792 <-
+         t790)
+      CJUMP(EQ,
+         t792,
+         CONST 0,
+         _invokebad_507, _invokeok_506)
+      LABEL _invokeok_506
+      MOVE(
+         t876 <-
+         CALL(
+            NAME(_Tree$GetHas_Left),
+            t792))
+      CJUMP(EQ,
+         t876,
+         CONST 0,
+         _L_504, _L_503)
+      LABEL _L_503
+      MOVE(
+         t878 <-
+         t789)
+      MOVE(
+         t793 <-
+         t790)
+      CJUMP(EQ,
+         t793,
+         CONST 0,
+         _invokebad_507, _invokeok_508)
+      LABEL _invokeok_508
+      MOVE(
+         t877 <-
+         CALL(
+            NAME(_Tree$GetLeft),
+            t793))
+      MOVE(
+         t791 <-
+         CALL(
+            NAME(_Tree$RecPrint),
+            t878,
+            t877))
+      LABEL _L_505
+      MOVE(
+         t794 <-
+         t790)
+      CJUMP(EQ,
+         t794,
+         CONST 0,
+         _invokebad_507, _invokeok_509)
+      LABEL _invokeok_509
+      MOVE(
+         t879 <-
+         CALL(
+            NAME(_Tree$GetKey),
+            t794))
+      EXP(CALL(
+         NAME(_cs411println),
+         t879))
+      MOVE(
+         t795 <-
+         t790)
+      CJUMP(EQ,
+         t795,
+         CONST 0,
+         _invokebad_507, _invokeok_513)
+      LABEL _invokeok_513
+      MOVE(
+         t880 <-
+         CALL(
+            NAME(_Tree$GetHas_Right),
+            t795))
+      CJUMP(EQ,
+         t880,
+         CONST 0,
+         _L_511, _L_510)
+      LABEL _L_510
+      MOVE(
+         t882 <-
+         t789)
+      MOVE(
+         t796 <-
+         t790)
+      CJUMP(EQ,
+         t796,
+         CONST 0,
+         _invokebad_507, _invokeok_514)
+      LABEL _invokeok_514
+      MOVE(
+         t881 <-
+         CALL(
+            NAME(_Tree$GetRight),
+            t796))
+      MOVE(
+         t791 <-
+         CALL(
+            NAME(_Tree$RecPrint),
+            t882,
+            t881))
+      LABEL _L_512
+      MOVE(
+         %rax:%rax <-
+         CONST 1)
+      LABEL _bail_502
+      MOVE(
+         %rbx:%rbx <-
+         t797)
+      MOVE(
+         %r12:%r12 <-
+         t798)
+      MOVE(
+         %r13:%r13 <-
+         t799)
+      MOVE(
+         %r14:%r14 <-
+         t800)
+      MOVE(
+         %r15:%r15 <-
+         t801)
+      JUMP(NAME(_DONE_557))
+      LABEL _invokebad_507
+      MOVE(
+         %rax:%rax <-
+         CALL(
+            NAME(_cs411error),
+            CONST 2))
+      JUMP(NAME(_bail_502))
+      LABEL _L_504
+      MOVE(
+         t791 <-
+         CONST 1)
+      JUMP(NAME(_L_505))
+      LABEL _L_511
+      MOVE(
+         t791 <-
+         CONST 1)
+      JUMP(NAME(_L_512))
+      LABEL _DONE_557
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _cs411main
+      nextLocalOffset = -8
+      formals = List {
+      }
+   }
+   List {
+      LABEL _L_558
+      MOVE(
+         t802 <-
+         %rbx:%rbx)
+      MOVE(
+         t803 <-
+         %r12:%r12)
+      MOVE(
+         t804 <-
+         %r13:%r13)
+      MOVE(
+         t805 <-
+         %r14:%r14)
+      MOVE(
+         t806 <-
+         %r15:%r15)
+      MOVE(
+         t884 <-
+         CALL(
+            NAME(_cs411newobject),
+            CONST 0))
+      MOVE(
+         t883 <-
+         CALL(
+            NAME(_BT$Start),
+            t884))
+      EXP(CALL(
+         NAME(_cs411println),
+         t883))
+      LABEL _bail_515
+      MOVE(
+         %rbx:%rbx <-
+         t802)
+      MOVE(
+         %r12:%r12 <-
+         t803)
+      MOVE(
+         %r13:%r13 <-
+         t804)
+      MOVE(
+         %r14:%r14 <-
+         t805)
+      MOVE(
+         %r15:%r15 <-
+         t806)
+      LABEL _DONE_559
+   }
+}

@@ -1,0 +1,173 @@
+/**
+ * JavaCC file
+ */
+ 
+options {
+  JDK_VERSION = "1.6";
+  STATIC = false;
+}
+PARSER_BEGIN(JCCMinijavaParser)
+package parser;
+
+import ast.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class JCCMinijavaParser {
+}
+
+PARSER_END(JCCMinijavaParser)
+
+SKIP :
+{
+ 	" "
+|	"\r"
+|	"\t"
+|	"\n"
+|	< MULTI_LINE_COMMENT: "/*" (~["*"])* "*" ("*" | ~["*","/"] (~["*"])* "*")* "/" >
+|   < SINGLE_LINE_COMMENT: "//" (~["\n"])* >
+|   < #NOT_STAR_SLASH: ~["*"] | "*" ~["/"] >
+}
+
+TOKEN : /* KEYWORDS */
+{	
+	< PRINT:		"print" >
+|	< RETURN: 		"return" >
+| 	< INT:			"int" >
+| 	< BOOLEAN: 		"boolean" >
+}
+TOKEN : /* SEPARATORS and OPERATORS*/
+{	<LPAREN: "(">
+|	<RPAREN: ")">
+|	<LBRACE: "{">
+|	<RBRACE: "}">
+|	<ASSIGN: "=">
+|	<QUESTION:	 "?">
+|	<PLUS:	 "+" >
+|	<MINUS:  "-" >
+|	<MULT:   "*" >
+|	<SMALLER:"<">
+|	<NOT:	 "!">
+| 	<COLON:	 ":" >
+| 	<COMMA:	"," >
+| 	<SEMICOLON:	 ";" >
+}
+	
+TOKEN :
+{   < INTEGER_LITERAL: ( <DIGIT> )+ >
+|   < IDENTIFIER: <LETTER> (<LETTER> | "_" | <DIGIT>)* >
+|   < #LETTER: ["A" - "Z", "a" - "z"] >
+|   < #DIGIT: ["0" - "9"] >
+}
+
+Program Program() : { 
+	NodeList<Statement> ss = new NodeList<Statement>();
+	Statement s;
+	Expression e;
+}
+{
+	( s=Statement()
+		{ ss.add(s); }
+	)*
+	< PRINT > e = Expression()
+	<EOF>
+	{ /*return new Program(ss, new Print(e));*/ return new Program(null, new NodeList<ClassDecl>()); }
+	//TODO: This is just to make the code compile
+}
+
+Statement Statement() : {
+	Statement s = null; //TODO: should not be null ever!
+}
+{
+	s=Assign()
+	{ return s; }
+}
+
+Statement Assign() : {
+	String name;
+	Expression value;
+}
+{	name=Identifier()
+	"="
+	value=Expression() ";"
+		{return new Assign(name, value); }
+}
+
+
+Expression Expression() : {
+	Expression e, e2, e3;
+}
+{	e=CompExpression()
+	( "?" e2 = Expression()
+	  ":" e3 = Expression()
+		{	e = new Conditional(e, e2, e3); }
+	)?
+	{ return e; }
+}
+
+// For parsing anything with priority same or higher than <
+Expression CompExpression() : {
+	Expression e, e2;
+}
+{ 	e=AddExpression()
+	( "<" e2=AddExpression()
+		{ e = new LessThan(e, e2); }
+	)?
+	{ return e; }
+}
+// For parsing anything with priority same or higher than +
+Expression AddExpression() : {
+	Expression e, e2;
+	Token op;
+}
+{	e=MultExpression()
+	( 	(op="+"|op="-")
+		e2=MultExpression()
+			{ if (op.image.equals("+"))
+				e=new Plus(e, e2);
+			  else
+			  	e=new Minus(e, e2);
+			}
+	)*
+	{ return e; }
+}
+
+// For parsing anything with priority same or higher than *
+Expression MultExpression() :  {
+	Expression e, e2;
+}
+{	e=NotExpression()
+	(	"*" e2=NotExpression()
+			{ e = new Times(e, e2); }
+	)*
+	{ return e; }
+}
+
+// For parsing anything with priority same or higher than ! expressions:
+Expression NotExpression() : {
+	Expression e;
+}
+{ 	"!" e=NotExpression()
+		{ return new Not(e); }
+| 	e=PrimaryExpression()
+		{ return e; }
+}
+
+/* PrimaryExpression is the expression that has highest precedence.*/
+Expression PrimaryExpression() : {
+	Token t;
+	String i, f;
+	Expression e;
+}
+{ t=<INTEGER_LITERAL>					{ return new IntegerLiteral(t.image); }
+| i=Identifier()						{ return new IdentifierExp(i); }
+| "(" e=Expression() ")"				{ return e; }
+}
+
+String Identifier() : {
+	Token i;
+}
+{
+	i = <IDENTIFIER>
+	{ return i.image; }
+}

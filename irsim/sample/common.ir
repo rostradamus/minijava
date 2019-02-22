@@ -1,0 +1,190 @@
+MethodFragment {
+   X86_64Frame { label = _Test$do
+      nextLocalOffset = -8
+      formals = List {
+         t1468
+      }
+   }
+   List {
+      LABEL _L_951
+      MOVE(
+         t1473 <-
+         %rbx:%rbx)
+      MOVE(
+         t1474 <-
+         %r12:%r12)
+      MOVE(
+         t1475 <-
+         %r13:%r13)
+      MOVE(
+         t1476 <-
+         %r14:%r14)
+      MOVE(
+         t1477 <-
+         %r15:%r15)
+      MOVE(
+         t1468 <-
+         %rdi:%rdi)
+      MOVE(
+         t1469 <-
+         CALL(
+            NAME(_Test$id),
+            t1468,
+            CONST 1))
+      MOVE(
+         t1470 <-
+         CALL(
+            NAME(_Test$id),
+            t1468,
+            CONST 2))
+      CJUMP(GE,
+         t1469,
+         t1470,
+         _L_947, _L_946)
+      LABEL _L_946
+      MOVE(
+         t1471 <-
+         BINOP(MUL,
+            t1469, 
+            t1470))
+      LABEL _L_948
+      MOVE(
+         %rax:%rax <-
+         BINOP(MUL,
+            t1469, 
+            t1470))
+      LABEL _bail_945
+      MOVE(
+         %rbx:%rbx <-
+         t1473)
+      MOVE(
+         %r12:%r12 <-
+         t1474)
+      MOVE(
+         %r13:%r13 <-
+         t1475)
+      MOVE(
+         %r14:%r14 <-
+         t1476)
+      MOVE(
+         %r15:%r15 <-
+         t1477)
+      JUMP(NAME(_DONE_952))
+      LABEL _L_947
+      MOVE(
+         t1472 <-
+         BINOP(MUL,
+            t1469, 
+            t1470))
+      JUMP(NAME(_L_948))
+      LABEL _DONE_952
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _Test$id
+      nextLocalOffset = -8
+      formals = List {
+         t1478
+         t1479
+      }
+   }
+   List {
+      LABEL _L_953
+      MOVE(
+         t1480 <-
+         %rbx:%rbx)
+      MOVE(
+         t1481 <-
+         %r12:%r12)
+      MOVE(
+         t1482 <-
+         %r13:%r13)
+      MOVE(
+         t1483 <-
+         %r14:%r14)
+      MOVE(
+         t1484 <-
+         %r15:%r15)
+      MOVE(
+         t1478 <-
+         %rdi:%rdi)
+      MOVE(
+         t1479 <-
+         %rsi:%rsi)
+      MOVE(
+         %rax:%rax <-
+         t1479)
+      LABEL _bail_949
+      MOVE(
+         %rbx:%rbx <-
+         t1480)
+      MOVE(
+         %r12:%r12 <-
+         t1481)
+      MOVE(
+         %r13:%r13 <-
+         t1482)
+      MOVE(
+         %r14:%r14 <-
+         t1483)
+      MOVE(
+         %r15:%r15 <-
+         t1484)
+      LABEL _DONE_954
+   }
+}
+MethodFragment {
+   X86_64Frame { label = _cs411main
+      nextLocalOffset = -8
+      formals = List {
+      }
+   }
+   List {
+      LABEL _L_955
+      MOVE(
+         t1485 <-
+         %rbx:%rbx)
+      MOVE(
+         t1486 <-
+         %r12:%r12)
+      MOVE(
+         t1487 <-
+         %r13:%r13)
+      MOVE(
+         t1488 <-
+         %r14:%r14)
+      MOVE(
+         t1489 <-
+         %r15:%r15)
+      MOVE(
+         t1491 <-
+         CALL(
+            NAME(_cs411newobject),
+            CONST 0))
+      MOVE(
+         t1490 <-
+         CALL(
+            NAME(_Test$do),
+            t1491))
+      EXP(CALL(
+         NAME(_cs411println),
+         t1490))
+      LABEL _bail_950
+      MOVE(
+         %rbx:%rbx <-
+         t1485)
+      MOVE(
+         %r12:%r12 <-
+         t1486)
+      MOVE(
+         %r13:%r13 <-
+         t1487)
+      MOVE(
+         %r14:%r14 <-
+         t1488)
+      MOVE(
+         %r15:%r15 <-
+         t1489)
+      LABEL _DONE_956
+   }
+}
