@@ -68,9 +68,9 @@ public class PrettyPrintVisitor implements Visitor<Void> {
 
     @Override
     public Void visit(Print n) {
-        out.print("print ");
+        out.print("System.out.println(");
         n.exp.accept(this);
-        out.println("");
+        out.print(");");
         return null;
     }
 
@@ -78,7 +78,7 @@ public class PrettyPrintVisitor implements Visitor<Void> {
     public Void visit(Assign n) {
         out.print(n.name + " = ");
         n.value.accept(this);
-        out.println(";");
+        out.print(";");
         return null;
     }
 
@@ -168,7 +168,7 @@ public class PrettyPrintVisitor implements Visitor<Void> {
     @Override
     public Void visit(VarDecl n) {
         n.type.accept(this);
-        out.print(" " + n.name);
+        out.print(" " + n.name + ";");
         return null;
     }
 
@@ -189,7 +189,9 @@ public class PrettyPrintVisitor implements Visitor<Void> {
 
     @Override
     public Void visit(Call n) {
-        out.print(n.name);
+        n.receiver.accept(this);
+
+        out.print("." + n.name);
         out.print("(");
         for (int i = 0; i < n.rands.size(); i++) {
             n.rands.elementAt(i).accept(this);
@@ -197,7 +199,7 @@ public class PrettyPrintVisitor implements Visitor<Void> {
                 out.print(", ");
             }
         }
-        out.println(")");
+        out.print(")");
         return null;
     }
 
@@ -212,97 +214,158 @@ public class PrettyPrintVisitor implements Visitor<Void> {
 
     @Override
     public Void visit(MainClass n) {
-        // TODO Auto-generated method stub
+        out.println(String.format("class %s {", n.className));
+        out.indent();
+        out.println(String.format("public static void main (String[] %s) {", n.argName));
+        out.indent();
+        n.statement.accept(this);
+        out.outdent();
+        out.println("}");
+        out.outdent();
+        out.println("}");
         return null;
     }
 
     @Override
     public Void visit(ClassDecl n) {
-        // TODO Auto-generated method stub
+        out.println(n.superName != null ? String.format("class %s extends %s{", n.name, n.superName)
+                : String.format("class %s {", n.name));
+        out.indent();
+        n.vars.accept(this);
+        n.methods.accept(this);
+        out.outdent();
+        out.println("}");
         return null;
     }
 
     @Override
     public Void visit(MethodDecl n) {
-        // TODO Auto-generated method stub
+        out.print("public ");
+        n.returnType.accept(this);
+        out.print(" " + n.name + "(");
+        for (int i = 0; i < n.formals.size(); i++) {
+            if (i != 0) out.print(", ");
+            VarDecl param = n.formals.elementAt(i);
+            param.type.accept(this);
+            out.print(" " + param.name);
+        }
+        out.println(") {");
+        out.indent();
+        n.vars.accept(this);
+        n.statements.accept(this);
+        out.print("return ");
+        n.returnExp.accept(this);
+        out.println(";");
+        out.outdent();
+        out.print("}");
         return null;
     }
 
     @Override
     public Void visit(IntArrayType n) {
-        // TODO Auto-generated method stub
+        out.print("int[]");
         return null;
     }
 
     @Override
     public Void visit(ObjectType n) {
-        // TODO Auto-generated method stub
+        out.print(n.name);
         return null;
     }
 
     @Override
     public Void visit(Block n) {
-        // TODO Auto-generated method stub
+        out.println("{");
+        out.indent();
+        n.statements.accept(this);
+        out.outdent();
+        out.println("}");
         return null;
     }
 
     @Override
     public Void visit(If n) {
-        // TODO Auto-generated method stub
+        out.print("if (");
+        n.tst.accept(this);
+        out.println(")");
+        out.indent();
+        n.thn.accept(this);
+        out.outdent();
+        out.println("else");
+        out.indent();
+        n.els.accept(this);
+        out.outdent();
         return null;
     }
 
     @Override
     public Void visit(While n) {
-        // TODO Auto-generated method stub
+        out.print("while (");
+        n.tst.accept(this);
+        out.print(") ");
+        n.body.accept(this);
         return null;
     }
 
     @Override
     public Void visit(ArrayAssign n) {
-        // TODO Auto-generated method stub
+        out.print(n.name + "[");
+        n.index.accept(this);
+        out.print("] = ");
+        n.value.accept(this);
+        out.print(";");
         return null;
     }
 
     @Override
     public Void visit(And n) {
-        // TODO Auto-generated method stub
+        out.print("(");
+        n.e1.accept(this);
+        out.print(" && ");
+        n.e2.accept(this);
+        out.print(")");
         return null;
     }
 
     @Override
     public Void visit(ArrayLookup n) {
-        // TODO Auto-generated method stub
+        n.array.accept(this);
+        out.print("[");
+        n.index.accept(this);
+        out.print("]");
         return null;
     }
 
     @Override
     public Void visit(ArrayLength n) {
-        // TODO Auto-generated method stub
+        n.array.accept(this);
+        out.print(".length");
         return null;
     }
 
     @Override
     public Void visit(BooleanLiteral n) {
-        // TODO Auto-generated method stub
+        out.print(n.value);
         return null;
     }
 
     @Override
     public Void visit(This n) {
-        // TODO Auto-generated method stub
+        out.print("this");
         return null;
     }
 
     @Override
     public Void visit(NewArray n) {
-        // TODO Auto-generated method stub
+        out.print("new int[");
+        n.size.accept(this);
+        out.print("]");
         return null;
     }
 
     @Override
     public Void visit(NewObject n) {
-        // TODO Auto-generated method stub
+        out.print("new " + n.typeName + "()");
         return null;
     }
 }

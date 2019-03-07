@@ -289,9 +289,11 @@ Expression ObjectAccessExpression() : {
         (
             "length"    { return new ArrayLength(e); }
         |
-            name=Identifier()
+            name = Identifier()
+
             "("
             (
+                { rands = new NodeList<Expression>(); }
                 e2=Expression()
                     { rands.add(e2); }
                 (
