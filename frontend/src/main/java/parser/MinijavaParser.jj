@@ -34,11 +34,9 @@ TOKEN : /* KEYWORDS */
     < RETURN: 		"return" >
 | 	< INT:			"int" >
 | 	< BOOLEAN: 		"boolean" >
-// TODO: SHOUD STRING BE A TOKEN ? (RO)
 |   < STRING:       "String" >
 |   < VOID:         "void" >
 |   < CLASS:        "class" >
-// TODO: SHOUD MAIN BE A TOKEN ? (RO)
 |   < MAIN:         "main" >
 |   < PUBLIC:       "public" >
 |   < STATIC:       "static" >
