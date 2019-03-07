@@ -35,10 +35,27 @@ TOKEN : /* KEYWORDS */
 |	< RETURN: 		"return" >
 | 	< INT:			"int" >
 | 	< BOOLEAN: 		"boolean" >
+// TODO: SHOUD STRING BE A TOKEN ? (RO)
+|   < STRING:       "String" >
+|   < VOID:         "void" >
+|   < CLASS:        "class" >
+// TODO: SHOUD MAIN BE A TOKEN ? (RO)
+|   < MAIN:         "main" >
+|   < PUBLIC:       "public" >
+|   < STATIC:       "static" >
+|   < EXTENDS:      "extends" >
+|   < IF:           "if" >
+|   < ELSE:         "else" >
+|   < WHILE:        "while" >
+|   < SOUT:         "System.out.println" >
+|   < THIS:         "this" >
+|   < NEW:          "new" >
 }
 TOKEN : /* SEPARATORS and OPERATORS*/
 {	<LPAREN: "(">
 |	<RPAREN: ")">
+|   <LBRKT:  "[">
+|   <RBRKT:  "]">
 |	<LBRACE: "{">
 |	<RBRACE: "}">
 |	<ASSIGN: "=">
@@ -47,62 +64,153 @@ TOKEN : /* SEPARATORS and OPERATORS*/
 |	<MINUS:  "-" >
 |	<MULT:   "*" >
 |	<SMALLER:"<">
+|   <AND:    "&&">
 |	<NOT:	 "!">
 | 	<COLON:	 ":" >
 | 	<COMMA:	"," >
+|   <DOT:   "." >
 | 	<SEMICOLON:	 ";" >
 }
 	
 TOKEN :
 {   < INTEGER_LITERAL: ( <DIGIT> )+ >
+|   < BOOLEAN_LITERAL: "true" | "false" >
 |   < IDENTIFIER: <LETTER> (<LETTER> | "_" | <DIGIT>)* >
 |   < #LETTER: ["A" - "Z", "a" - "z"] >
 |   < #DIGIT: ["0" - "9"] >
 }
 
-Program Program() : { 
+Program Program() : {
+    MainClass mainClass;
+    NodeList<ClassDecl> classes = new NodeList<ClassDecl>();
+    ClassDecl klass;
+
 	NodeList<Statement> ss = new NodeList<Statement>();
 	Statement s;
 	Expression e;
 }
 {
-	( s=Statement()
-		{ ss.add(s); }
-	)*
-	< PRINT > e = Expression()
+    mainClass=MainClass()
+    (
+        klass=ClassDecl()
+        { classes.add(klass); }
+    )*
 	<EOF>
-	{ /*return new Program(ss, new Print(e));*/ return new Program(null, new NodeList<ClassDecl>()); }
-	//TODO: This is just to make the code compile
+	{ return new Program(mainClass, classes); }
 }
 
-Statement Statement() : {
-	Statement s = null; //TODO: should not be null ever!
+MainClass MainClass() : {
+    String className;
+    String argName;
+    Statement s;
 }
 {
-	s=Assign()
+    "class" className=Identifier() "{"
+    "public" "static" "void" "main" "(" "String" "[" "]" argName=Identifier() ")"
+    "{" s=Statement() "}" "}"
+    { return new MainClass(className, argName, s); }
+}
+
+ClassDecl ClassDecl() : {
+    String name;
+    String superName = null;
+    VarDecl var;
+    MethodDecl method;
+    NodeList<VarDecl> vars = new NodeList<VarDecl>();
+    NodeList<MethodDecl> methods = new NodeList<MethodDecl>();
+}
+{
+    "class" name=Identifier()
+    ( "extends" superName=Identifier() )? "{"
+    ( var = VarDecl(vars.size()) { vars.add(var); } )*
+    ( method = MethodDecl() { methods.add(method); } )* "}"
+    { return new ClassDecl(name, superName, vars, methods); }
+}
+
+VarDecl VarDecl(int index) : {
+    Type type;
+    String name;
+}
+{
+    type=Type() name=Identifier() ";"
+    { return new VarDecl(type, name, index); }
+}
+
+MethodDecl MethodDecl() : {
+    Type returnType, paramType;
+    String name, paramName;
+    NodeList<VarDecl> formals = new NodeList<VarDecl>();
+    NodeList<VarDecl> vars = new NodeList<VarDecl>();
+    VarDecl var;
+    NodeList<Statement> statements = new NodeList<Statement>();
+    Statement stmt;
+    Expression returnExp;
+}
+{
+    "public" returnType=Type() name=Identifier()
+    "(" ( paramType=Type() paramName=Identifier()
+            { formals.add(new VarDecl(paramType, paramName, formals.size())); }
+            ( "," paramType=Type() paramName=Identifier()
+                { formals.add(new VarDecl(paramType, paramName, formals.size())); }
+            )*
+        )? ")"
+    "{" (
+            LOOKAHEAD(2)
+            var=VarDecl(vars.size())
+                { vars.add(var); }
+        )*
+        (
+            stmt=Statement()
+                { statements.add(stmt); }
+        )*
+        "return" returnExp=Expression() ";" "}"
+    { return new MethodDecl(returnType, name, formals, vars, statements, returnExp); }
+}
+
+
+Statement Statement() : {
+	Statement s = null, s2; //TODO: should not be null ever!
+	NodeList<Statement> statements = new NodeList<Statement>();
+	Expression e;
+}
+{
+    "{" (
+            s=Statement()
+            { statements.add(s); }
+        )*
+    "}"
+    { return new Block(statements); }
+|   "if" "(" e=Expression() ")" s=Statement() "else" s2=Statement()
+    { return new If(e, s, s2); }
+|   "while" "(" e=Expression() ")" s=Statement()
+    { return new While(e, s); }
+|   <SOUT> "(" e=Expression() ")" ";"
+    { return new Print(e); }
+|	s=Assign()
 	{ return s; }
 }
 
 Statement Assign() : {
 	String name;
+	Expression index;
 	Expression value;
 }
 {	name=Identifier()
-	"="
-	value=Expression() ";"
-		{return new Assign(name, value); }
+	(
+	    "="
+	    value=Expression() ";"
+            { return new Assign(name, value); }
+    |   "[" index=Expression() "]" "="
+        value=Expression() ";"
+            { return new ArrayAssign(name, index, value); }
+    )
 }
-
 
 Expression Expression() : {
 	Expression e, e2, e3;
 }
-{	e=CompExpression()
-	( "?" e2 = Expression()
-	  ":" e3 = Expression()
-		{	e = new Conditional(e, e2, e3); }
-	)?
-	{ return e; }
+{
+    e=CompExpression()  { return e; }
 }
 
 // For parsing anything with priority same or higher than <
@@ -112,6 +220,8 @@ Expression CompExpression() : {
 { 	e=AddExpression()
 	( "<" e2=AddExpression()
 		{ e = new LessThan(e, e2); }
+    | "&&" e2=AddExpression()
+        { e = new And(e, e2); }
 	)?
 	{ return e; }
 }
@@ -121,15 +231,15 @@ Expression AddExpression() : {
 	Token op;
 }
 {	e=MultExpression()
-	( 	(op="+"|op="-")
-		e2=MultExpression()
-			{ if (op.image.equals("+"))
-				e=new Plus(e, e2);
-			  else
-			  	e=new Minus(e, e2);
-			}
-	)*
-	{ return e; }
+    ( 	(op="+"|op="-")
+        e2=MultExpression()
+            { if (op.image.equals("+"))
+                e=new Plus(e, e2);
+              else
+                e=new Minus(e, e2);
+            }
+    )*
+    { return e; }
 }
 
 // For parsing anything with priority same or higher than *
@@ -137,10 +247,10 @@ Expression MultExpression() :  {
 	Expression e, e2;
 }
 {	e=NotExpression()
-	(	"*" e2=NotExpression()
-			{ e = new Times(e, e2); }
-	)*
-	{ return e; }
+	( "*" e2=NotExpression()
+        { e = new Times(e, e2); }
+    )?
+    { return e; }
 }
 
 // For parsing anything with priority same or higher than ! expressions:
@@ -149,8 +259,40 @@ Expression NotExpression() : {
 }
 { 	"!" e=NotExpression()
 		{ return new Not(e); }
-| 	e=PrimaryExpression()
+| 	e=AccessExpression()
 		{ return e; }
+}
+
+Expression AccessExpression() : {
+    Expression e, e2;
+    NodeList<Expression> rands = new NodeList<Expression>();
+    String name;
+}
+{
+    e = PrimaryExpression()
+    (
+        "[" e2=Expression() "]"
+            { return new ArrayLookup(e, e2); }
+    |  LOOKAHEAD(2)
+        "."
+        (
+            "length"    { return new ArrayLength(e); }
+        |
+            name=Identifier()
+            "("
+            (
+                e2=Expression()
+                    { rands.add(e2); }
+                (
+                    "," e2=Expression()
+                        { rands.add(e2); }
+                )*
+            )?
+            ")"
+                { return new Call(e, name, rands); }
+        )
+    )?
+    { return e; }
 }
 
 /* PrimaryExpression is the expression that has highest precedence.*/
@@ -160,7 +302,14 @@ Expression PrimaryExpression() : {
 	Expression e;
 }
 { t=<INTEGER_LITERAL>					{ return new IntegerLiteral(t.image); }
+| t=<BOOLEAN>                           { return new BooleanLiteral(Boolean.parseBoolean(t.image)); }
 | i=Identifier()						{ return new IdentifierExp(i); }
+| <THIS>                                { return new This(); }
+| "new"
+    (
+        "int" "[" e=Expression() "]"    { return new NewArray(e); }
+    |   i=Identifier() "(" ")"          { return new NewObject(i); }
+    )
 | "(" e=Expression() ")"				{ return e; }
 }
 
@@ -170,4 +319,18 @@ String Identifier() : {
 {
 	i = <IDENTIFIER>
 	{ return i.image; }
+}
+
+Type Type() : {
+    String name;
+}
+{
+    "int"
+    (
+        "[" "]"
+        { return new IntArrayType(); }
+    )?
+    { return new IntegerType(); }
+|   "boolean"           { return new BooleanType(); }
+|   name=Identifier()   { return new ObjectType(name); }
 }
