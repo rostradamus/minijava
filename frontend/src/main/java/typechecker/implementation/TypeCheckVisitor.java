@@ -227,8 +227,8 @@ public class TypeCheckVisitor implements Visitor<Type> {
         }
 
 //        System.out.println("n.rands.size() " + n.rands.size());
-////        System.out.println("getParametertypes() " + method.getParameterTypes().size());
-////        System.out.println("method name " + n.name);
+//        System.out.println("getParametertypes() " + method.getParameterTypes().size());
+//        System.out.println("method name " + n.name)
 
         // type check arguments
         for (int i = 0; i < n.rands.size(); i++) {
