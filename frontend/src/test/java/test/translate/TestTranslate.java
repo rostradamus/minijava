@@ -161,11 +161,11 @@ public class TestTranslate {
         test("1\n99\n",
                 "class Main {\n" +
                         "  public static void main(String[] args) {\n" +
-                        "      System.out.println(new Foo().do(true,true));\n" +
+                        "      System.out.println(new Foo().doit(true,true));\n" +
                         "  }\n" +
                         "}\n" +
                         "class Foo {\n " +
-                        "   public int do(boolean a, boolean b) { \n" +
+                        "   public int doit(boolean a, boolean b) { \n" +
                         "      if (a && b)\n" +
                         "         System.out.println(1);\n" +
                         "      else \n" +
@@ -182,11 +182,11 @@ public class TestTranslate {
         test("99\n",
                 "class Main {\n" +
                         "  public static void main(String[] args) {\n" +
-                        "      System.out.println(new Foo().do());\n" +
+                        "      System.out.println(new Foo().doit());\n" +
                         "  }\n" +
                         "}\n" +
                         "class Foo {\n " +
-                        "   public int do() { \n" +
+                        "   public int doit() { \n" +
                         "      int[] arr;\n" +
                         "      arr = new int[1];\n" +
                         "      arr[0] = 99;\n" +
@@ -219,12 +219,12 @@ public class TestTranslate {
         test(20 + "\n",
                 "class Main {\n" +
                         "  public static void main(String[] args) {\n" +
-                        "      System.out.println(new Foo().do(2));\n" +
+                        "      System.out.println(new Foo().doit(2));\n" +
                         "  }\n" +
                         "}\n" +
                         "class Foo {\n " +
                         "   int [] arr;\n" +
-                        "   public int do(int y) { \n" +
+                        "   public int doit(int y) { \n" +
                         "      return this.n(5)[0] + this.n(15)[0];\n" +
                         "   }\n" +
                         "   public int [] n(int n) { \n" +
