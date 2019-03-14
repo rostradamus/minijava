@@ -120,18 +120,18 @@ ClassDecl ClassDecl() : {
 {
     "class" name=Identifier()
     ( "extends" superName=Identifier() )? "{"
-    ( var = VarDecl(vars.size()) { vars.add(var); } )*
+    ( var = VarDecl(VarDecl.Kind.FIELD, vars.size()) { vars.add(var); } )*
     ( method = MethodDecl() { methods.add(method); } )* "}"
     { return new ClassDecl(name, superName, vars, methods); }
 }
 
-VarDecl VarDecl(int index) : {
+VarDecl VarDecl(VarDecl.Kind kind, int index) : {
     Type type;
     String name;
 }
 {
     type=Type() name=Identifier() ";"
-    { return new VarDecl(type, name, index); }
+    { return new VarDecl(kind, type, name, index); }
 }
 
 MethodDecl MethodDecl() : {
@@ -147,14 +147,14 @@ MethodDecl MethodDecl() : {
 {
     "public" returnType=Type() name=Identifier()
     "(" ( paramType=Type() paramName=Identifier()
-            { formals.add(new VarDecl(paramType, paramName, formals.size())); }
+            { formals.add(new VarDecl(VarDecl.Kind.FORMAL, paramType, paramName, formals.size())); }
             ( "," paramType=Type() paramName=Identifier()
-                { formals.add(new VarDecl(paramType, paramName, formals.size())); }
+                { formals.add(new VarDecl(VarDecl.Kind.FORMAL, paramType, paramName, formals.size())); }
             )*
         )? ")"
     "{" (
             LOOKAHEAD(2)
-            var=VarDecl(vars.size())
+            var=VarDecl(VarDecl.Kind.LOCAL, vars.size())
                 { vars.add(var); }
         )*
         (
