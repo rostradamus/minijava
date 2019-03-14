@@ -226,9 +226,12 @@ public class TypeCheckVisitor implements Visitor<Type> {
             errors.wrongNumberOfArguments(method.getParameterTypes().size(), n.rands.size());
         }
 
+        System.out.println("n.rands.size() " + n.rands.size());
+        System.out.println("getParametertypes() " + method.getParameterTypes().size());
+
         // type check arguments
         for (int i = 0; i < n.rands.size(); i++) {
-            System.out.println(method.getParameterTypes().elementAt(i));
+            System.out.println("WTFF " + n.rands.elementAt(i));
             check(n.rands.elementAt(i), (Type) method.getParameterTypes().elementAt(i));
         }
 
@@ -266,57 +269,78 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     @Override
     public Type visit(IntArrayType n) {
-        throw new Error("Not implemented");
+        return n;
     }
 
     @Override
     public Type visit(ObjectType n) {
-        throw new Error("Not implemented");
+        return n;
     }
 
     @Override
     public Type visit(Block n) {
-        throw new Error("Not implemented");
+        n.statements.accept(this);
+        return null;
     }
 
     @Override
     public Type visit(If n) {
-        throw new Error("Not implemented");
+        check(n.tst, new BooleanType());
+        n.thn.accept(this);
+        n.els.accept(this);
+        return null;
     }
 
     @Override
     public Type visit(While n) {
-        throw new Error("Not implemented");
+        check(n.tst, new BooleanType());
+        n.body.accept(this);
+        return null;
     }
 
     @Override
     public Type visit(ArrayAssign n) {
-        throw new Error("Not implemented");
+        check(new IdentifierExp(n.name), new IntArrayType());
+        check(n.index, new IntegerType());
+        check(n.value, new IntegerType());
+        return null;
     }
 
     @Override
     public Type visit(And n) {
-        throw new Error("Not implemented");
+        check(n.e1, new BooleanType());
+        check(n.e2, new BooleanType());
+        n.setType(new BooleanType());
+        return n.getType();
     }
 
     @Override
     public Type visit(ArrayLookup n) {
-        throw new Error("Not implemented");
+        check(n.array, new IntArrayType());
+        check(n.index, new IntegerType());
+        n.setType(new IntegerType());
+        return n.getType();
     }
 
     @Override
     public Type visit(ArrayLength n) {
-        throw new Error("Not implemented");
+        check(n.array, new IntArrayType());
+        n.setType(new IntegerType());
+        return n.getType();
     }
 
     @Override
     public Type visit(This n) {
-        throw new Error("Not implemented");
+        ObjectType t = new ObjectType(thisClass.getName());
+        n.setType(t);
+        return n.getType();
     }
 
     @Override
     public Type visit(NewArray n) {
-        throw new Error("Not implemented");
+        check(n.size, new IntegerType());
+        n.setType(new IntArrayType());
+        return n.getType();
     }
 
     @Override

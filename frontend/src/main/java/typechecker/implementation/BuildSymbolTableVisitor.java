@@ -86,6 +86,10 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<ClassEntry>
     public ImpTable<ClassEntry> visit(MethodDecl n) {
         List pTypes = new ArrayList<>();
 
+        System.out.println("n.name " + n.name);
+        System.out.println("n.formals.size() " + n.formals.size());
+        System.out.println("n.vars.size()" + n.vars.size());
+
         for (int i = 0; i < n.formals.size(); i++) {
             pTypes.add(i, n.formals.elementAt(i).type);
         }
