@@ -3,7 +3,6 @@ package typechecker.implementation;
 import ast.*;
 import typechecker.ErrorReport;
 import util.ImpTable;
-import util.Pair;
 import visitor.Visitor;
 
 import java.util.ArrayList;
@@ -35,9 +34,8 @@ public class TypeCheckVisitor implements Visitor<Type> {
      * The symbol table from Phase 1.
      */
     private ImpTable<ClassEntry> symbolTable;
-    private ClassEntry currentClass;
-    private MethodEntry currentMethod;
-
+    private ClassEntry thisClass;
+    private MethodEntry thisMethod;
 
     public TypeCheckVisitor(ImpTable<ClassEntry> symbolTable, ErrorReport errors) {
         this.symbolTable = symbolTable;
@@ -122,20 +120,20 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     @Override
-    public Type visit(LessThan n) {
-        check(n.e1, new IntegerType());
-        check(n.e2, new IntegerType());
-        n.setType(new BooleanType());
-        return n.getType();
-    }
-
-    @Override
     public Type visit(Conditional n) {
         check(n.e1, new BooleanType());
         Type t2 = n.e2.accept(this);
         Type t3 = n.e3.accept(this);
         check(n, t2, t3);
         return t2;
+    }
+
+    @Override
+    public Type visit(LessThan n) {
+        check(n.e1, new IntegerType());
+        check(n.e2, new IntegerType());
+        n.setType(new BooleanType());
+        return n.getType();
     }
 
     @Override
@@ -169,8 +167,15 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     @Override
+    public Type visit(BooleanLiteral n) {
+        n.setType(new BooleanType());
+        return n.getType();
+    }
+
+    @Override
     public Type visit(IdentifierExp n) {
-        Type type = currentMethod.lookupVariable(n.name);
+        Type type = thisMethod.lookupVariable(n.name);
+
         if (type == null) {
             errors.undefinedId(n.name);
         }
@@ -193,6 +198,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     @Override
     public Type visit(VarDecl n) {
+//        throw new Error("Not implemented");
         return null;
     }
 
@@ -243,18 +249,18 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     @Override
     public Type visit(ClassDecl n) {
-        currentClass = symbolTable.lookup(n.name);
+        thisClass = symbolTable.lookup(n.name);
         n.methods.accept(this);
-        currentClass = null;
+        thisClass = null;
         return null;
     }
 
     @Override
     public Type visit(MethodDecl n) {
-        currentMethod = currentClass.lookupMethod(n.name);
+        thisMethod = thisClass.lookupMethod(n.name);
         check(n.returnExp, n.returnType);
         n.statements.accept(this);
-        currentMethod = null;
+        thisMethod = null;
         return null;
     }
 
@@ -300,11 +306,6 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     @Override
     public Type visit(ArrayLength n) {
-        throw new Error("Not implemented");
-    }
-
-    @Override
-    public Type visit(BooleanLiteral n) {
         throw new Error("Not implemented");
     }
 

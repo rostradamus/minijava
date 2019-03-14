@@ -41,17 +41,17 @@ public class ClassEntry {
     }
 
     boolean containsMethod(String methodName) {
-        //lookup within this class method entry table
+        // lookup within this class method entry table
         if (methods.lookup(methodName) != null) {
             return true;
         }
 
-        //If you can't find it, look in the Super class if it exists
+        // If you can't find it, look in the Super class if it exists
         if (superClass != null) {
             superClass.containsMethod(methodName);
         }
 
-        //Doesn't exist
+        // Doesn't exist
         return false;
     }
 

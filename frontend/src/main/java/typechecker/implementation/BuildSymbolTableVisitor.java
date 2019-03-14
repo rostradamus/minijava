@@ -6,9 +6,6 @@ import util.ImpTable;
 import util.ImpTable.DuplicateException;
 import visitor.DefaultVisitor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * This visitor implements Phase 1 of the TypeChecker. It constructs the symboltable.
  *
@@ -18,8 +15,8 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<ClassEntry>
 
     private final ImpTable<ClassEntry> symbolTable = new ImpTable<>();
     private final ErrorReport errors;
-    private ClassEntry currentClass;
-    private MethodEntry currentMethod;
+    private ClassEntry thisClass;
+    private MethodEntry thisMethod;
 
     public BuildSymbolTableVisitor(ErrorReport errors) {
         this.errors = errors;
@@ -55,20 +52,20 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<ClassEntry>
 
     @Override
     public ImpTable<ClassEntry> visit(ClassDecl n) {
-        currentClass = new ClassEntry(n.name, new ImpTable<>(), new ImpTable<>());
+        thisClass = new ClassEntry(n.name, new ImpTable<>(), new ImpTable<>());
 
         if (n.superName != null) {
             if (symbolTable.lookup(n.superName) == null) {
                 errors.undefinedId(n.superName);
             }
-            currentClass.setSuperClass(symbolTable.lookup(n.superName));
+            thisClass.setSuperClass(symbolTable.lookup(n.superName));
         }
 
         n.vars.accept(this);
         n.methods.accept(this);
 
-        def(symbolTable, n.name, currentClass);
-        currentClass = null;
+        def(symbolTable, n.name, thisClass);
+        thisClass = null;
 
         return null;
     }
@@ -76,9 +73,9 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<ClassEntry>
     @Override
     public ImpTable<ClassEntry> visit(VarDecl n) {
         if (n.kind == VarDecl.Kind.FIELD) {
-            def(currentClass.fields, n.name, n.type);
+            def(thisClass.fields, n.name, n.type);
         } else {
-            def(currentMethod.variables, n.name, n.type);
+            def(thisMethod.variables, n.name, n.type);
         }
 
         return null;
@@ -86,13 +83,13 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<ClassEntry>
 
     @Override
     public ImpTable<ClassEntry> visit(MethodDecl n) {
-        currentMethod = new MethodEntry(n.returnType, n.formals, currentClass);
+        thisMethod = new MethodEntry(n.returnType, n.formals, thisClass);
 
         n.formals.accept(this);
         n.vars.accept(this);
 
-        def(currentClass.methods, n.name, currentMethod);
-        currentMethod = null;
+        def(thisClass.methods, n.name, thisMethod);
+        thisMethod = null;
 
         return null;
     }
@@ -167,6 +164,11 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<ClassEntry>
 
     @Override
     public ImpTable<ClassEntry> visit(IntegerLiteral n) {
+        return null;
+    }
+
+    @Override
+    public ImpTable<ClassEntry> visit(BooleanLiteral n) {
         return null;
     }
 
