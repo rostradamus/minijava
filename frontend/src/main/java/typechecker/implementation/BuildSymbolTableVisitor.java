@@ -1,10 +1,10 @@
 package typechecker.implementation;
 
+import java.util.*;
 import ast.*;
 import typechecker.ErrorReport;
 import util.ImpTable;
 import util.ImpTable.DuplicateException;
-import util.Pair;
 import visitor.DefaultVisitor;
 
 /**
@@ -12,11 +12,12 @@ import visitor.DefaultVisitor;
  *
  * @author norm
  */
-public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<Type>> {
+public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<ClassEntry>> {
 
-    private final ImpTable<Type> variables = new ImpTable<>();
+    private final ImpTable<ClassEntry> symbolTable = new ImpTable<>();
     private final ErrorReport errors;
-    private ImpTable<Type> thisClass = null;
+    private ClassEntry thisClass;
+    private MethodEntry thisMethod;
 
     public BuildSymbolTableVisitor(ErrorReport errors) {
         this.errors = errors;
@@ -30,232 +31,166 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<Type>> {
     // We also check for duplicate identifier definitions in each symbol table
 
     @Override
-    public <T extends AST> ImpTable<Type> visit(NodeList<T> ns) {
+    public ImpTable<ClassEntry> visit(Program n) {
+        n.mainClass.accept(this);
+        n.classes.accept(this); // process all the "normal" classes.
+        return symbolTable;
+    }
+
+    @Override
+    public ImpTable<ClassEntry> visit(MainClass n) {
+        ClassEntry ce = new ClassEntry(n.className, new ImpTable<>(), new ImpTable<>());
+        def(symbolTable, n.className, ce);
+        return null;
+    }
+
+    @Override
+    public <T extends AST> ImpTable<ClassEntry> visit(NodeList<T> ns) {
         for (int i = 0; i < ns.size(); i++)
             ns.elementAt(i).accept(this);
         return null;
     }
 
     @Override
-    public ImpTable<Type> visit(Program n) {
-        n.mainClass.accept(this);
-        n.classes.accept(this); // process all the "normal" classes.
-        return variables;
-    }
+    public ImpTable<ClassEntry> visit(ClassDecl n) {
+        thisClass = new ClassEntry(n.name, new ImpTable<>(), new ImpTable<>());
 
-    // TODO
-    @Override
-    public ImpTable<Type> visit(MainClass n) {
-        return null;
-    }
+        if (n.superName != null) {
+            if (symbolTable.lookup(n.superName) == null) {
+                errors.undefinedId(n.superName);
+            }
+            thisClass.setSuperClass(symbolTable.lookup(n.superName));
+        }
 
-    /// DECLARATIONS
-
-    // TODO
-    @Override
-    public ImpTable<Type> visit(VarDecl n) {
-        return null;
-    }
-
-    // TODO
-    @Override
-    public ImpTable<Type> visit(ClassDecl n) {
-        ClassDecl cd = new ClassDecl(n.name, n.superName, n.vars, n.methods);
-        thisClass = new ImpTable<Type>();
         n.vars.accept(this);
         n.methods.accept(this);
-        def(variables, n.name, thisClass);
+
+        def(symbolTable, n.name, thisClass);
+        thisClass = null;
 
         return null;
     }
 
-    // TODO
     @Override
-    public ImpTable<Type> visit(MethodDecl n) {
-        return null;
-    }
+    public ImpTable<ClassEntry> visit(VarDecl n) {
+        if (n.kind == VarDecl.Kind.FIELD) {
+            def(thisClass.fields, n.name, n.type);
+        } else {
+            def(thisMethod.variables, n.name, n.type);
+        }
 
-    // TODO
-    @Override
-    public ImpTable<Type> visit(FunctionDecl n) {
-        return null;
-    }
-
-    /// TYPES
-
-    @Override
-    public ImpTable<Type> visit(BooleanType n) {
         return null;
     }
 
     @Override
-    public ImpTable<Type> visit(IntegerType n) {
+    public ImpTable<ClassEntry> visit(MethodDecl n) {
+        List pTypes = new ArrayList<>();
+
+        System.out.println("n.name " + n.name);
+        System.out.println("n.formals.size() " + n.formals.size());
+        System.out.println("n.vars.size()" + n.vars.size());
+
+        for (int i = 0; i < n.formals.size(); i++) {
+            pTypes.add(i, n.formals.elementAt(i).type);
+        }
+
+        thisMethod = new MethodEntry(n.returnType, new NodeList<>(pTypes), thisClass);
+
+        n.formals.accept(this);
+        n.vars.accept(this);
+
+        def(thisClass.methods, n.name, thisMethod);
+        thisMethod = null;
+
         return null;
     }
 
     @Override
-    public ImpTable<Type> visit(UnknownType n) {
-        return null;
+    public ImpTable<ClassEntry> visit(Assign n) {
+        throw new Error("Implementation removed");
+/*        n.value.accept(this);
+        def(symbolTable, n.name, new UnknownType());
+        return null;*/
     }
 
-    // TODO
-    @Override
-    public ImpTable<Type> visit(IntArrayType n) {
-        return null;
-    }
 
-    // TODO
     @Override
-    public ImpTable<Type> visit(ObjectType n) {
-        return null;
-    }
-
-    // TODO
-    @Override
-    public ImpTable<Type> visit(FunctionType n) {
-        return null;
-    }
-
-    /// STATEMENTS
-
-    // TODO
-    @Override
-    public ImpTable<Type> visit(If n) {
-        return null;
-    }
-
-    // TODO
-    @Override
-    public ImpTable<Type> visit(While n) {
+    public ImpTable<ClassEntry> visit(IdentifierExp n) {
+        if (symbolTable.lookup(n.name) == null)
+            errors.undefinedId(n.name);
         return null;
     }
 
     @Override
-    public ImpTable<Type> visit(Print n) {
+    public ImpTable<ClassEntry> visit(BooleanType n) {
+        return null;
+    }
+
+    @Override
+    public ImpTable<ClassEntry> visit(IntegerType n) {
+        return null;
+    }
+
+    @Override
+    public ImpTable<ClassEntry> visit(Print n) {
         n.exp.accept(this);
         return null;
     }
 
     @Override
-    public ImpTable<Type> visit(Assign n) {
-        n.value.accept(this);
-        def(variables, n.name, new UnknownType());
+    public ImpTable<ClassEntry> visit(LessThan n) {
+        n.e1.accept(this);
+        n.e2.accept(this);
         return null;
     }
 
-    // TODO
     @Override
-    public ImpTable<Type> visit(ArrayAssign n) {
-        return null;
-    }
-
-    /// EXPRESSIONS
-
-    @Override
-    public ImpTable<Type> visit(Conditional n) {
+    public ImpTable<ClassEntry> visit(Conditional n) {
         n.e1.accept(this);
         n.e2.accept(this);
         n.e3.accept(this);
         return null;
     }
 
-    // TODO
     @Override
-    public ImpTable<Type> visit(And n) {
-        return null;
-    }
-
-    @Override
-    public ImpTable<Type> visit(LessThan n) {
+    public ImpTable<ClassEntry> visit(Plus n) {
         n.e1.accept(this);
         n.e2.accept(this);
         return null;
     }
 
     @Override
-    public ImpTable<Type> visit(Plus n) {
+    public ImpTable<ClassEntry> visit(Minus n) {
         n.e1.accept(this);
         n.e2.accept(this);
         return null;
     }
 
     @Override
-    public ImpTable<Type> visit(Minus n) {
+    public ImpTable<ClassEntry> visit(Times n) {
         n.e1.accept(this);
         n.e2.accept(this);
         return null;
     }
 
     @Override
-    public ImpTable<Type> visit(Times n) {
-        n.e1.accept(this);
-        n.e2.accept(this);
-        return null;
-    }
-
-    // TODO
-    @Override
-    public ImpTable<Type> visit(ArrayLookup n) {
-        return null;
-    }
-
-    // TODO
-    @Override
-    public ImpTable<Type> visit(ArrayLength n) {
+    public ImpTable<ClassEntry> visit(IntegerLiteral n) {
         return null;
     }
 
     @Override
-    public ImpTable<Type> visit(IdentifierExp n) {
-        if (variables.lookup(n.name) == null)
-            errors.undefinedId(n.name);
+    public ImpTable<ClassEntry> visit(BooleanLiteral n) {
         return null;
     }
 
     @Override
-    public ImpTable<Type> visit(IntegerLiteral n) {
-        return null;
-    }
-
-    // TODO
-    @Override
-    public ImpTable<Type> visit(BooleanLiteral n) {
-        return null;
-    }
-
-    // TODO
-    @Override
-    public ImpTable<Type> visit(Call n) {
-        return null;
-    }
-
-    // TODO
-    @Override
-    public ImpTable<Type> visit(This n) {
-        return null;
-    }
-
-    // TODO
-    @Override
-    public ImpTable<Type> visit(NewArray n) {
-        return null;
-    }
-
-    // TODO
-    @Override
-    public ImpTable<Type> visit(NewObject n) {
-        return null;
-    }
-
-    @Override
-    public ImpTable<Type> visit(Not not) {
+    public ImpTable<ClassEntry> visit(Not not) {
         not.e.accept(this);
         return null;
     }
 
-    // TODO
     @Override
-    public ImpTable<Type> visit(Block n) {
+    public ImpTable<ClassEntry> visit(UnknownType n) {
         return null;
     }
 

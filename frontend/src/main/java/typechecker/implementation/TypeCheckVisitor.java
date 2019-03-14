@@ -3,11 +3,11 @@ package typechecker.implementation;
 import ast.*;
 import typechecker.ErrorReport;
 import util.ImpTable;
-import util.Pair;
 import visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * This class implements Phase 2 of the Type Checker. This phase
@@ -33,11 +33,12 @@ public class TypeCheckVisitor implements Visitor<Type> {
     /**
      * The symbol table from Phase 1.
      */
-    private ImpTable<Type> variables;
+    private ImpTable<ClassEntry> symbolTable;
+    private ClassEntry thisClass;
+    private MethodEntry thisMethod;
 
-
-    public TypeCheckVisitor(ImpTable<Type> variables, ErrorReport errors) {
-        this.variables = variables;
+    public TypeCheckVisitor(ImpTable<ClassEntry> symbolTable, ErrorReport errors) {
+        this.symbolTable = symbolTable;
         this.errors = errors;
     }
 
@@ -114,17 +115,8 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     @Override
     public Type visit(Assign n) {
-        Type expressionType = n.value.accept(this);
-        variables.set(n.name, expressionType);
+        check(n.value, new IdentifierExp(n.name).accept(this), n.value.accept(this));
         return null;
-    }
-
-    @Override
-    public Type visit(LessThan n) {
-        check(n.e1, new IntegerType());
-        check(n.e2, new IntegerType());
-        n.setType(new BooleanType());
-        return n.getType();
     }
 
     @Override
@@ -134,6 +126,14 @@ public class TypeCheckVisitor implements Visitor<Type> {
         Type t3 = n.e3.accept(this);
         check(n, t2, t3);
         return t2;
+    }
+
+    @Override
+    public Type visit(LessThan n) {
+        check(n.e1, new IntegerType());
+        check(n.e2, new IntegerType());
+        n.setType(new BooleanType());
+        return n.getType();
     }
 
     @Override
@@ -167,11 +167,21 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     @Override
+    public Type visit(BooleanLiteral n) {
+        n.setType(new BooleanType());
+        return n.getType();
+    }
+
+    @Override
     public Type visit(IdentifierExp n) {
-        Type type = variables.lookup(n.name);
-        if (type == null)
-            type = new UnknownType();
-        return type;
+        Type type = thisMethod.lookupVariable(n.name);
+
+        if (type == null) {
+            errors.undefinedId(n.name);
+        }
+
+        n.setType(type);
+        return n.getType();
     }
 
     @Override
@@ -182,33 +192,79 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     @Override
+    public Type visit(FunctionDecl n) {
+        throw new Error("Not implemented");
+    }
+
+    @Override
     public Type visit(VarDecl n) {
-        Type type = n.type.accept(this);
-        return type;
+        return null;
     }
 
     @Override
     public Type visit(Call n) {
         Type receiverType = n.receiver.accept(this);
+        if (!(receiverType instanceof ObjectType)) {
+            errors.typeError(n.receiver, new ObjectType("object"), receiverType);
+        }
 
-        // TODO
+        // check whether the class is defined
+        ObjectType objectType = (ObjectType) receiverType;
+        if (symbolTable.lookup(objectType.name) == null) {
+            errors.undefinedId(objectType.name);
+        }
 
-        throw new Error("Not implemented");
+        // check whether the method is defined
+        if (!symbolTable.lookup(objectType.name).containsMethod(n.name)) {
+            errors.undefinedId(n.name);
+        }
+
+        MethodEntry method = symbolTable.lookup(objectType.name).lookupMethod(n.name);
+
+        // arity check
+        if (method.getParameterTypes().size() != n.rands.size()) {
+            errors.wrongNumberOfArguments(method.getParameterTypes().size(), n.rands.size());
+        }
+
+        System.out.println("n.rands.size() " + n.rands.size());
+        System.out.println("getParametertypes() " + method.getParameterTypes().size());
+
+        // type check arguments
+        for (int i = 0; i < n.rands.size(); i++) {
+            System.out.println("WTFF " + n.rands.elementAt(i));
+            check(n.rands.elementAt(i), (Type) method.getParameterTypes().elementAt(i));
+        }
+
+        n.setType(method.getReturnType());
+        return n.getType();
+    }
+
+    @Override
+    public Type visit(FunctionType n) {
+        return n;
     }
 
     @Override
     public Type visit(MainClass n) {
-        throw new Error("Not implemented");
+        n.statement.accept(this);
+        return null;
     }
 
     @Override
     public Type visit(ClassDecl n) {
-        throw new Error("Not implemented");
+        thisClass = symbolTable.lookup(n.name);
+        n.methods.accept(this);
+        thisClass = null;
+        return null;
     }
 
     @Override
     public Type visit(MethodDecl n) {
-        throw new Error("Not implemented");
+        thisMethod = thisClass.lookupMethod(n.name);
+        check(n.returnExp, n.returnType);
+        n.statements.accept(this);
+        thisMethod = null;
+        return null;
     }
 
     @Override
@@ -223,68 +279,77 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     @Override
     public Type visit(Block n) {
-        throw new Error("Not implemented");
+        n.statements.accept(this);
+        return null;
     }
 
     @Override
     public Type visit(If n) {
-        throw new Error("Not implemented");
+        check(n.tst, new BooleanType());
+        n.thn.accept(this);
+        n.els.accept(this);
+        return null;
     }
 
     @Override
     public Type visit(While n) {
-        throw new Error("Not implemented");
+        check(n.tst, new BooleanType());
+        n.body.accept(this);
+        return null;
     }
 
     @Override
     public Type visit(ArrayAssign n) {
-        throw new Error("Not implemented");
+        check(new IdentifierExp(n.name), new IntArrayType());
+        check(n.index, new IntegerType());
+        check(n.value, new IntegerType());
+        return null;
     }
 
     @Override
     public Type visit(And n) {
-        throw new Error("Not implemented");
+        check(n.e1, new BooleanType());
+        check(n.e2, new BooleanType());
+        n.setType(new BooleanType());
+        return n.getType();
     }
 
     @Override
     public Type visit(ArrayLookup n) {
-        throw new Error("Not implemented");
+        check(n.array, new IntArrayType());
+        check(n.index, new IntegerType());
+        n.setType(new IntegerType());
+        return n.getType();
     }
 
     @Override
     public Type visit(ArrayLength n) {
-        throw new Error("Not implemented");
-    }
-
-    @Override
-    public Type visit(BooleanLiteral n) {
-        throw new Error("Not implemented");
+        check(n.array, new IntArrayType());
+        n.setType(new IntegerType());
+        return n.getType();
     }
 
     @Override
     public Type visit(This n) {
-        throw new Error("Not implemented");
+        ObjectType t = new ObjectType(thisClass.getName());
+        n.setType(t);
+        return n.getType();
     }
 
     @Override
     public Type visit(NewArray n) {
-        throw new Error("Not implemented");
+        check(n.size, new IntegerType());
+        n.setType(new IntArrayType());
+        return n.getType();
     }
 
     @Override
     public Type visit(NewObject n) {
-        throw new Error("Not implemented");
-    }
+        if (symbolTable.lookup(n.typeName) == null) {
+            errors.undefinedId(n.typeName);
+        }
 
-    // We don't have FunctionDecl! Throw error!
-    @Override
-    public Type visit(FunctionDecl n) {
-        throw new Error("Not implemented");
-    }
-
-    // We don't have FunctionType! Throw error!
-    @Override
-    public Type visit(FunctionType n) {
-        throw new Error("Not implemented");
+        n.setType(new ObjectType(n.typeName));
+        return n.getType();
     }
 }
