@@ -179,7 +179,7 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<ClassEntry>
 
     ///////////////////// Helpers ///////////////////////////////////////////////
 
-/*    *//**
+    /*    *//**
      * Add an entry to a table, and check whether the name already existed.
      * If the name already existed before, the new definition is ignored and
      * an error is sent to the error report.
