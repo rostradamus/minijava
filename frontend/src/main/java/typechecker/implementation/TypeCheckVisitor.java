@@ -226,12 +226,12 @@ public class TypeCheckVisitor implements Visitor<Type> {
             errors.wrongNumberOfArguments(method.getParameterTypes().size(), n.rands.size());
         }
 
-        System.out.println("n.rands.size() " + n.rands.size());
-        System.out.println("getParametertypes() " + method.getParameterTypes().size());
+//        System.out.println("n.rands.size() " + n.rands.size());
+////        System.out.println("getParametertypes() " + method.getParameterTypes().size());
+////        System.out.println("method name " + n.name);
 
         // type check arguments
         for (int i = 0; i < n.rands.size(); i++) {
-            System.out.println("WTFF " + n.rands.elementAt(i));
             check(n.rands.elementAt(i), (Type) method.getParameterTypes().elementAt(i));
         }
 

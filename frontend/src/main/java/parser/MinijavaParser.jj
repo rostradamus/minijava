@@ -290,8 +290,8 @@ Expression ObjectAccessExpression() : {
             name = Identifier()
 
             "("
+            { rands = new NodeList<Expression>(); }
             (
-                { rands = new NodeList<Expression>(); }
                 e2=Expression()
                     { rands.add(e2); }
                 (
