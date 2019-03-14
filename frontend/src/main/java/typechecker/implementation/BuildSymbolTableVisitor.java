@@ -1,5 +1,6 @@
 package typechecker.implementation;
 
+import java.util.*;
 import ast.*;
 import typechecker.ErrorReport;
 import util.ImpTable;
@@ -83,7 +84,13 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<ClassEntry>
 
     @Override
     public ImpTable<ClassEntry> visit(MethodDecl n) {
-        thisMethod = new MethodEntry(n.returnType, n.formals, thisClass);
+        List pTypes = new ArrayList<>();
+
+        for (int i = 0; i < n.formals.size(); i++) {
+            pTypes.add(i, n.formals.elementAt(i).type);
+        }
+
+        thisMethod = new MethodEntry(n.returnType, new NodeList<>(pTypes), thisClass);
 
         n.formals.accept(this);
         n.vars.accept(this);

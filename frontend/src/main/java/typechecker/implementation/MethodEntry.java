@@ -3,7 +3,6 @@ package typechecker.implementation;
 import ast.NodeList;
 import ast.Type;
 import util.ImpTable;
-import util.List;
 
 public class MethodEntry {
 

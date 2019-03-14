@@ -198,7 +198,6 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     @Override
     public Type visit(VarDecl n) {
-//        throw new Error("Not implemented");
         return null;
     }
 
@@ -229,6 +228,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
         // type check arguments
         for (int i = 0; i < n.rands.size(); i++) {
+            System.out.println(method.getParameterTypes().elementAt(i));
             check(n.rands.elementAt(i), (Type) method.getParameterTypes().elementAt(i));
         }
 
