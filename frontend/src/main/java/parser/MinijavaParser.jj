@@ -57,7 +57,7 @@ TOKEN : /* SEPARATORS and OPERATORS*/
 |	<LBRACE: "{">
 |	<RBRACE: "}">
 |	<ASSIGN: "=">
-|	<QUESTION:	 "?">
+|	<QUESTION: "?">
 |	<PLUS:	 "+" >
 |	<MINUS:  "-" >
 |	<MULT:   "*" >

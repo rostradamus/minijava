@@ -334,4 +334,5 @@ public class StructurePrintVisitor implements Visitor<Void> {
         new IdentifierExp(n.typeName).accept(this);
         return null;
     }
+
 }

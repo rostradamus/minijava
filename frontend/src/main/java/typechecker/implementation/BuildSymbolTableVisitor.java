@@ -14,9 +14,9 @@ import visitor.DefaultVisitor;
  */
 public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<Type>> {
 
-    private final ImpTable<Type> variables = new ImpTable<Type>();
+    private final ImpTable<Type> variables = new ImpTable<>();
     private final ErrorReport errors;
-    private ImpTable<Type> thisFunction = null;
+    private ImpTable<Type> thisClass = null;
 
     public BuildSymbolTableVisitor(ErrorReport errors) {
         this.errors = errors;
@@ -30,13 +30,6 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<Type>> {
     // We also check for duplicate identifier definitions in each symbol table
 
     @Override
-    public ImpTable<Type> visit(Program n) {
-        n.mainClass.accept(this);
-        n.classes.accept(this); // process all the "normal" classes.
-        return variables;
-    }
-
-    @Override
     public <T extends AST> ImpTable<Type> visit(NodeList<T> ns) {
         for (int i = 0; i < ns.size(); i++)
             ns.elementAt(i).accept(this);
@@ -44,19 +37,51 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<Type>> {
     }
 
     @Override
-    public ImpTable<Type> visit(Assign n) {
-        n.value.accept(this);
-        def(variables, n.name, new UnknownType());
-        return null;
+    public ImpTable<Type> visit(Program n) {
+        n.mainClass.accept(this);
+        n.classes.accept(this); // process all the "normal" classes.
+        return variables;
     }
 
-
+    // TODO
     @Override
-    public ImpTable<Type> visit(IdentifierExp n) {
-        if (variables.lookup(n.name) == null)
-            errors.undefinedId(n.name);
+    public ImpTable<Type> visit(MainClass n) {
         return null;
     }
+
+    /// DECLARATIONS
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(VarDecl n) {
+        return null;
+    }
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(ClassDecl n) {
+        ClassDecl cd = new ClassDecl(n.name, n.superName, n.vars, n.methods);
+        thisClass = new ImpTable<Type>();
+        n.vars.accept(this);
+        n.methods.accept(this);
+        def(variables, n.name, thisClass);
+
+        return null;
+    }
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(MethodDecl n) {
+        return null;
+    }
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(FunctionDecl n) {
+        return null;
+    }
+
+    /// TYPES
 
     @Override
     public ImpTable<Type> visit(BooleanType n) {
@@ -69,8 +94,74 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<Type>> {
     }
 
     @Override
+    public ImpTable<Type> visit(UnknownType n) {
+        return null;
+    }
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(IntArrayType n) {
+        return null;
+    }
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(ObjectType n) {
+        return null;
+    }
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(FunctionType n) {
+        return null;
+    }
+
+    /// STATEMENTS
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(If n) {
+        return null;
+    }
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(While n) {
+        return null;
+    }
+
+    @Override
     public ImpTable<Type> visit(Print n) {
         n.exp.accept(this);
+        return null;
+    }
+
+    @Override
+    public ImpTable<Type> visit(Assign n) {
+        n.value.accept(this);
+        def(variables, n.name, new UnknownType());
+        return null;
+    }
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(ArrayAssign n) {
+        return null;
+    }
+
+    /// EXPRESSIONS
+
+    @Override
+    public ImpTable<Type> visit(Conditional n) {
+        n.e1.accept(this);
+        n.e2.accept(this);
+        n.e3.accept(this);
+        return null;
+    }
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(And n) {
         return null;
     }
 
@@ -78,14 +169,6 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<Type>> {
     public ImpTable<Type> visit(LessThan n) {
         n.e1.accept(this);
         n.e2.accept(this);
-        return null;
-    }
-
-    @Override
-    public ImpTable<Type> visit(Conditional n) {
-        n.e1.accept(this);
-        n.e2.accept(this);
-        n.e3.accept(this);
         return null;
     }
 
@@ -110,8 +193,57 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<Type>> {
         return null;
     }
 
+    // TODO
+    @Override
+    public ImpTable<Type> visit(ArrayLookup n) {
+        return null;
+    }
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(ArrayLength n) {
+        return null;
+    }
+
+    @Override
+    public ImpTable<Type> visit(IdentifierExp n) {
+        if (variables.lookup(n.name) == null)
+            errors.undefinedId(n.name);
+        return null;
+    }
+
     @Override
     public ImpTable<Type> visit(IntegerLiteral n) {
+        return null;
+    }
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(BooleanLiteral n) {
+        return null;
+    }
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(Call n) {
+        return null;
+    }
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(This n) {
+        return null;
+    }
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(NewArray n) {
+        return null;
+    }
+
+    // TODO
+    @Override
+    public ImpTable<Type> visit(NewObject n) {
         return null;
     }
 
@@ -121,11 +253,11 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<Type>> {
         return null;
     }
 
+    // TODO
     @Override
-    public ImpTable<Type> visit(UnknownType n) {
+    public ImpTable<Type> visit(Block n) {
         return null;
     }
-
 
     ///////////////////// Helpers ///////////////////////////////////////////////
 

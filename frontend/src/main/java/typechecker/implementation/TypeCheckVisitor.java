@@ -9,7 +9,6 @@ import visitor.Visitor;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * This class implements Phase 2 of the Type Checker. This phase
  * assumes that we have already constructed the program's symbol table in
@@ -183,23 +182,18 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     @Override
-    public Type visit(FunctionDecl n) {
-        throw new Error("Not implemented");
-    }
-
-    @Override
     public Type visit(VarDecl n) {
-        return null;
+        Type type = n.type.accept(this);
+        return type;
     }
 
     @Override
     public Type visit(Call n) {
-        throw new Error("Not implemented");
-    }
+        Type receiverType = n.receiver.accept(this);
 
-    @Override
-    public Type visit(FunctionType n) {
-        return n;
+        // TODO
+
+        throw new Error("Not implemented");
     }
 
     @Override
@@ -219,12 +213,12 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     @Override
     public Type visit(IntArrayType n) {
-        throw new Error("Not implemented");
+        return n;
     }
 
     @Override
     public Type visit(ObjectType n) {
-        throw new Error("Not implemented");
+        return n;
     }
 
     @Override
@@ -279,6 +273,18 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     @Override
     public Type visit(NewObject n) {
+        throw new Error("Not implemented");
+    }
+
+    // We don't have FunctionDecl! Throw error!
+    @Override
+    public Type visit(FunctionDecl n) {
+        throw new Error("Not implemented");
+    }
+
+    // We don't have FunctionType! Throw error!
+    @Override
+    public Type visit(FunctionType n) {
         throw new Error("Not implemented");
     }
 }
