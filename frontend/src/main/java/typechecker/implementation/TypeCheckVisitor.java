@@ -34,11 +34,13 @@ public class TypeCheckVisitor implements Visitor<Type> {
     /**
      * The symbol table from Phase 1.
      */
-    private ImpTable<Type> variables;
+    private ImpTable<ClassEntry> symbolTable;
+    private ClassEntry currentClass;
+    private MethodEntry currentMethod;
 
 
-    public TypeCheckVisitor(ImpTable<Type> variables, ErrorReport errors) {
-        this.variables = variables;
+    public TypeCheckVisitor(ImpTable<ClassEntry> symbolTable, ErrorReport errors) {
+        this.symbolTable = symbolTable;
         this.errors = errors;
     }
 
@@ -115,8 +117,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     @Override
     public Type visit(Assign n) {
-        Type expressionType = n.value.accept(this);
-        variables.set(n.name, expressionType);
+        check(n.value, new IdentifierExp(n.name).accept(this), n.value.accept(this));
         return null;
     }
 
@@ -169,10 +170,13 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     @Override
     public Type visit(IdentifierExp n) {
-        Type type = variables.lookup(n.name);
-        if (type == null)
-            type = new UnknownType();
-        return type;
+        Type type = currentMethod.lookupVariable(n.name);
+        if (type == null) {
+            errors.undefinedId(n.name);
+        }
+
+        n.setType(type);
+        return n.getType();
     }
 
     @Override
@@ -194,7 +198,37 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     @Override
     public Type visit(Call n) {
-        throw new Error("Not implemented");
+        Type receiverType = n.receiver.accept(this);
+        if (!(receiverType instanceof ObjectType)) {
+            errors.typeError(n.receiver, new ObjectType("object"), receiverType);
+        }
+
+        // check whether the class is defined
+        ObjectType objectType = (ObjectType) receiverType;
+        if (symbolTable.lookup(objectType.name) == null) {
+            errors.undefinedId(objectType.name);
+        }
+
+        // check whether the method is defined
+        if (!symbolTable.lookup(objectType.name).containsMethod(n.name)) {
+            errors.undefinedId(n.name);
+        }
+
+        MethodEntry.MethodSignature methodSignature = symbolTable.lookup(objectType.name)
+                .lookupMethod(n.name)
+                .getMethodSignature();
+        // arity check
+        if (methodSignature.getParameterTypes().size() != n.rands.size()) {
+            errors.wrongNumberOfArguments(methodSignature.getParameterTypes().size(), n.rands.size());
+        }
+
+        // type check arguments
+        for (int i = 0; i < n.rands.size(); i++) {
+            check(n.rands.elementAt(i), (Type) methodSignature.getParameterTypes().elementAt(i));
+        }
+
+        n.setType(methodSignature.getReturnType());
+        return n.getType();
     }
 
     @Override
@@ -204,17 +238,25 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     @Override
     public Type visit(MainClass n) {
-        throw new Error("Not implemented");
+        n.statement.accept(this);
+        return null;
     }
 
     @Override
     public Type visit(ClassDecl n) {
-        throw new Error("Not implemented");
+        currentClass = symbolTable.lookup(n.name);
+        n.methods.accept(this);
+        currentClass = null;
+        return null;
     }
 
     @Override
     public Type visit(MethodDecl n) {
-        throw new Error("Not implemented");
+        currentMethod = currentClass.lookupMethod(n.name);
+        check(n.returnExp, n.returnType);
+        n.statements.accept(this);
+        currentMethod = null;
+        return null;
     }
 
     @Override
@@ -279,6 +321,11 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     @Override
     public Type visit(NewObject n) {
-        throw new Error("Not implemented");
+        if (symbolTable.lookup(n.typeName) == null) {
+            errors.undefinedId(n.typeName);
+        }
+
+        n.setType(new ObjectType(n.typeName));
+        return n.getType();
     }
 }

@@ -15,6 +15,7 @@ import translate.implementation.Cx;
 import translate.implementation.Ex;
 import translate.implementation.Nx;
 import translate.implementation.TRExp;
+import typechecker.implementation.ClassEntry;
 import util.FunTable;
 import util.List;
 import util.Lookup;
@@ -56,7 +57,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     private FunTable<Access> currentEnv;
 
-    public TranslateVisitor(Lookup<Type> table, Frame frameFactory) {
+    public TranslateVisitor(Lookup<ClassEntry> table, Frame frameFactory) {
         this.frags = new Fragments(frameFactory);
         this.frameFactory = frameFactory;
     }
