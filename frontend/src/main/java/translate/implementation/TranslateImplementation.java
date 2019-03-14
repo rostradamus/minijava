@@ -5,6 +5,7 @@ import ast.Type;
 import ir.frame.Frame;
 import translate.Fragments;
 import typechecker.TypeChecked;
+import typechecker.implementation.ClassEntry;
 import typechecker.implementation.TypeCheckerImplementation;
 import util.ImpTable;
 import util.Pair;
@@ -13,7 +14,7 @@ public class TranslateImplementation {
 
     private Frame frameFactory;
     private Program program;
-    private ImpTable<Type> table;
+    private ImpTable<ClassEntry> table;
 
     public TranslateImplementation(Frame frameFactory, TypeChecked _typechecked) {
         this.frameFactory = frameFactory;
