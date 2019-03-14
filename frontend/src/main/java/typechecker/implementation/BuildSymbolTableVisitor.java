@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<ClassEntry>> {
 
-    private final ImpTable<ClassEntry> symbolTable = new ImpTable<ClassEntry>();
+    private final ImpTable<ClassEntry> symbolTable = new ImpTable<>();
     private final ErrorReport errors;
     private ClassEntry currentClass;
     private MethodEntry currentMethod;
@@ -41,7 +41,8 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<ClassEntry>
 
     @Override
     public ImpTable<ClassEntry> visit(MainClass n) {
-        addClass(n.className, new ClassEntry(n.className, new ImpTable<Type>(), new ImpTable<MethodEntry>()));
+        ClassEntry ce = new ClassEntry(n.className, new ImpTable<>(), new ImpTable<>());
+        def(symbolTable, n.className, ce);
         return null;
     }
 
@@ -54,7 +55,7 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<ClassEntry>
 
     @Override
     public ImpTable<ClassEntry> visit(ClassDecl n) {
-        currentClass = new ClassEntry(n.name, new ImpTable<Type>(), new ImpTable<MethodEntry>());
+        currentClass = new ClassEntry(n.name, new ImpTable<>(), new ImpTable<>());
 
         if (n.superName != null) {
             if (symbolTable.lookup(n.superName) == null) {
@@ -66,29 +67,33 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<ClassEntry>
         n.vars.accept(this);
         n.methods.accept(this);
 
-        addClass(n.name, currentClass);
+        def(symbolTable, n.name, currentClass);
         currentClass = null;
+
         return null;
     }
 
     @Override
     public ImpTable<ClassEntry> visit(VarDecl n) {
-        addVariable(n);
+        if (n.kind == VarDecl.Kind.FIELD) {
+            def(currentClass.fields, n.name, n.type);
+        } else {
+            def(currentMethod.variables, n.name, n.type);
+        }
+
         return null;
     }
 
     @Override
     public ImpTable<ClassEntry> visit(MethodDecl n) {
-
-        NodeList paramTypes = n.formals;
-
-        currentMethod = new MethodEntry(new MethodEntry.MethodSignature(n.returnType, paramTypes), currentClass);
+        currentMethod = new MethodEntry(n.returnType, n.formals, currentClass);
 
         n.formals.accept(this);
         n.vars.accept(this);
 
-        addMethod(n.name, currentMethod);
+        def(currentClass.methods, n.name, currentMethod);
         currentMethod = null;
+
         return null;
     }
 
@@ -176,50 +181,18 @@ public class BuildSymbolTableVisitor extends DefaultVisitor<ImpTable<ClassEntry>
         return null;
     }
 
-
     ///////////////////// Helpers ///////////////////////////////////////////////
 
-    /*    *//**
+    /**
      * Add an entry to a table, and check whether the name already existed.
      * If the name already existed before, the new definition is ignored and
      * an error is sent to the error report.
-     *//*
+     */
     private <V> void def(ImpTable<V> tab, String name, V value) {
         try {
             tab.put(name, value);
         } catch (DuplicateException e) {
             errors.duplicateDefinition(name);
-        }
-    }*/
-
-    private void addClass(String name, ClassEntry entry) {
-        try {
-            symbolTable.put(name, entry);
-        } catch (DuplicateException e) {
-            errors.duplicateDefinition(name);
-        }
-    }
-
-    private void addMethod(String name, MethodEntry entry) {
-        try {
-            currentClass.insertMethod(name, entry);
-        } catch (DuplicateException e) {
-            errors.duplicateDefinition(name);
-        }
-    }
-
-    private void addVariable(VarDecl var) {
-        try {
-            if (var.kind == VarDecl.Kind.FIELD) {
-                currentClass.insertField(var.name, var.type);
-            } else if (var.kind == VarDecl.Kind.FORMAL) {
-                currentMethod.insertVariable(var.name, var.type);
-            }
-            else {
-                currentMethod.insertVariable(var.name, var.type);
-            }
-        } catch (DuplicateException e) {
-            errors.duplicateDefinition(var.name);
         }
     }
 

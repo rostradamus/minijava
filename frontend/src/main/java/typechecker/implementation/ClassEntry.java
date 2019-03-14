@@ -5,14 +5,14 @@ import util.ImpTable;
 
 public class ClassEntry {
     public final String name;
-    private final ImpTable<Type> fields;
-    private final ImpTable<MethodEntry> methods;
+    public final ImpTable<MethodEntry> methods;
+    public final ImpTable<Type> fields;
     private ClassEntry superClass;
 
-    ClassEntry(String name, ImpTable<Type> fields, ImpTable<MethodEntry> methods) {
-        this.name = name;
-        this.fields = fields;
-        this.methods = methods;
+    ClassEntry(String _name, ImpTable<Type> _fields, ImpTable<MethodEntry> _methods) {
+        this.name = _name;
+        this.fields = _fields;
+        this.methods = _methods;
         this.superClass = null;
     }
 
@@ -34,14 +34,6 @@ public class ClassEntry {
 
     public void setSuperClass(ClassEntry superClass) {
         this.superClass = superClass;
-    }
-
-    void insertMethod(String methodName, MethodEntry methodEntry) throws ImpTable.DuplicateException {
-        methods.put(methodName, methodEntry);
-    }
-
-    void insertField(String fieldName, Type fieldType) throws ImpTable.DuplicateException {
-        fields.put(fieldName, fieldType);
     }
 
     public Type lookupField(String name) {

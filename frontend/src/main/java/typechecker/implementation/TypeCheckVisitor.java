@@ -214,20 +214,19 @@ public class TypeCheckVisitor implements Visitor<Type> {
             errors.undefinedId(n.name);
         }
 
-        MethodEntry.MethodSignature methodSignature = symbolTable.lookup(objectType.name)
-                .lookupMethod(n.name)
-                .getMethodSignature();
+        MethodEntry method = symbolTable.lookup(objectType.name).lookupMethod(n.name);
+
         // arity check
-        if (methodSignature.getParameterTypes().size() != n.rands.size()) {
-            errors.wrongNumberOfArguments(methodSignature.getParameterTypes().size(), n.rands.size());
+        if (method.getParameterTypes().size() != n.rands.size()) {
+            errors.wrongNumberOfArguments(method.getParameterTypes().size(), n.rands.size());
         }
 
         // type check arguments
         for (int i = 0; i < n.rands.size(); i++) {
-            check(n.rands.elementAt(i), (Type) methodSignature.getParameterTypes().elementAt(i));
+            check(n.rands.elementAt(i), (Type) method.getParameterTypes().elementAt(i));
         }
 
-        n.setType(methodSignature.getReturnType());
+        n.setType(method.getReturnType());
         return n.getType();
     }
 

@@ -7,18 +7,16 @@ import util.List;
 
 public class MethodEntry {
 
-    private final MethodSignature methodSignature;
-    private final ImpTable<Type> variables;
-    private final ClassEntry classEntry; //parent class
+    private Type returnType;
+    private NodeList parameterTypes;
+    private final ClassEntry classEntry;
+    public final ImpTable<Type> variables;
 
-    MethodEntry(MethodSignature methodSignature, ClassEntry classEntry) {
-        this.methodSignature = methodSignature;
-        this.classEntry = classEntry;
-        variables = new ImpTable<Type>();
-    }
-
-    public MethodSignature getMethodSignature() {
-        return methodSignature;
+    MethodEntry(Type _returnType, NodeList _parameterTypes, ClassEntry _classEntry) {
+        this.returnType = _returnType;
+        this.parameterTypes = _parameterTypes;
+        this.classEntry = _classEntry;
+        variables = new ImpTable<>();
     }
 
     public ImpTable<Type> getVariables() {
@@ -29,8 +27,20 @@ public class MethodEntry {
         return classEntry;
     }
 
-    void insertVariable(String variableName, Type variableType) throws ImpTable.DuplicateException {
-        variables.put(variableName, variableType);
+    public Type getReturnType() {
+        return returnType;
+    }
+
+    public void setReturnType(Type returnType) {
+        this.returnType = returnType;
+    }
+
+    public NodeList getParameterTypes() {
+        return parameterTypes;
+    }
+
+    public void setParameterTypes(NodeList parameterTypes) {
+        this.parameterTypes = parameterTypes;
     }
 
     public Type lookupVariable(String name) {
@@ -38,32 +48,6 @@ public class MethodEntry {
             return variables.lookup(name);
         } else {
             return classEntry.lookupField(name);
-        }
-    }
-
-    static class MethodSignature {
-        private Type returnType;
-        private NodeList parameterTypes;
-
-        MethodSignature(Type returnType, NodeList parameterTypes) {
-            this.returnType = returnType;
-            this.parameterTypes = parameterTypes;
-        }
-
-        public Type getReturnType() {
-            return returnType;
-        }
-
-        public void setReturnType(Type returnType) {
-            this.returnType = returnType;
-        }
-
-        public NodeList getParameterTypes() {
-            return parameterTypes;
-        }
-
-        public void setParameterTypes(NodeList parameterTypes) {
-            this.parameterTypes = parameterTypes;
         }
     }
 }
