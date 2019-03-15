@@ -49,16 +49,18 @@ public class TypeCheckVisitor implements Visitor<Type> {
      */
     private void check(Expression exp, Type expected) {
         Type actual = exp.accept(this);
-        if (!assignableFrom(expected, actual))
+        if (!assignableFrom(expected, actual)) {
             errors.typeError(exp, expected, actual);
+        }
     }
 
     /**
      * Check whether two types in an expression are the same
      */
     private void check(Expression exp, Type t1, Type t2) {
-        if (!t1.equals(t2))
+        if (!assignableFrom(t1, t2)) {
             errors.typeError(exp, t1, t2);
+        }
     }
 
     private boolean assignableFrom(Type varType, Type valueType) {
@@ -95,7 +97,6 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     @Override
     public Type visit(Program n) {
-        //		variables = applyInheritance(variables);
         n.mainClass.accept(this);
         n.classes.accept(this);
         return null;
@@ -227,16 +228,6 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     @Override
-    public Type visit(FunctionDecl n) {
-        throw new Error("Not implemented");
-    }
-
-    @Override
-    public Type visit(VarDecl n) {
-        return null;
-    }
-
-    @Override
     public Type visit(Call n) {
         Type receiverType = n.receiver.accept(this);
 
@@ -248,7 +239,6 @@ public class TypeCheckVisitor implements Visitor<Type> {
         ClassEntry ce = symbolTable.lookup(objectType.name);
 
         if (ce == null) {
-            System.out.println("HERE2");
             errors.undefinedId(objectType.name);
         }
 
@@ -285,11 +275,6 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     @Override
-    public Type visit(FunctionType n) {
-        return n;
-    }
-
-    @Override
     public Type visit(MainClass n) {
         n.statement.accept(this);
         return null;
@@ -309,6 +294,11 @@ public class TypeCheckVisitor implements Visitor<Type> {
         check(n.returnExp, n.returnType);
         n.statements.accept(this);
         thisMethod = null;
+        return null;
+    }
+
+    @Override
+    public Type visit(VarDecl n) {
         return null;
     }
 
@@ -397,5 +387,17 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
         n.setType(new ObjectType(n.typeName));
         return n.getType();
+    }
+
+    // Not Implemented
+
+    @Override
+    public Type visit(FunctionType n) {
+        throw new Error("Not implemented");
+    }
+
+    @Override
+    public Type visit(FunctionDecl n) {
+        throw new Error("Not implemented");
     }
 }
