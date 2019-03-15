@@ -245,17 +245,32 @@ public class TypeCheckVisitor implements Visitor<Type> {
         }
 
         ObjectType objectType = (ObjectType) receiverType;
-        if (symbolTable.lookup(objectType.name) == null) {
+        ClassEntry ce = symbolTable.lookup(objectType.name);
+
+        if (ce == null) {
             System.out.println("HERE2");
             errors.undefinedId(objectType.name);
         }
 
-        if (!symbolTable.lookup(objectType.name).containsMethod(n.name)) {
-            System.out.println("HERE3");
+        boolean doesContainMethod = false;
+        ClassEntry checkCe = ce;
+
+        // Check parent classes to see if it contains method.
+        while (checkCe != null) {
+            doesContainMethod = checkCe.containsMethod(n.name);
+
+            if (doesContainMethod) {
+                break;
+            }
+
+            checkCe = checkCe.getSuperClass();
+        }
+
+        if (!doesContainMethod) {
             errors.undefinedId(n.name);
         }
 
-        MethodEntry method = symbolTable.lookup(objectType.name).lookupMethod(n.name);
+        MethodEntry method = ce.lookupMethod(n.name);
 
         if (method.getParameterTypes().size() != n.rands.size()) {
             errors.wrongNumberOfArguments(method.getParameterTypes().size(), n.rands.size());
