@@ -62,7 +62,25 @@ public class TypeCheckVisitor implements Visitor<Type> {
     }
 
     private boolean assignableFrom(Type varType, Type valueType) {
-        return varType.equals(valueType);
+        boolean result = false;
+
+        if ((varType instanceof ObjectType) && (valueType instanceof  ObjectType)) {
+            String expectedType = ((ObjectType) varType).name;
+            ClassEntry ce = symbolTable.lookup(((ObjectType) valueType).name);
+
+            while (ce != null) {
+                if (expectedType.equals(ce.getName())) {
+                    result = true;
+                    break;
+                }
+
+                ce = ce.getSuperClass();
+            }
+        } else {
+            result = varType.equals(valueType);
+        }
+
+        return result;
     }
 
     ///////// Visitor implementation //////////////////////////////////////
@@ -174,13 +192,30 @@ public class TypeCheckVisitor implements Visitor<Type> {
 
     @Override
     public Type visit(IdentifierExp n) {
-        Type type = thisMethod.lookupVariable(n.name);
+        Type identType = thisMethod.lookupVariable(n.name);
 
-        if (type == null) {
-            errors.undefinedId(n.name);
+        // If variable is not in this method, check parent class fields.
+        if (identType == null) {
+            ClassEntry ce = thisMethod.getClassEntry();
+
+            while (ce != null) {
+                Type lookupType = ce.lookupField(n.name);
+
+                if (lookupType != null) {
+                    identType = lookupType;
+                    break;
+                }
+
+                ce = ce.getSuperClass();
+            }
+
+            // If identType is still null, raise error.
+            if (identType == null) {
+                errors.undefinedId(n.name);
+            }
         }
 
-        n.setType(type);
+        n.setType(identType);
         return n.getType();
     }
 
@@ -204,33 +239,28 @@ public class TypeCheckVisitor implements Visitor<Type> {
     @Override
     public Type visit(Call n) {
         Type receiverType = n.receiver.accept(this);
+
         if (!(receiverType instanceof ObjectType)) {
             errors.typeError(n.receiver, new ObjectType("object"), receiverType);
         }
 
-        // check whether the class is defined
         ObjectType objectType = (ObjectType) receiverType;
         if (symbolTable.lookup(objectType.name) == null) {
+            System.out.println("HERE2");
             errors.undefinedId(objectType.name);
         }
 
-        // check whether the method is defined
         if (!symbolTable.lookup(objectType.name).containsMethod(n.name)) {
+            System.out.println("HERE3");
             errors.undefinedId(n.name);
         }
 
         MethodEntry method = symbolTable.lookup(objectType.name).lookupMethod(n.name);
 
-        // arity check
         if (method.getParameterTypes().size() != n.rands.size()) {
             errors.wrongNumberOfArguments(method.getParameterTypes().size(), n.rands.size());
         }
 
-//        System.out.println("n.rands.size() " + n.rands.size());
-//        System.out.println("getParametertypes() " + method.getParameterTypes().size());
-//        System.out.println("method name " + n.name)
-
-        // type check arguments
         for (int i = 0; i < n.rands.size(); i++) {
             check(n.rands.elementAt(i), (Type) method.getParameterTypes().elementAt(i));
         }
@@ -346,6 +376,7 @@ public class TypeCheckVisitor implements Visitor<Type> {
     @Override
     public Type visit(NewObject n) {
         if (symbolTable.lookup(n.typeName) == null) {
+            System.out.println("HERE4");
             errors.undefinedId(n.typeName);
         }
 
