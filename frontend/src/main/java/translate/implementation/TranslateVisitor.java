@@ -107,7 +107,11 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(Program n) {
-        throw new Error("Not implemented");
+        n.mainClass.accept(this);
+        for (int i = 0; i < n.classes.size(); i++) {
+            n.classes.elementAt(i).accept(this);
+        }
+        return new Nx(NOP);
     }
 
     @Override
@@ -293,7 +297,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(MainClass n) {
-        throw new Error("Not implemented");
+        Frame mainFrame = newFrame(L_MAIN, n.);
     }
 
     @Override
