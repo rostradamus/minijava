@@ -297,7 +297,9 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(MainClass n) {
-        Frame mainFrame = newFrame(L_MAIN, n.);
+        Frame mainFrame = newFrame(L_MAIN,1);
+
+        return null;
     }
 
     @Override
