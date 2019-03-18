@@ -107,6 +107,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(Program n) {
+        currentEnv = FunTable.theEmpty();//Instantiate funTable
         n.mainClass.accept(this);
         for (int i = 0; i < n.classes.size(); i++) {
             n.classes.elementAt(i).accept(this);
@@ -298,7 +299,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
     @Override
     public TRExp visit(MainClass n) {
         Frame mainFrame = newFrame(L_MAIN,1);
-
+        currentEnv = currentEnv.insert(n.className, mainFrame.getFormal(0));
         return null;
     }
 
