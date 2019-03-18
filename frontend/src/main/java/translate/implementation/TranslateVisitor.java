@@ -300,7 +300,10 @@ public class TranslateVisitor implements Visitor<TRExp> {
     public TRExp visit(MainClass n) {
         Frame mainFrame = newFrame(L_MAIN,1);
         currentEnv = currentEnv.insert(n.className, mainFrame.getFormal(0));
-        return null;
+        //System.out.println(n.statement.toString());
+        frags.add(new DataFragment(mainFrame, new IRData(mainFrame.getLabel(), List.list(CONST(0)))));
+        frags.add(new ProcFragment(mainFrame, mainFrame.procEntryExit1(n.statement.accept(this).unNx())));
+        return new Nx(NOP);
     }
 
     @Override
@@ -325,7 +328,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(Block n) {
-        throw new Error("Not implemented");
+        return n.statements.accept(this);
     }
 
     @Override
