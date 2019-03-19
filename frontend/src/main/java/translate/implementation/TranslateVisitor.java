@@ -303,15 +303,15 @@ public class TranslateVisitor implements Visitor<TRExp> {
         Frame mainFrame = newFrame(L_MAIN,1);
         currentEnv = currentEnv.insert(n.className, mainFrame.getFormal(0));
         //System.out.println(n.statement.toString());
-        frags.add(new DataFragment(mainFrame, new IRData(L_NEW_OBJECT, List.list(CONST(0)))));
+        frags.add(new DataFragment(mainFrame, new IRData(Label.get("main"), List.list(CONST(0)))));
         frags.add(new ProcFragment(mainFrame, mainFrame.procEntryExit1(n.statement.accept(this).unNx())));
         return new Nx(NOP);
     }
 
     @Override
     public TRExp visit(ClassDecl n) {
-        List<IRExp> methods = List.list(NAME(L_NEW_OBJECT));
-        Frame frame = newFrame(Label.get(n.name), 0);
+        List<IRExp> methods = List.list(NAME(Label.get(n.name)));
+        Frame frame = newFrame(Label.get(n.name), 1);
         for (int i = 0; i < n.methods.size(); i++) {
             n.methods.elementAt(i).accept(this);
             IRExp methodExp = NAME(Label.get(n.name + "_" + n.methods.elementAt(i).name));
@@ -323,7 +323,26 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(MethodDecl n) {
-        throw new Error("Not implemented");
+        Frame frame = newFrame(Label.get(n.name), n.formals.size() + 1);
+
+        //parameters
+        for (int i = 0; i < n.formals.size(); i++) {
+            putEnv(n.formals.elementAt(i).name, frame.getFormal(i + 1));
+        }
+
+        IRStm inits = NOP;
+        //locals
+        for (int i = 0; i < n.vars.size(); i++) {
+            Access var = frame.allocLocal(false);
+            putEnv(n.vars.elementAt(i).name, var);
+            inits = SEQ(inits, MOVE(var.exp(frame.FP()), CONST(0)));
+        }
+
+        //body
+        IRExp exp = ESEQ(SEQ(inits, n.statements.accept(this).unNx()),
+                n.returnExp.accept(this).unEx());
+        frags.add(new ProcFragment(frame, frame.procEntryExit1(MOVE(frame.RV(), exp))));
+        return new Nx(NOP);
     }
 
     @Override
