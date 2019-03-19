@@ -303,14 +303,22 @@ public class TranslateVisitor implements Visitor<TRExp> {
         Frame mainFrame = newFrame(L_MAIN,1);
         currentEnv = currentEnv.insert(n.className, mainFrame.getFormal(0));
         //System.out.println(n.statement.toString());
-        frags.add(new DataFragment(mainFrame, new IRData(Label.get(GLOBAL), List.list(CONST(0)))));
+        frags.add(new DataFragment(mainFrame, new IRData(L_NEW_OBJECT, List.list(CONST(0)))));
         frags.add(new ProcFragment(mainFrame, mainFrame.procEntryExit1(n.statement.accept(this).unNx())));
         return new Nx(NOP);
     }
 
     @Override
     public TRExp visit(ClassDecl n) {
-        throw new Error("Not implemented");
+        List<IRExp> methods = List.list(NAME(L_NEW_OBJECT));
+        Frame frame = newFrame(Label.get(n.name), 0);
+        for (int i = 0; i < n.methods.size(); i++) {
+            n.methods.elementAt(i).accept(this);
+            IRExp methodExp = NAME(Label.get(n.name + "_" + n.methods.elementAt(i).name));
+            methods.add(methodExp);
+        }
+        frags.add(new DataFragment(frame, new IRData(Label.get(n.name), methods)));
+        return new Nx(NOP);
     }
 
     @Override
