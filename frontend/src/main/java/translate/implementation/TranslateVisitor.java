@@ -55,6 +55,8 @@ public class TranslateVisitor implements Visitor<TRExp> {
      */
     private Frame frame;
 
+    private String GLOBAL = "global";
+
     private FunTable<Access> currentEnv;
 
     public TranslateVisitor(Lookup<ClassEntry> table, Frame frameFactory) {
@@ -301,7 +303,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
         Frame mainFrame = newFrame(L_MAIN,1);
         currentEnv = currentEnv.insert(n.className, mainFrame.getFormal(0));
         //System.out.println(n.statement.toString());
-        frags.add(new DataFragment(mainFrame, new IRData(mainFrame.getLabel(), List.list(CONST(0)))));
+        frags.add(new DataFragment(mainFrame, new IRData(Label.get(GLOBAL), List.list(CONST(0)))));
         frags.add(new ProcFragment(mainFrame, mainFrame.procEntryExit1(n.statement.accept(this).unNx())));
         return new Nx(NOP);
     }

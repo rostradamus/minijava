@@ -52,7 +52,7 @@ class ArrList<E> extends List<E> implements Iterable<E> {
      * @see util.List#size()
      */
     public int size() {
-        makeImmutable();
+        //makeImmutable();
         return elements.size();
     }
 
