@@ -283,9 +283,15 @@ public class TranslateVisitor implements Visitor<TRExp> {
         for (int i = 0; i < n.rands.size(); i++) {
             args.add(n.rands.elementAt(i).accept(this).unEx());
         }
-        System.out.println(currentEnv);
-        //int methodOffset = table.lookup(n.receiver.getType().toString()).getOffsetOfMethod(n.name) + 1;
-        return null;
+
+        throw new Error("Working on call");
+
+/*        return new Ex(new IfThenElse(
+                new Ex(n.receiver.accept(this).unEx()),
+                new Ex(CALL(MEM(PLUS(MEM(vmt),
+                        methodOffset * frames.peek().wordSize())),
+                        args)),
+                new Ex(CALL(L_ERROR, NULL_OBJECT_REFERENCE))).unEx());*/
     }
 
 
@@ -413,7 +419,9 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(NewObject n) {
-        //ClassEntry clazz = currentEnv.lookup(n.typeName);
-        throw new Error("Not implemented");
+        TEMP temp = TEMP(new Temp());
+        return new Ex(ESEQ(SEQ(MOVE(temp, CALL(L_NEW_OBJECT, CONST(10))),
+                                MOVE(MEM(temp), NAME(Label.get(n.typeName)))),
+                                temp));
     }
 }
