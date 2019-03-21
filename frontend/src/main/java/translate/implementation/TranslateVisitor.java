@@ -55,8 +55,6 @@ public class TranslateVisitor implements Visitor<TRExp> {
      */
     private Frame frame;
 
-    private String GLOBAL = "global";
-
     private FunTable<Access> currentEnv;
 
     public TranslateVisitor(Lookup<ClassEntry> table, Frame frameFactory) {
@@ -281,7 +279,13 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(Call n) {
-        throw new Error("Not implemented");
+        List<IRExp> args = List.list(n.receiver.accept(this).unEx());
+        for (int i = 0; i < n.rands.size(); i++) {
+            args.add(n.rands.elementAt(i).accept(this).unEx());
+        }
+        System.out.println(currentEnv);
+        //int methodOffset = table.lookup(n.receiver.getType().toString()).getOffsetOfMethod(n.name) + 1;
+        return null;
     }
 
 
@@ -301,6 +305,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
     @Override
     public TRExp visit(MainClass n) {
         Frame mainFrame = newFrame(L_MAIN,1);
+        frame = mainFrame;
         currentEnv = currentEnv.insert(n.className, mainFrame.getFormal(0));
         //System.out.println(n.statement.toString());
         frags.add(new DataFragment(mainFrame, new IRData(Label.get("main"), List.list(CONST(0)))));
@@ -312,6 +317,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
     public TRExp visit(ClassDecl n) {
         List<IRExp> methods = List.list(NAME(Label.get(n.name)));
         Frame frame = newFrame(Label.get(n.name), 1);
+        this.frame = frame;
         for (int i = 0; i < n.methods.size(); i++) {
             n.methods.elementAt(i).accept(this);
             IRExp methodExp = NAME(Label.get(n.name + "_" + n.methods.elementAt(i).name));
@@ -324,7 +330,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
     @Override
     public TRExp visit(MethodDecl n) {
         Frame frame = newFrame(Label.get(n.name), n.formals.size() + 1);
-
+        this.frame = frame;
         //parameters
         for (int i = 0; i < n.formals.size(); i++) {
             putEnv(n.formals.elementAt(i).name, frame.getFormal(i + 1));
@@ -407,6 +413,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(NewObject n) {
+        //ClassEntry clazz = currentEnv.lookup(n.typeName);
         throw new Error("Not implemented");
     }
 }
