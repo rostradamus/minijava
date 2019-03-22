@@ -49,6 +49,11 @@ public class LabelChecker extends DefaultVisitor<String> {
 
         // traverse through proc body
         f.getBody().accept(this);
+
+        // basic block will insert jump to done label, but raw fragments do not have them yet
+        if (f.getFrame().done != null) {
+            ref(f.getFrame().done);
+        }
     }
 
     public void check(DataFragment f) {
