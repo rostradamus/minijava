@@ -11,15 +11,10 @@ import ir.tree.CJUMP.RelOp;
 import translate.DataFragment;
 import translate.Fragments;
 import translate.ProcFragment;
-import translate.implementation.Cx;
-import translate.implementation.Ex;
-import translate.implementation.Nx;
-import translate.implementation.TRExp;
 import typechecker.implementation.ClassEntry;
 import util.FunTable;
 import util.List;
 import util.Lookup;
-import util.Pair;
 import visitor.Visitor;
 
 import static ir.tree.IR.*;
@@ -57,7 +52,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     private FunTable<IRExp> currentEnv;
     private String currentClass;
-    private Type tp;
+    private Type type;
 
     public TranslateVisitor(Lookup<ClassEntry> table, Frame frameFactory) {
         this.frags = new Fragments(frameFactory);
@@ -82,10 +77,9 @@ public class TranslateVisitor implements Visitor<TRExp> {
      * Creates a label for a function (used by calls to that method).
      * The label name is simply the function name.
      */
-    private Label functionLabel(String functionName) {
-        return Label.get("_" + functionName);
+    private Label methodLabel(String functionName) {
+        return Label.get(currentClass + "_" + functionName);
     }
-
 
     private void putEnv(String name, Access access) {
         currentEnv = currentEnv.insert(name, access.exp(frame.FP()));
@@ -93,10 +87,6 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     private void putEnv(String name, IRExp irexp) {
         currentEnv = currentEnv.insert(name, irexp);
-    }
-
-    private Label methodLabel(String functionName) {
-        return Label.get(currentClass + "_" + functionName);
     }
 
     /**
@@ -107,7 +97,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
         return frags;
     }
 
-    ////// Visitor ///////////////////////////////////////////////
+    ////// Visitor Methods ///////////////////////////////////////////////
 
     @Override
     public <T extends AST> TRExp visit(NodeList<T> ns) {
@@ -126,32 +116,21 @@ public class TranslateVisitor implements Visitor<TRExp> {
     @Override
     public TRExp visit(Program n) {
         currentEnv = FunTable.theEmpty();
-        TRExp main = n.mainClass.accept(this);
-        TRExp classes = n.classes.accept(this);
+        n.mainClass.accept(this);
+        n.classes.accept(this);
+
         return new Nx(NOP);
-    }
-
-    @Override
-    public TRExp visit(BooleanType n) {
-        throw new Error("Not implemented");
-    }
-
-    @Override
-    public TRExp visit(IntegerType n) {
-        throw new Error("Not implemented");
-    }
-
-    @Override
-    public TRExp visit(UnknownType n) {
-        throw new Error("Not implemented");
     }
 
     private TRExp visitStatements(NodeList<Statement> statements) {
         IRStm result = IR.NOP;
+
         for (int i = 0; i < statements.size(); i++) {
-            Statement nextStm = statements.elementAt(i);
-            result = IR.SEQ(result, nextStm.accept(this).unNx());
+            result = IR.SEQ(
+                    result,
+                    statements.elementAt(i).accept(this).unNx());
         }
+
         return new Nx(result);
     }
 
@@ -230,6 +209,31 @@ public class TranslateVisitor implements Visitor<TRExp> {
         return relOp(RelOp.LT, n.e1, n.e2);
     }
 
+    @Override
+    public TRExp visit(And n) {
+        IRExp e1 = n.e1.accept(this).unEx();
+        IRExp e2 = n.e2.accept(this).unEx();
+
+        Label l1 = Label.gen();
+        Label l2 = Label.gen();
+        Label and = Label.gen();
+
+        TEMP tmp = TEMP(new Temp());
+
+        TRExp res = new Ex(IR.ESEQ(
+                SEQ(
+                        MOVE(tmp, FALSE),
+                        IR.CJUMP(RelOp.EQ, e1, IR.CONST(1), l1, and),
+                        LABEL(l1),
+                        IR.CJUMP(RelOp.EQ, e2, IR.CONST(1), l2, and),
+                        LABEL(l2),
+                        MOVE(tmp, TRUE),
+                        LABEL(and)
+                ), tmp));
+
+        return res;
+    }
+
     //////////////////////////////////////////////////////////////
 
     private TRExp numericOp(Op op, Expression e1, Expression e2) {
@@ -288,16 +292,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
     }
 
     @Override
-    public TRExp visit(FunctionDecl n) {
-        throw new Error("Not implemented");
-    }
-
-
-    @Override
     public TRExp visit(VarDecl n) {
-//        Access var = frame.getInArg(n.index);
-//        putEnv(n.name, var);
-
         switch (n.kind) {
             case LOCAL:
                 Access var = frame.allocLocal(false);
@@ -344,7 +339,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
             Call t = (Call)n.receiver;
             n.receiver.accept(this);
             ptr = frame.RV();
-            currentClass = tp.toString();
+            currentClass = type.toString();
         }
         else{
             System.out.println("receiver is: "+ n.receiver.toString());
@@ -359,12 +354,6 @@ public class TranslateVisitor implements Visitor<TRExp> {
         TRExp ret = new Ex(IR.CALL(methodLabel(functionName), args));
         currentClass = old_className;
         return ret;
-    }
-
-
-    @Override
-    public TRExp visit(FunctionType n) {
-        throw new Error("Not implemented");
     }
 
     @Override
@@ -405,7 +394,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
         TRExp stats = n.statements.accept(this);
         TRExp exp = n.returnExp.accept(this);
 
-        tp = n.returnType;
+        type = n.returnType;
 
         IRStm body = IR.SEQ(
                 stats.unNx(),
@@ -415,16 +404,6 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
         frame = oldFrame;
         return new Nx(NOP);
-    }
-
-    @Override
-    public TRExp visit(IntArrayType n) {
-        throw new Error("Not implemented");
-    }
-
-    @Override
-    public TRExp visit(ObjectType n) {
-        throw new Error("Not implemented");
     }
 
     @Override
@@ -485,37 +464,11 @@ public class TranslateVisitor implements Visitor<TRExp> {
     }
 
     @Override
-    public TRExp visit(And n) {
-        IRExp e1 = n.e1.accept(this).unEx();
-        IRExp e2 = n.e2.accept(this).unEx();
-
-        Label l1 = Label.gen();
-        Label l2 = Label.gen();
-        Label and = Label.gen();
-
-        TEMP tmp = TEMP(new Temp());
-
-        TRExp res = new Ex(IR.ESEQ(
-                SEQ(
-                        MOVE(tmp, FALSE),
-                        IR.CJUMP(RelOp.EQ, e1, IR.CONST(1), l1, and),
-                        LABEL(l1),
-                        IR.CJUMP(RelOp.EQ, e2, IR.CONST(1), l2, and),
-                        LABEL(l2),
-                        MOVE(tmp, TRUE),
-                        LABEL(and)
-                ), tmp));
-
-        return res;
-    }
-
-    @Override
     public TRExp visit(ArrayLookup n) {
         IRExp ptr = n.array.accept(this).unEx();
         IRExp idx = n.index.accept(this).unEx();
 
-        TRExp res = new Ex(
-                IR.MEM(IR.BINOP(
+        TRExp res = new Ex(IR.MEM(IR.BINOP(
                                 Op.PLUS,
                                 ptr,
                                 IR.BINOP(
@@ -564,6 +517,43 @@ public class TranslateVisitor implements Visitor<TRExp> {
         TRExp ptr = new Ex(IR.CALL(L_NEW_OBJECT,List.list(CONST(size))));
         currentClass = t;
         return ptr;
+    }
+
+    // Types & Not supported (implemented)
+
+    @Override
+    public TRExp visit(BooleanType n) {
+        throw new Error("Not implemented");
+    }
+
+    @Override
+    public TRExp visit(IntegerType n) {
+        throw new Error("Not implemented");
+    }
+
+    @Override
+    public TRExp visit(UnknownType n) {
+        throw new Error("Not implemented");
+    }
+
+    @Override
+    public TRExp visit(IntArrayType n) {
+        throw new Error("Not implemented");
+    }
+
+    @Override
+    public TRExp visit(ObjectType n) {
+        throw new Error("Not implemented");
+    }
+
+    @Override
+    public TRExp visit(FunctionType n) {
+        throw new Error("Not implemented");
+    }
+
+    @Override
+    public TRExp visit(FunctionDecl n) {
+        throw new Error("Not implemented");
     }
 
 }
