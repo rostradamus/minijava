@@ -99,6 +99,14 @@ public class TranslateVisitor implements Visitor<TRExp> {
         return Label.get(currentClass + "_" + functionName);
     }
 
+    /**
+     * After the visitor successfully traversed the program,
+     * retrieve the built-up list of Fragments with this method.
+     */
+    public Fragments getResult() {
+        return frags;
+    }
+
     ////// Visitor ///////////////////////////////////////////////
 
     @Override
@@ -287,8 +295,24 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(VarDecl n) {
-        Access var = frame.getInArg(n.index);
-        putEnv(n.name, var);
+//        Access var = frame.getInArg(n.index);
+//        putEnv(n.name, var);
+
+        switch (n.kind) {
+            case LOCAL:
+                Access var = frame.allocLocal(false);
+                putEnv(n.name, var);
+                break;
+            case FORMAL:
+                break;
+            case FIELD:
+                Label l = Label.get(currentClass + "_" + n.name);
+                IRData data = new IRData(l, List.list(IR.CONST(0)));
+                DataFragment df = new DataFragment(frame, data);
+                frags.add(df);
+                break;
+        }
+
         return null;
     }
 
@@ -296,9 +320,9 @@ public class TranslateVisitor implements Visitor<TRExp> {
     @Override
     public TRExp visit(Call n) {
         String functionName = "unknown";
-        if (n.name instanceof IdentifierExp) {
-            functionName = ((IdentifierExp) n.name).name;
-        }
+//        if (n.name instanceof IdentifierExp) {
+//            functionName = ((IdentifierExp) n.name).name;
+//        }
         List<IRExp> args = List.list();
 
         // 3 cases for receiver: 1. new object 2. identifierExp 3.This
@@ -346,14 +370,6 @@ public class TranslateVisitor implements Visitor<TRExp> {
         throw new Error("Not implemented");
     }
 
-    /**
-     * After the visitor successfully traversed the program,
-     * retrieve the built-up list of Fragments with this method.
-     */
-    public Fragments getResult() {
-        return frags;
-    }
-
     @Override
     public TRExp visit(MainClass n) {
         frame = newFrame(L_MAIN,0);
@@ -381,10 +397,11 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(MethodDecl n) {
-        Frame oldframe = frame;
+        Frame oldFrame = frame;
         frame = newFrame(methodLabel(n.name), n.formals.size()+1);
-        for (int i = 1; i < n.formals.size()+1; i++) {
-            putEnv(n.formals.elementAt(i-1).name, frame.getFormal(i));
+
+        for (int i = 0; i < n.formals.size(); i++) {
+            putEnv(n.formals.elementAt(i).name, frame.getFormal(i + 1));
         }
         n.vars.accept(this);
 
@@ -399,7 +416,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
         body = frame.procEntryExit1(body);
         frags.add(new ProcFragment(frame, body));
 
-        frame = oldframe;
+        frame = oldFrame;
         return new Nx(NOP);
     }
 
@@ -420,22 +437,79 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(If n) {
-        throw new Error("Not implemented");
+        Label tLabel = Label.gen();
+        Label fLabel = Label.gen();
+        Label endLabel = Label.gen();
+
+        TRExp tst = n.tst.accept(this);
+        TRExp thn = n.thn.accept(this);
+        TRExp els = n.els.accept(this);
+
+        IRStm res = IR.SEQ(
+                tst.unCx(tLabel, fLabel),
+                IR.LABEL(tLabel),
+                thn.unNx(),
+                IR.JUMP(endLabel),
+                IR.LABEL(fLabel),
+                els.unNx(),
+                IR.LABEL(endLabel));
+
+        return new Nx(res);
     }
 
     @Override
     public TRExp visit(While n) {
-        throw new Error("Not implemented");
+        Label s = Label.gen();
+        Label e = Label.gen();
+
+        IRStm tst = n.tst.accept(this).unCx(s, e);
+        IRStm bdy = n.body.accept(this).unNx();
+        IRStm res = IR.SEQ(
+                tst,
+                IR.LABEL(s),
+                bdy,
+                tst,
+                IR.LABEL(e));
+
+        return new Nx(res);
     }
 
     @Override
     public TRExp visit(ArrayAssign n) {
-        throw new Error("Not implemented");
+        IRExp base = currentEnv.lookup(n.name);
+        IRExp offset = IR.BINOP(
+                Op.MUL,
+                n.index.accept(this).unEx(),
+                CONST(frame.wordSize()));
+        IRExp ptr = IR.BINOP(Op.PLUS, base, offset);
+        IRStm res = IR.MOVE(IR.MEM(ptr), n.value.accept(this).unEx());
+
+        return new Nx(res);
     }
 
     @Override
     public TRExp visit(And n) {
-        throw new Error("Not implemented");
+        IRExp e1 = n.e1.accept(this).unEx();
+        IRExp e2 = n.e2.accept(this).unEx();
+
+        Label l1 = Label.gen();
+        Label l2 = Label.gen();
+        Label and = Label.gen();
+
+        TEMP tmp = TEMP(new Temp());
+
+        TRExp res = new Ex(IR.ESEQ(
+                SEQ(
+                        MOVE(tmp, FALSE),
+                        IR.CJUMP(RelOp.EQ, e1, IR.CONST(1), l1, and),
+                        LABEL(l1),
+                        IR.CJUMP(RelOp.EQ, e2, IR.CONST(1), l2, and),
+                        LABEL(l2),
+                        MOVE(tmp, IR.TRUE),
+                        LABEL(and)
+                ), tmp));
+
+        return res;
     }
 
     @Override
@@ -470,4 +544,5 @@ public class TranslateVisitor implements Visitor<TRExp> {
                                 MOVE(MEM(temp), NAME(Label.get(n.typeName)))),
                                 temp));
     }
+
 }
