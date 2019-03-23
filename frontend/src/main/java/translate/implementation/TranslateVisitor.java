@@ -459,17 +459,19 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(While n) {
-        Label s = Label.gen();
-        Label e = Label.gen();
+        Label begin = Label.gen();
+        Label check = Label.gen();
+        Label end = Label.gen();
 
-        IRStm tst = n.tst.accept(this).unCx(s, e);
+        IRStm tst = n.tst.accept(this).unCx(begin, end);
         IRStm bdy = n.body.accept(this).unNx();
         IRStm res = IR.SEQ(
+                IR.LABEL(check),
                 tst,
-                IR.LABEL(s),
+                IR.LABEL(begin),
                 bdy,
-                tst,
-                IR.LABEL(e));
+                IR.LABEL(check),
+                IR.LABEL(end));
 
         return new Nx(res);
     }
@@ -505,7 +507,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
                         LABEL(l1),
                         IR.CJUMP(RelOp.EQ, e2, IR.CONST(1), l2, and),
                         LABEL(l2),
-                        MOVE(tmp, IR.TRUE),
+                        MOVE(tmp, TRUE),
                         LABEL(and)
                 ), tmp));
 
@@ -514,27 +516,48 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(ArrayLookup n) {
-        throw new Error("Not implemented");
+        IRExp ptr = n.array.accept(this).unEx();
+        IRExp idx = n.index.accept(this).unEx();
+
+        TRExp res = new Ex(
+                IR.MEM(IR.BINOP(
+                                Op.PLUS,
+                                ptr,
+                                IR.BINOP(
+                                        Op.MUL,
+                                        idx,
+                                        IR.CONST(frame.wordSize())))));
+
+        return res;
     }
 
     @Override
     public TRExp visit(ArrayLength n) {
-        throw new Error("Not implemented");
+        TRExp arr = n.array.accept(this);
+        TRExp res = new Ex(IR.MEM(IR.BINOP(Op.MINUS, arr.unEx(), IR.CONST(frame.wordSize()))));
+        return res;
     }
 
     @Override
     public TRExp visit(BooleanLiteral n) {
-        throw new Error("Not implemented");
+        if (n.value) {
+            return new Ex(TRUE);
+        }
+
+        return new Ex(FALSE);
     }
 
     @Override
     public TRExp visit(This n) {
-        throw new Error("Not implemented");
+        Access t = frame.getFormal(0);
+        return new Ex(t.exp(frame.FP()));
     }
 
     @Override
     public TRExp visit(NewArray n) {
-        throw new Error("Not implemented");
+        TRExp size = n.size.accept(this);
+        IRExp res = IR.CALL(L_NEW_ARRAY, List.list(size.unEx()));
+        return new Ex(res);
     }
 
     @Override
