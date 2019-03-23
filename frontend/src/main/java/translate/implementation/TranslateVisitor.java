@@ -55,7 +55,9 @@ public class TranslateVisitor implements Visitor<TRExp> {
      */
     private Frame frame;
 
-    private FunTable<Access> currentEnv;
+    private FunTable<IRExp> currentEnv;
+    private String currentClass;
+    private Type tp;
 
     public TranslateVisitor(Lookup<ClassEntry> table, Frame frameFactory) {
         this.frags = new Fragments(frameFactory);
@@ -86,7 +88,15 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
 
     private void putEnv(String name, Access access) {
-        currentEnv = currentEnv.insert(name, access);
+        currentEnv = currentEnv.insert(name, access.exp(frame.FP()));
+    }
+
+    private void putEnv(String name, IRExp irexp) {
+        currentEnv = currentEnv.insert(name, irexp);
+    }
+
+    private Label methodLabel(String functionName) {
+        return Label.get(currentClass + "_" + functionName);
     }
 
     ////// Visitor ///////////////////////////////////////////////
@@ -107,11 +117,9 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(Program n) {
-        currentEnv = FunTable.theEmpty();//Instantiate funTable
-        n.mainClass.accept(this);
-        for (int i = 0; i < n.classes.size(); i++) {
-            n.classes.elementAt(i).accept(this);
-        }
+        currentEnv = FunTable.theEmpty();
+        TRExp main = n.mainClass.accept(this);
+        TRExp classes = n.classes.accept(this);
         return new Nx(NOP);
     }
 
@@ -161,10 +169,18 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(Assign n) {
-        Access var = frame.allocLocal(false);
-        putEnv(n.name, var);
+        IRExp lhs;
+        IRExp value = currentEnv.lookup(n.name);
+        if (value == null) {
+            Access var = frame.allocLocal(false);
+            putEnv(n.name, var);
+            lhs = var.exp(frame.FP());
+        }
+        else{
+            lhs = value;
+        }
         TRExp val = n.value.accept(this);
-        return new Nx(MOVE(var.exp(frame.FP()), val.unEx()));
+        return new Nx(IR.MOVE(lhs, val.unEx()));
     }
 
     private TRExp relOp(final CJUMP.RelOp op, AST ltree, AST rtree) {
@@ -238,8 +254,8 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(IdentifierExp n) {
-        Access var = currentEnv.lookup(n.name);
-        return new Ex(var.exp(frame.FP()));
+        IRExp var = currentEnv.lookup(n.name);
+        return new Ex(var);
     }
 
     @Override
@@ -279,34 +295,49 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(Call n) {
-        List<IRExp> args = List.list(n.receiver.accept(this).unEx());
+        String functionName = "unknown";
+        if (n.name instanceof IdentifierExp) {
+            functionName = ((IdentifierExp) n.name).name;
+        }
+        List<IRExp> args = List.list();
+
+        // 3 cases for receiver: 1. new object 2. identifierExp 3.This
+        IRExp ptr/* = n.receiver.accept(this).unEx()*/;
+        String old_className = currentClass;
+
+        if (n.receiver instanceof NewObject){
+            ptr = n.receiver.accept(this).unEx();
+            currentClass = ((NewObject)n.receiver).typeName;
+        }
+        else if (n.receiver instanceof IdentifierExp){
+            IdentifierExp tmp = (IdentifierExp)n.receiver;
+            ptr = currentEnv.lookup(tmp.name);
+            if(tmp.getType() instanceof ObjectType){
+                currentClass = ((ObjectType) tmp.getType()).name;
+            } else throw new Error("you should be an object =(");
+        }
+        else if (n.receiver instanceof This){
+            ptr = currentEnv.lookup(currentClass);
+        }
+        else if (n.receiver instanceof Call){
+            Call t = (Call)n.receiver;
+            n.receiver.accept(this);
+            ptr = frame.RV();
+            currentClass = tp.toString();
+        }
+        else{
+            System.out.println("receiver is: "+ n.receiver.toString());
+            throw new Error("receiver must be newObject or IdentifierExp or This or Call");
+        }
+
+        args.add(ptr);
         for (int i = 0; i < n.rands.size(); i++) {
-            args.add(n.rands.elementAt(i).accept(this).unEx());
+            TRExp arg = n.rands.elementAt(i).accept(this);
+            args.add(arg.unEx());
         }
-
-        //new Foo().getFoo() - Does Foo exist with getFoo method?
-        if (currentEnv.lookup(n.receiver.getType().toString()) == null) { //if Foo doesn't exist
-            putEnv(n.receiver.getType().toString(), )
-            n.receiver.accept(this); //look Foo up
-        }
-
-        if (currentEnv.lookup(n.receiver.getType().toString() + "_" + n.name) == null) { //Does Foo exist with method? (getFoo)
-            //TODO: Something to do with super, because if you lookup the class, it should have thrown in the methods with it previously
-        }
-
-        int methodOffset = 999;
-
-/*        return new Ex(CALL(MEM(PLUS(MEM(n.receiver.accept(this).unEx()),
-                methodOffset * frame.wordSize()))),
-                args);*/
-        throw new Error("In progress implementing");
-
-/*        return new Ex(new IfThenElse(
-                new Ex(n.receiver.accept(this).unEx()),
-                new Ex(CALL(MEM(PLUS(MEM(vmt),
-                        methodOffset * frames.peek().wordSize())),
-                        args)),
-                new Ex(CALL(L_ERROR, NULL_OBJECT_REFERENCE))).unEx());*/
+        TRExp ret = new Ex(IR.CALL(methodLabel(functionName), args));
+        currentClass = old_className;
+        return ret;
     }
 
 
@@ -325,50 +356,50 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(MainClass n) {
-        Frame mainFrame = newFrame(L_MAIN,1);
-        frame = mainFrame;
-        putEnv(n.className, mainFrame.getFormal(0));
-        //System.out.println(n.statement.toString());
-        frags.add(new DataFragment(mainFrame, new IRData(Label.get("main"), List.list(CONST(0)))));
-        frags.add(new ProcFragment(mainFrame, mainFrame.procEntryExit1(n.statement.accept(this).unNx())));
+        frame = newFrame(L_MAIN,0);
+        TRExp st = n.statement.accept(this);
+        IRStm body = IR.SEQ(st.unNx());
+        body = frame.procEntryExit1(body);
+        frags.add(new ProcFragment(frame, body));
         return new Nx(NOP);
     }
 
     @Override
     public TRExp visit(ClassDecl n) {
-        List<IRExp> methods = List.list(NAME(Label.get(n.name)));
-        Frame frame = newFrame(Label.get(n.name), 1);
-        this.frame = frame;
-        for (int i = 0; i < n.methods.size(); i++) {
-            n.methods.elementAt(i).accept(this);
-            IRExp methodExp = NAME(Label.get(n.name + "_" + n.methods.elementAt(i).name));
-            methods.add(methodExp);
+        FunTable<IRExp> oldEnv = currentEnv;
+        currentClass = n.name;
+        NewObject ts = new NewObject("this");
+        IRExp ptr = ts.accept(this).unEx();
+        putEnv(currentClass,ptr);
+        n.vars.accept(this);
+        if(n.superName!=null){
+            currentEnv.merge(oldEnv);
         }
-        frags.add(new DataFragment(frame, new IRData(Label.get(n.name), methods)));
+        n.methods.accept(this);
         return new Nx(NOP);
     }
 
     @Override
     public TRExp visit(MethodDecl n) {
-        Frame frame = newFrame(Label.get(n.name), n.formals.size() + 1);
-        this.frame = frame;
-        //parameters
-        for (int i = 0; i < n.formals.size(); i++) {
-            putEnv(n.formals.elementAt(i).name, frame.getFormal(i + 1));
+        Frame oldframe = frame;
+        frame = newFrame(methodLabel(n.name), n.formals.size()+1);
+        for (int i = 1; i < n.formals.size()+1; i++) {
+            putEnv(n.formals.elementAt(i-1).name, frame.getFormal(i));
         }
+        n.vars.accept(this);
 
-        IRStm inits = NOP;
-        //locals
-        for (int i = 0; i < n.vars.size(); i++) {
-            Access var = frame.allocLocal(false);
-            putEnv(n.vars.elementAt(i).name, var);
-            inits = SEQ(inits, MOVE(var.exp(frame.FP()), CONST(0)));
-        }
+        TRExp stats = n.statements.accept(this);
+        TRExp exp = n.returnExp.accept(this);
 
-        //body
-        IRExp exp = ESEQ(SEQ(inits, n.statements.accept(this).unNx()),
-                n.returnExp.accept(this).unEx());
-        frags.add(new ProcFragment(frame, frame.procEntryExit1(MOVE(frame.RV(), exp))));
+        tp = n.returnType;
+
+        IRStm body = IR.SEQ(
+                stats.unNx(),
+                IR.MOVE(frame.RV(), exp.unEx()));
+        body = frame.procEntryExit1(body);
+        frags.add(new ProcFragment(frame, body));
+
+        frame = oldframe;
         return new Nx(NOP);
     }
 
