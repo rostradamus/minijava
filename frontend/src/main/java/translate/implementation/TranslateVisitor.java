@@ -319,10 +319,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(Call n) {
-        String functionName = "unknown";
-//        if (n.name instanceof IdentifierExp) {
-//            functionName = ((IdentifierExp) n.name).name;
-//        }
+        String functionName = n.name;
         List<IRExp> args = List.list();
 
         // 3 cases for receiver: 1. new object 2. identifierExp 3.This
@@ -562,10 +559,13 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(NewObject n) {
-        TEMP temp = TEMP(new Temp());
-        return new Ex(ESEQ(SEQ(MOVE(temp, CALL(L_NEW_OBJECT, CONST(10))),
-                                MOVE(MEM(temp), NAME(Label.get(n.typeName)))),
-                                temp));
+        String t = currentClass;
+        currentClass = n.typeName;
+        int i = Label.get(currentClass).toString().length();
+        int size = i*frame.wordSize();
+        TRExp ptr = new Ex(IR.CALL(L_NEW_OBJECT,List.list(CONST(size))));
+        currentClass = t;
+        return ptr;
     }
 
 }
