@@ -456,21 +456,19 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(While n) {
-        Label begin = Label.gen();
-        Label check = Label.gen();
-        Label end = Label.gen();
+        TRExp test = n.tst.accept(this);
+        TRExp body = n.body.accept(this);
 
-        IRStm tst = n.tst.accept(this).unCx(begin, end);
-        IRStm bdy = n.body.accept(this).unNx();
-        IRStm res = IR.SEQ(
-                IR.LABEL(check),
-                tst,
-                IR.LABEL(begin),
-                bdy,
-                IR.LABEL(check),
-                IR.LABEL(end));
+        Label loopTest = Label.gen();
+        Label loopBody = Label.gen();
+        Label done = Label.gen();
 
-        return new Nx(res);
+        return new Nx(SEQ(SEQ(LABEL(loopTest),
+                SEQ(test.unCx(loopBody, done),
+                        SEQ(LABEL(loopBody),
+                                SEQ(body.unNx(),
+                                        JUMP(loopTest))))),
+                LABEL(done)));
     }
 
     @Override
