@@ -284,7 +284,22 @@ public class TranslateVisitor implements Visitor<TRExp> {
             args.add(n.rands.elementAt(i).accept(this).unEx());
         }
 
-        throw new Error("Working on call");
+        //new Foo().getFoo() - Does Foo exist with getFoo method?
+        if (currentEnv.lookup(n.receiver.getType().toString()) == null) { //if Foo doesn't exist
+            putEnv(n.receiver.getType().toString(), )
+            n.receiver.accept(this); //look Foo up
+        }
+
+        if (currentEnv.lookup(n.receiver.getType().toString() + "_" + n.name) == null) { //Does Foo exist with method? (getFoo)
+            //TODO: Something to do with super, because if you lookup the class, it should have thrown in the methods with it previously
+        }
+
+        int methodOffset = 999;
+
+/*        return new Ex(CALL(MEM(PLUS(MEM(n.receiver.accept(this).unEx()),
+                methodOffset * frame.wordSize()))),
+                args);*/
+        throw new Error("In progress implementing");
 
 /*        return new Ex(new IfThenElse(
                 new Ex(n.receiver.accept(this).unEx()),
@@ -312,7 +327,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
     public TRExp visit(MainClass n) {
         Frame mainFrame = newFrame(L_MAIN,1);
         frame = mainFrame;
-        currentEnv = currentEnv.insert(n.className, mainFrame.getFormal(0));
+        putEnv(n.className, mainFrame.getFormal(0));
         //System.out.println(n.statement.toString());
         frags.add(new DataFragment(mainFrame, new IRData(Label.get("main"), List.list(CONST(0)))));
         frags.add(new ProcFragment(mainFrame, mainFrame.procEntryExit1(n.statement.accept(this).unNx())));
