@@ -19,7 +19,7 @@ import ir.tree.IR;
 import ir.tree.IRExp;
 import ir.tree.IRStm;
 
-/* Stack frame layout: 
+/* Stack frame layout:
  First 6 out arguments go in registers
  ESP+0  -->       outArg[7]
  ESP+8  -->       outArg[8]
@@ -27,14 +27,14 @@ import ir.tree.IRStm;
 
  EBP-8*(n+1) -->  local[n]
  ...              ...
- EBP-16 -->       local[1] 
- EBP-8  -->       local[0] 
- EBP    -->       saved EBP 
+ EBP-16 -->       local[1]
+ EBP-8  -->       local[0]
+ EBP    -->       saved EBP
  EBP+8  -->       return address
  EBP+16  -->      inArg[7]
  EBP+24  -->      inArg[8]
  EBP+32 -->       inArg[9]
- ... 
+ ...
 
  */
 
@@ -87,7 +87,6 @@ public class X86_64Frame extends Frame {
 
     protected X86_64Frame(Label label, int nFormals) {
         super(label, allocFormals(nFormals));
-        this.done = Label.generate("bail");
     }
 
     static List<Access> toListOfAccess(List<Temp> formals) {
@@ -102,7 +101,6 @@ public class X86_64Frame extends Frame {
     public X86_64Frame(Label label, int offset, List<Temp> formals) {
         super(label, toListOfAccess(formals));
         nextLocalOffset = offset;
-        this.done = Label.generate("bail");
     }
 
     private X86_64Frame() {
@@ -160,6 +158,9 @@ public class X86_64Frame extends Frame {
 
     @Override
     public IRStm procEntryExit1(IRStm body) {
+        if (this.done == null) {
+            this.done = Label.generate("bail");
+        }
         IRStm preAmble = IR.NOP;
         IRStm postAmble = IR.NOP;
         postAmble = IR.LABEL(done);
