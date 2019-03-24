@@ -1,0 +1,277 @@
+MethodFragment {
+   X86_64Frame { label = _cs411main
+      nextLocalOffset = -8
+      formals = List {
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  MOVE(
+                     t5009 <-
+                     %rbx), 
+                  MOVE(
+                     t5010 <-
+                     %r12)), 
+               MOVE(
+                  t5011 <-
+                  %r13)), 
+            MOVE(
+               t5012 <-
+               %r14)), 
+         MOVE(
+            t5013 <-
+            %r15)), 
+      SEQ(
+         EXP(CALL(
+            NAME(_cs411println),
+            CALL(
+               NAME(__Test$go),
+               CALL(
+                  NAME(_cs411newobject),
+                  CONST 0)))), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_2926, 
+                        MOVE(
+                           %rbx <-
+                           t5009)), 
+                     MOVE(
+                        %r12 <-
+                        t5010)), 
+                  MOVE(
+                     %r13 <-
+                     t5011)), 
+               MOVE(
+                  %r14 <-
+                  t5012)), 
+            MOVE(
+               %r15 <-
+               t5013))))
+}
+MethodFragment {
+   X86_64Frame { label = __Test$odd
+      nextLocalOffset = -8
+      formals = List {
+         t5014
+         t5015
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        MOVE(
+                           t5017 <-
+                           %rbx), 
+                        MOVE(
+                           t5018 <-
+                           %r12)), 
+                     MOVE(
+                        t5019 <-
+                        %r13)), 
+                  MOVE(
+                     t5020 <-
+                     %r14)), 
+               MOVE(
+                  t5021 <-
+                  %r15)), 
+            MOVE(
+               t5014 <-
+               %rdi)), 
+         MOVE(
+            t5015 <-
+            %rsi)), 
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  LABEL _L_2927, 
+                  SEQ(
+                     CJUMP(LT,
+                        CONST 1,
+                        t5015,
+                        _L_2928, _L_2929), 
+                     SEQ(
+                        LABEL _L_2928, 
+                        SEQ(
+                           MOVE(
+                              t5015 <-
+                              BINOP(MINUS,
+                                 t5015, 
+                                 CONST 2)), 
+                           JUMP(NAME(_L_2927)))))), 
+               LABEL _L_2929), 
+            MOVE(
+               %rax <-
+               ESEQ(
+                  SEQ(
+                     MOVE(
+                        t5016 <-
+                        CONST 0), 
+                     CMOVE(LT,
+                        t5015,
+                        CONST 1,
+                        t5016 <- CONST 1)),
+                  t5016))), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_2930, 
+                        MOVE(
+                           %rbx <-
+                           t5017)), 
+                     MOVE(
+                        %r12 <-
+                        t5018)), 
+                  MOVE(
+                     %r13 <-
+                     t5019)), 
+               MOVE(
+                  %r14 <-
+                  t5020)), 
+            MOVE(
+               %r15 <-
+               t5021))))
+}
+MethodFragment {
+   X86_64Frame { label = __Test$go
+      nextLocalOffset = -8
+      formals = List {
+         t5022
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     MOVE(
+                        t5025 <-
+                        %rbx), 
+                     MOVE(
+                        t5026 <-
+                        %r12)), 
+                  MOVE(
+                     t5027 <-
+                     %r13)), 
+               MOVE(
+                  t5028 <-
+                  %r14)), 
+            MOVE(
+               t5029 <-
+               %r15)), 
+         MOVE(
+            t5022 <-
+            %rdi)), 
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  MOVE(
+                     t5023 <-
+                     CONST 0), 
+                  MOVE(
+                     t5024 <-
+                     CONST 0)), 
+               SEQ(
+                  SEQ(
+                     LABEL _L_2937, 
+                     SEQ(
+                        CJUMP(LT,
+                           t5023,
+                           CONST 10,
+                           _L_2938, _L_2939), 
+                        SEQ(
+                           LABEL _L_2938, 
+                           SEQ(
+                              SEQ(
+                                 SEQ(
+                                    MOVE(
+                                       t5024 <-
+                                       CONST 0), 
+                                    SEQ(
+                                       SEQ(
+                                          LABEL _L_2934, 
+                                          SEQ(
+                                             CJUMP(LT,
+                                                t5024,
+                                                CONST 10,
+                                                _L_2935, _L_2936), 
+                                             SEQ(
+                                                LABEL _L_2935, 
+                                                SEQ(
+                                                   SEQ(
+                                                      CJUMP(NE,
+                                                         CALL(
+                                                            NAME(__Test$odd),
+                                                            t5022,
+                                                            t5024),
+                                                         CONST 0,
+                                                         _L_2931, _L_2932), 
+                                                      SEQ(
+                                                         LABEL _L_2931, 
+                                                         SEQ(
+                                                            MOVE(
+                                                               t5024 <-
+                                                               BINOP(PLUS,
+                                                                  t5024, 
+                                                                  CONST 1)), 
+                                                            SEQ(
+                                                               JUMP(NAME(_L_2933)), 
+                                                               SEQ(
+                                                                  LABEL _L_2932, 
+                                                                  SEQ(
+                                                                     MOVE(
+                                                                        t5024 <-
+                                                                        BINOP(PLUS,
+                                                                           t5024, 
+                                                                           CONST 3)), 
+                                                                     LABEL _L_2933)))))), 
+                                                   JUMP(NAME(_L_2934)))))), 
+                                       LABEL _L_2936)), 
+                                 MOVE(
+                                    t5023 <-
+                                    BINOP(PLUS,
+                                       t5023, 
+                                       CONST 1))), 
+                              JUMP(NAME(_L_2937)))))), 
+                  LABEL _L_2939)), 
+            MOVE(
+               %rax <-
+               BINOP(MUL,
+                  t5023, 
+                  t5024))), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_2940, 
+                        MOVE(
+                           %rbx <-
+                           t5025)), 
+                     MOVE(
+                        %r12 <-
+                        t5026)), 
+                  MOVE(
+                     %r13 <-
+                     t5027)), 
+               MOVE(
+                  %r14 <-
+                  t5028)), 
+            MOVE(
+               %r15 <-
+               t5029))))
+}

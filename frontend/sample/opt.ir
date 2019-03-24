@@ -1,0 +1,158 @@
+MethodFragment {
+   X86_64Frame { label = _cs411main
+      nextLocalOffset = -8
+      formals = List {
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  MOVE(
+                     t5111 <-
+                     %rbx), 
+                  MOVE(
+                     t5112 <-
+                     %r12)), 
+               MOVE(
+                  t5113 <-
+                  %r13)), 
+            MOVE(
+               t5114 <-
+               %r14)), 
+         MOVE(
+            t5115 <-
+            %r15)), 
+      SEQ(
+         EXP(CALL(
+            NAME(_cs411println),
+            CALL(
+               NAME(__Test$go),
+               CALL(
+                  NAME(_cs411newobject),
+                  CONST 0)))), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_2998, 
+                        MOVE(
+                           %rbx <-
+                           t5111)), 
+                     MOVE(
+                        %r12 <-
+                        t5112)), 
+                  MOVE(
+                     %r13 <-
+                     t5113)), 
+               MOVE(
+                  %r14 <-
+                  t5114)), 
+            MOVE(
+               %r15 <-
+               t5115))))
+}
+MethodFragment {
+   X86_64Frame { label = __Test$go
+      nextLocalOffset = -8
+      formals = List {
+         t5116
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     MOVE(
+                        t5121 <-
+                        %rbx), 
+                     MOVE(
+                        t5122 <-
+                        %r12)), 
+                  MOVE(
+                     t5123 <-
+                     %r13)), 
+               MOVE(
+                  t5124 <-
+                  %r14)), 
+            MOVE(
+               t5125 <-
+               %r15)), 
+         MOVE(
+            t5116 <-
+            %rdi)), 
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     MOVE(
+                        t5120 <-
+                        CONST 1), 
+                     MOVE(
+                        t5117 <-
+                        CONST 0)), 
+                  MOVE(
+                     t5119 <-
+                     CONST 0)), 
+               SEQ(
+                  SEQ(
+                     LABEL _L_2999, 
+                     SEQ(
+                        CJUMP(LT,
+                           t5117,
+                           CONST 10,
+                           _L_3000, _L_3001), 
+                        SEQ(
+                           LABEL _L_3000, 
+                           SEQ(
+                              SEQ(
+                                 SEQ(
+                                    MOVE(
+                                       t5118 <-
+                                       BINOP(PLUS,
+                                          t5117, 
+                                          t5120)), 
+                                    MOVE(
+                                       t5119 <-
+                                       BINOP(PLUS,
+                                          t5119, 
+                                          BINOP(PLUS,
+                                             t5117, 
+                                             t5120)))), 
+                                 MOVE(
+                                    t5117 <-
+                                    BINOP(PLUS,
+                                       t5117, 
+                                       t5120))), 
+                              JUMP(NAME(_L_2999)))))), 
+                  LABEL _L_3001)), 
+            MOVE(
+               %rax <-
+               t5119)), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_3002, 
+                        MOVE(
+                           %rbx <-
+                           t5121)), 
+                     MOVE(
+                        %r12 <-
+                        t5122)), 
+                  MOVE(
+                     %r13 <-
+                     t5123)), 
+               MOVE(
+                  %r14 <-
+                  t5124)), 
+            MOVE(
+               %r15 <-
+               t5125))))
+}

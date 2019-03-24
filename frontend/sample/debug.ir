@@ -1,0 +1,144 @@
+MethodFragment {
+   X86_64Frame { label = _cs411main
+      nextLocalOffset = -8
+      formals = List {
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  MOVE(
+                     t4936 <-
+                     %rbx), 
+                  MOVE(
+                     t4937 <-
+                     %r12)), 
+               MOVE(
+                  t4938 <-
+                  %r13)), 
+            MOVE(
+               t4939 <-
+               %r14)), 
+         MOVE(
+            t4940 <-
+            %r15)), 
+      SEQ(
+         EXP(CALL(
+            NAME(_cs411println),
+            CALL(
+               NAME(__Test$go),
+               CALL(
+                  NAME(_cs411newobject),
+                  CONST 0)))), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_2881, 
+                        MOVE(
+                           %rbx <-
+                           t4936)), 
+                     MOVE(
+                        %r12 <-
+                        t4937)), 
+                  MOVE(
+                     %r13 <-
+                     t4938)), 
+               MOVE(
+                  %r14 <-
+                  t4939)), 
+            MOVE(
+               %r15 <-
+               t4940))))
+}
+MethodFragment {
+   X86_64Frame { label = __Test$go
+      nextLocalOffset = -8
+      formals = List {
+         t4941
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     MOVE(
+                        t4944 <-
+                        %rbx), 
+                     MOVE(
+                        t4945 <-
+                        %r12)), 
+                  MOVE(
+                     t4946 <-
+                     %r13)), 
+               MOVE(
+                  t4947 <-
+                  %r14)), 
+            MOVE(
+               t4948 <-
+               %r15)), 
+         MOVE(
+            t4941 <-
+            %rdi)), 
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     MOVE(
+                        t4943 <-
+                        CONST 23), 
+                     MOVE(
+                        t4943 <-
+                        BINOP(MUL,
+                           t4943, 
+                           t4943))), 
+                  MOVE(
+                     t4942 <-
+                     CONST 1)), 
+               SEQ(
+                  CJUMP(NE,
+                     t4942,
+                     CONST 0,
+                     _L_2882, _L_2883), 
+                  SEQ(
+                     LABEL _L_2882, 
+                     SEQ(
+                        EXP(CALL(
+                           NAME(_cs411println),
+                           CONST 1)), 
+                        SEQ(
+                           JUMP(NAME(_L_2884)), 
+                           SEQ(
+                              LABEL _L_2883, 
+                              LABEL _L_2884)))))), 
+            MOVE(
+               %rax <-
+               t4943)), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_2885, 
+                        MOVE(
+                           %rbx <-
+                           t4944)), 
+                     MOVE(
+                        %r12 <-
+                        t4945)), 
+                  MOVE(
+                     %r13 <-
+                     t4946)), 
+               MOVE(
+                  %r14 <-
+                  t4947)), 
+            MOVE(
+               %r15 <-
+               t4948))))
+}
