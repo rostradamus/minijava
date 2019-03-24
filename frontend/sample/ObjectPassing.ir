@@ -1,0 +1,250 @@
+MethodFragment {
+   X86_64Frame { label = _cs411main
+      nextLocalOffset = -8
+      formals = List {
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  MOVE(
+                     t681 <-
+                     %rbx), 
+                  MOVE(
+                     t682 <-
+                     %r12)), 
+               MOVE(
+                  t683 <-
+                  %r13)), 
+            MOVE(
+               t684 <-
+               %r14)), 
+         MOVE(
+            t685 <-
+            %r15)), 
+      SEQ(
+         EXP(CALL(
+            NAME(_cs411println),
+            CALL(
+               NAME(_Foo_doit),
+               CALL(
+                  NAME(_cs411newobject),
+                  CONST 8)))), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_267, 
+                        MOVE(
+                           %rbx <-
+                           t681)), 
+                     MOVE(
+                        %r12 <-
+                        t682)), 
+                  MOVE(
+                     %r13 <-
+                     t683)), 
+               MOVE(
+                  %r14 <-
+                  t684)), 
+            MOVE(
+               %r15 <-
+               t685))))
+}
+DataFragment {
+   IRData _Foo_field 1 values
+      CONST 0
+
+}
+MethodFragment {
+   X86_64Frame { label = _Foo_doit
+      nextLocalOffset = -8
+      formals = List {
+         t686
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     MOVE(
+                        t687 <-
+                        %rbx), 
+                     MOVE(
+                        t688 <-
+                        %r12)), 
+                  MOVE(
+                     t689 <-
+                     %r13)), 
+               MOVE(
+                  t690 <-
+                  %r14)), 
+            MOVE(
+               t691 <-
+               %r15)), 
+         MOVE(
+            t686 <-
+            %rdi)), 
+      SEQ(
+         SEQ(
+            MOVE(
+               MEM(BINOP(PLUS,
+                  t686, 
+                  CONST 0)) <-
+               CONST 10), 
+            MOVE(
+               %rax <-
+               CALL(
+                  NAME(_Foo_getField),
+                  CALL(
+                     NAME(_Foo_ident),
+                     t686,
+                     t686)))), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_268, 
+                        MOVE(
+                           %rbx <-
+                           t687)), 
+                     MOVE(
+                        %r12 <-
+                        t688)), 
+                  MOVE(
+                     %r13 <-
+                     t689)), 
+               MOVE(
+                  %r14 <-
+                  t690)), 
+            MOVE(
+               %r15 <-
+               t691))))
+}
+MethodFragment {
+   X86_64Frame { label = _Foo_ident
+      nextLocalOffset = -8
+      formals = List {
+         t692
+         t693
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        MOVE(
+                           t694 <-
+                           %rbx), 
+                        MOVE(
+                           t695 <-
+                           %r12)), 
+                     MOVE(
+                        t696 <-
+                        %r13)), 
+                  MOVE(
+                     t697 <-
+                     %r14)), 
+               MOVE(
+                  t698 <-
+                  %r15)), 
+            MOVE(
+               t692 <-
+               %rdi)), 
+         MOVE(
+            t693 <-
+            %rsi)), 
+      SEQ(
+         MOVE(
+            %rax <-
+            t693), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_269, 
+                        MOVE(
+                           %rbx <-
+                           t694)), 
+                     MOVE(
+                        %r12 <-
+                        t695)), 
+                  MOVE(
+                     %r13 <-
+                     t696)), 
+               MOVE(
+                  %r14 <-
+                  t697)), 
+            MOVE(
+               %r15 <-
+               t698))))
+}
+MethodFragment {
+   X86_64Frame { label = _Foo_getField
+      nextLocalOffset = -8
+      formals = List {
+         t699
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     MOVE(
+                        t700 <-
+                        %rbx), 
+                     MOVE(
+                        t701 <-
+                        %r12)), 
+                  MOVE(
+                     t702 <-
+                     %r13)), 
+               MOVE(
+                  t703 <-
+                  %r14)), 
+            MOVE(
+               t704 <-
+               %r15)), 
+         MOVE(
+            t699 <-
+            %rdi)), 
+      SEQ(
+         MOVE(
+            %rax <-
+            MEM(BINOP(PLUS,
+               t699, 
+               CONST 0))), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_270, 
+                        MOVE(
+                           %rbx <-
+                           t700)), 
+                     MOVE(
+                        %r12 <-
+                        t701)), 
+                  MOVE(
+                     %r13 <-
+                     t702)), 
+               MOVE(
+                  %r14 <-
+                  t703)), 
+            MOVE(
+               %r15 <-
+               t704))))
+}

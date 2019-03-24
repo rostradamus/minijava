@@ -1,0 +1,267 @@
+MethodFragment {
+   X86_64Frame { label = _cs411main
+      nextLocalOffset = -8
+      formals = List {
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  MOVE(
+                     t4981 <-
+                     %rbx), 
+                  MOVE(
+                     t4982 <-
+                     %r12)), 
+               MOVE(
+                  t4983 <-
+                  %r13)), 
+            MOVE(
+               t4984 <-
+               %r14)), 
+         MOVE(
+            t4985 <-
+            %r15)), 
+      SEQ(
+         EXP(CALL(
+            NAME(_cs411println),
+            CALL(
+               NAME(__Test$go),
+               CALL(
+                  NAME(_cs411newobject),
+                  CONST 0)))), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_2911, 
+                        MOVE(
+                           %rbx <-
+                           t4981)), 
+                     MOVE(
+                        %r12 <-
+                        t4982)), 
+                  MOVE(
+                     %r13 <-
+                     t4983)), 
+               MOVE(
+                  %r14 <-
+                  t4984)), 
+            MOVE(
+               %r15 <-
+               t4985))))
+}
+MethodFragment {
+   X86_64Frame { label = __O$m
+      nextLocalOffset = -8
+      formals = List {
+         t4986
+         t4987
+         t4988
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        SEQ(
+                           MOVE(
+                              t4989 <-
+                              %rbx), 
+                           MOVE(
+                              t4990 <-
+                              %r12)), 
+                        MOVE(
+                           t4991 <-
+                           %r13)), 
+                     MOVE(
+                        t4992 <-
+                        %r14)), 
+                  MOVE(
+                     t4993 <-
+                     %r15)), 
+               MOVE(
+                  t4986 <-
+                  %rdi)), 
+            MOVE(
+               t4987 <-
+               %rsi)), 
+         MOVE(
+            t4988 <-
+            %rdx)), 
+      SEQ(
+         MOVE(
+            %rax <-
+            CONST 3), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_2912, 
+                        MOVE(
+                           %rbx <-
+                           t4989)), 
+                     MOVE(
+                        %r12 <-
+                        t4990)), 
+                  MOVE(
+                     %r13 <-
+                     t4991)), 
+               MOVE(
+                  %r14 <-
+                  t4992)), 
+            MOVE(
+               %r15 <-
+               t4993))))
+}
+MethodFragment {
+   X86_64Frame { label = __Test$go
+      nextLocalOffset = -8
+      formals = List {
+         t4994
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     MOVE(
+                        t5000 <-
+                        %rbx), 
+                     MOVE(
+                        t5001 <-
+                        %r12)), 
+                  MOVE(
+                     t5002 <-
+                     %r13)), 
+               MOVE(
+                  t5003 <-
+                  %r14)), 
+            MOVE(
+               t5004 <-
+               %r15)), 
+         MOVE(
+            t4994 <-
+            %rdi)), 
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        MOVE(
+                           t4995 <-
+                           CALL(
+                              NAME(_cs411newarray),
+                              CONST 4)), 
+                        SEQ(
+                           CJUMP(GE,
+                              CONST 3,
+                              CONST 0,
+                              _L_2913, _L_2914), 
+                           SEQ(
+                              LABEL _L_2913, 
+                              SEQ(
+                                 CJUMP(LT,
+                                    CONST 3,
+                                    MEM(BINOP(MINUS,
+                                       t4995, 
+                                       CONST 8)),
+                                    _L_2915, _L_2914), 
+                                 SEQ(
+                                    LABEL _L_2914, 
+                                    SEQ(
+                                       EXP(CALL(
+                                          NAME(_cs411error),
+                                          CONST 1)), 
+                                       SEQ(
+                                          LABEL _L_2915, 
+                                          MOVE(
+                                             MEM(BINOP(PLUS,
+                                                t4995, 
+                                                CONST 24)) <-
+                                             CONST 11)))))))), 
+                     MOVE(
+                        t4996 <-
+                        CONST 1)), 
+                  MOVE(
+                     t4997 <-
+                     CALL(
+                        NAME(_cs411newobject),
+                        CONST 0))), 
+               MOVE(
+                  t4996 <-
+                  ESEQ(
+                     SEQ(
+                        MOVE(
+                           t4999 <-
+                           CONST 0), 
+                        SEQ(
+                           CJUMP(EQ,
+                              ESEQ(
+                                 SEQ(
+                                    MOVE(
+                                       t4998 <-
+                                       CONST 0), 
+                                    CMOVE(LT,
+                                       MEM(BINOP(PLUS,
+                                          t4995, 
+                                          CONST 24)),
+                                       CALL(
+                                          NAME(__O$m),
+                                          t4997,
+                                          CONST 6,
+                                          CONST 1),
+                                       t4998 <- CONST 1)),
+                                 t4998),
+                              CONST 1,
+                              _L_2916, _L_2918), 
+                           SEQ(
+                              LABEL _L_2916, 
+                              SEQ(
+                                 CJUMP(EQ,
+                                    t4996,
+                                    CONST 1,
+                                    _L_2917, _L_2918), 
+                                 SEQ(
+                                    LABEL _L_2917, 
+                                    SEQ(
+                                       MOVE(
+                                          t4999 <-
+                                          CONST 1), 
+                                       LABEL _L_2918)))))),
+                     t4999))), 
+            MOVE(
+               %rax <-
+               CONST 2)), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_2919, 
+                        MOVE(
+                           %rbx <-
+                           t5000)), 
+                     MOVE(
+                        %r12 <-
+                        t5001)), 
+                  MOVE(
+                     %r13 <-
+                     t5002)), 
+               MOVE(
+                  %r14 <-
+                  t5003)), 
+            MOVE(
+               %r15 <-
+               t5004))))
+}

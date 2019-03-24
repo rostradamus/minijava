@@ -3,6 +3,8 @@ package typechecker.implementation;
 import ast.Type;
 import util.ImpTable;
 
+import java.lang.reflect.Method;
+
 public class ClassEntry {
     public final String name;
     public final ImpTable<MethodEntry> methods;
@@ -40,6 +42,14 @@ public class ClassEntry {
         return fields.lookup(name);
     }
 
+    public MethodEntry lookupMethod(String name) {
+        if (methods.lookup(name) != null) {
+            return methods.lookup(name);
+        } else {
+            return superClass != null ? superClass.lookupMethod(name) : null;
+        }
+    }
+
     boolean containsMethod(String methodName) {
         // lookup within this class method entry table
         if (methods.lookup(methodName) != null) {
@@ -53,18 +63,5 @@ public class ClassEntry {
 
         // Doesn't exist
         return false;
-    }
-
-    /**
-     * Return the method entry
-     * @param methodName
-     * @return  Null on failed lookup
-     */
-    MethodEntry lookupMethod(String methodName) {
-        if (methods.lookup(methodName) != null) {
-            return methods.lookup(methodName);
-        } else {
-            return superClass != null ? superClass.lookupMethod(methodName) : null;
-        }
     }
 }

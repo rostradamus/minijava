@@ -1,0 +1,147 @@
+MethodFragment {
+   X86_64Frame { label = _cs411main
+      nextLocalOffset = -8
+      formals = List {
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  MOVE(
+                     t399 <-
+                     %rbx), 
+                  MOVE(
+                     t400 <-
+                     %r12)), 
+               MOVE(
+                  t401 <-
+                  %r13)), 
+            MOVE(
+               t402 <-
+               %r14)), 
+         MOVE(
+            t403 <-
+            %r15)), 
+      SEQ(
+         EXP(CALL(
+            NAME(_cs411println),
+            CALL(
+               NAME(_Fac_ComputeFac),
+               CALL(
+                  NAME(_cs411newobject),
+                  CONST 0),
+               CONST 10))), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_179, 
+                        MOVE(
+                           %rbx <-
+                           t399)), 
+                     MOVE(
+                        %r12 <-
+                        t400)), 
+                  MOVE(
+                     %r13 <-
+                     t401)), 
+               MOVE(
+                  %r14 <-
+                  t402)), 
+            MOVE(
+               %r15 <-
+               t403))))
+}
+MethodFragment {
+   X86_64Frame { label = _Fac_ComputeFac
+      nextLocalOffset = -8
+      formals = List {
+         t404
+         t405
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        MOVE(
+                           t408 <-
+                           %rbx), 
+                        MOVE(
+                           t409 <-
+                           %r12)), 
+                     MOVE(
+                        t410 <-
+                        %r13)), 
+                  MOVE(
+                     t411 <-
+                     %r14)), 
+               MOVE(
+                  t412 <-
+                  %r15)), 
+            MOVE(
+               t404 <-
+               %rdi)), 
+         MOVE(
+            t405 <-
+            %rsi)), 
+      SEQ(
+         SEQ(
+            SEQ(
+               CJUMP(LT,
+                  t405,
+                  CONST 1,
+                  _L_180, _L_181), 
+               SEQ(
+                  LABEL _L_180, 
+                  SEQ(
+                     MOVE(
+                        t407 <-
+                        CONST 1), 
+                     SEQ(
+                        JUMP(NAME(_L_182)), 
+                        SEQ(
+                           LABEL _L_181, 
+                           SEQ(
+                              MOVE(
+                                 t407 <-
+                                 BINOP(MUL,
+                                    t405, 
+                                    CALL(
+                                       NAME(_Fac_ComputeFac),
+                                       t404,
+                                       BINOP(MINUS,
+                                          t405, 
+                                          CONST 1)))), 
+                              LABEL _L_182)))))), 
+            MOVE(
+               %rax <-
+               t407)), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_183, 
+                        MOVE(
+                           %rbx <-
+                           t408)), 
+                     MOVE(
+                        %r12 <-
+                        t409)), 
+                  MOVE(
+                     %r13 <-
+                     t410)), 
+               MOVE(
+                  %r14 <-
+                  t411)), 
+            MOVE(
+               %r15 <-
+               t412))))
+}

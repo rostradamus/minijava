@@ -1,0 +1,137 @@
+MethodFragment {
+   X86_64Frame { label = _cs411main
+      nextLocalOffset = -8
+      formals = List {
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  MOVE(
+                     t814 <-
+                     %rbx), 
+                  MOVE(
+                     t815 <-
+                     %r12)), 
+               MOVE(
+                  t816 <-
+                  %r13)), 
+            MOVE(
+               t817 <-
+               %r14)), 
+         MOVE(
+            t818 <-
+            %r15)), 
+      SEQ(
+         EXP(CALL(
+            NAME(_cs411println),
+            CALL(
+               NAME(_Foo_doit),
+               CALL(
+                  NAME(_cs411newobject),
+                  CONST 0)))), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_314, 
+                        MOVE(
+                           %rbx <-
+                           t814)), 
+                     MOVE(
+                        %r12 <-
+                        t815)), 
+                  MOVE(
+                     %r13 <-
+                     t816)), 
+               MOVE(
+                  %r14 <-
+                  t817)), 
+            MOVE(
+               %r15 <-
+               t818))))
+}
+MethodFragment {
+   X86_64Frame { label = _Foo_doit
+      nextLocalOffset = -8
+      formals = List {
+         t819
+      }
+   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     MOVE(
+                        t822 <-
+                        %rbx), 
+                     MOVE(
+                        t823 <-
+                        %r12)), 
+                  MOVE(
+                     t824 <-
+                     %r13)), 
+               MOVE(
+                  t825 <-
+                  %r14)), 
+            MOVE(
+               t826 <-
+               %r15)), 
+         MOVE(
+            t819 <-
+            %rdi)), 
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     MOVE(
+                        t821 <-
+                        CALL(
+                           NAME(_cs411newarray),
+                           CONST 2)), 
+                     MOVE(
+                        MEM(BINOP(PLUS,
+                           t821, 
+                           CONST 0)) <-
+                        CONST 0)), 
+                  MOVE(
+                     MEM(BINOP(PLUS,
+                        t821, 
+                        CONST 8)) <-
+                     CONST 1)), 
+               MOVE(
+                  MEM(BINOP(PLUS,
+                     t821, 
+                     CONST 16)) <-
+                  CONST 2)), 
+            MOVE(
+               %rax <-
+               CONST 0)), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL _bail_315, 
+                        MOVE(
+                           %rbx <-
+                           t822)), 
+                     MOVE(
+                        %r12 <-
+                        t823)), 
+                  MOVE(
+                     %r13 <-
+                     t824)), 
+               MOVE(
+                  %r14 <-
+                  t825)), 
+            MOVE(
+               %r15 <-
+               t826))))
+}
