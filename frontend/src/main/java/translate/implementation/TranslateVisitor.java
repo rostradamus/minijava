@@ -81,20 +81,20 @@ public class TranslateVisitor implements Visitor<TRExp> {
         return Label.get(currentClass + "_" + functionName);
     }
 
-    private void putEnv(String name, Access access) {
-        currentEnv = currentEnv.insert(name, access.exp(frame.FP()));
-    }
-
-    private void putEnv(String name, IRExp irexp) {
-        currentEnv = currentEnv.insert(name, irexp);
-    }
-
     /**
      * After the visitor successfully traversed the program,
      * retrieve the built-up list of Fragments with this method.
      */
     public Fragments getResult() {
         return frags;
+    }
+
+    private void putEnv(String name, Access access) {
+        currentEnv = currentEnv.insert(name, access.exp(frame.FP()));
+    }
+
+    private void putEnv(String name, IRExp irexp) {
+        currentEnv = currentEnv.insert(name, irexp);
     }
 
     ////// Visitor Methods ///////////////////////////////////////////////
@@ -126,9 +126,8 @@ public class TranslateVisitor implements Visitor<TRExp> {
         IRStm result = IR.NOP;
 
         for (int i = 0; i < statements.size(); i++) {
-            result = IR.SEQ(
-                    result,
-                    statements.elementAt(i).accept(this).unNx());
+            Statement nextStm = statements.elementAt(i);
+            result = IR.SEQ(result, nextStm.accept(this).unNx());
         }
 
         return new Nx(result);
@@ -156,18 +155,16 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(Assign n) {
-        IRExp lhs;
-        IRExp value = currentEnv.lookup(n.name);
-        if (value == null) {
+        IRExp assignee = currentEnv.lookup(n.name);
+        TRExp value = n.value.accept(this);
+
+        if (assignee == null) {
             Access var = frame.allocLocal(false);
             putEnv(n.name, var);
-            lhs = var.exp(frame.FP());
+            assignee = var.exp(frame.FP());
         }
-        else{
-            lhs = value;
-        }
-        TRExp val = n.value.accept(this);
-        return new Nx(IR.MOVE(lhs, val.unEx()));
+
+        return new Nx(MOVE(assignee, value.unEx()));
     }
 
     private TRExp relOp(final CJUMP.RelOp op, AST ltree, AST rtree) {
@@ -207,31 +204,6 @@ public class TranslateVisitor implements Visitor<TRExp> {
     @Override
     public TRExp visit(LessThan n) {
         return relOp(RelOp.LT, n.e1, n.e2);
-    }
-
-    @Override
-    public TRExp visit(And n) {
-        IRExp e1 = n.e1.accept(this).unEx();
-        IRExp e2 = n.e2.accept(this).unEx();
-
-        Label l1 = Label.gen();
-        Label l2 = Label.gen();
-        Label and = Label.gen();
-
-        TEMP tmp = TEMP(new Temp());
-
-        TRExp res = new Ex(IR.ESEQ(
-                SEQ(
-                        MOVE(tmp, FALSE),
-                        IR.CJUMP(RelOp.EQ, e1, IR.CONST(1), l1, and),
-                        LABEL(l1),
-                        IR.CJUMP(RelOp.EQ, e2, IR.CONST(1), l2, and),
-                        LABEL(l2),
-                        MOVE(tmp, TRUE),
-                        LABEL(and)
-                ), tmp));
-
-        return res;
     }
 
     //////////////////////////////////////////////////////////////
@@ -295,16 +267,13 @@ public class TranslateVisitor implements Visitor<TRExp> {
     public TRExp visit(VarDecl n) {
         switch (n.kind) {
             case LOCAL:
-                Access var = frame.allocLocal(false);
-                putEnv(n.name, var);
+                putEnv(n.name, frame.allocLocal(false));
                 break;
             case FORMAL:
                 break;
             case FIELD:
-                Label l = Label.get(currentClass + "_" + n.name);
-                IRData data = new IRData(l, List.list(IR.CONST(0)));
-                DataFragment df = new DataFragment(frame, data);
-                frags.add(df);
+                IRData data = new IRData(methodLabel(n.name), List.list(IR.CONST(0)));
+                frags.add(new DataFragment(frame, data));
                 break;
         }
 
@@ -314,95 +283,97 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(Call n) {
-        String functionName = n.name;
-        List<IRExp> args = List.list();
+        List<IRExp> arguments = List.list();
+        String prevClass = currentClass;
+        IRExp pointer;
 
-        // 3 cases for receiver: 1. new object 2. identifierExp 3.This
-        IRExp ptr/* = n.receiver.accept(this).unEx()*/;
-        String old_className = currentClass;
+        if (n.receiver instanceof IdentifierExp) {
+            IdentifierExp iExp = (IdentifierExp) n.receiver;
+            pointer = currentEnv.lookup(iExp.name);
 
-        if (n.receiver instanceof NewObject){
-            ptr = n.receiver.accept(this).unEx();
-            currentClass = ((NewObject)n.receiver).typeName;
-        }
-        else if (n.receiver instanceof IdentifierExp){
-            IdentifierExp tmp = (IdentifierExp)n.receiver;
-            ptr = currentEnv.lookup(tmp.name);
-            if(tmp.getType() instanceof ObjectType){
-                currentClass = ((ObjectType) tmp.getType()).name;
-            } else throw new Error("you should be an object =(");
-        }
-        else if (n.receiver instanceof This){
-            ptr = currentEnv.lookup(currentClass);
-        }
-        else if (n.receiver instanceof Call){
-            Call t = (Call)n.receiver;
+            if (iExp.getType() instanceof ObjectType){
+                currentClass = ((ObjectType) iExp.getType()).name;
+            } else {
+                throw new Error("Expecting an object type for receiver.");
+            }
+        } else if (n.receiver instanceof This) {
+            pointer = currentEnv.lookup(currentClass);
+        } else if (n.receiver instanceof Call) {
             n.receiver.accept(this);
-            ptr = frame.RV();
+            pointer = frame.RV();
             currentClass = type.toString();
-        }
-        else{
-            System.out.println("receiver is: "+ n.receiver.toString());
-            throw new Error("receiver must be newObject or IdentifierExp or This or Call");
+        } else if (n.receiver instanceof NewObject) {
+            pointer = n.receiver.accept(this).unEx();
+            currentClass = ((NewObject) n.receiver).typeName;
+        } else {
+            throw new Error("Receiver is unexpected object.");
         }
 
-        args.add(ptr);
+        arguments.add(pointer);
+
         for (int i = 0; i < n.rands.size(); i++) {
-            TRExp arg = n.rands.elementAt(i).accept(this);
-            args.add(arg.unEx());
+            arguments.add(n.rands.elementAt(i).accept(this).unEx());
         }
-        TRExp ret = new Ex(IR.CALL(methodLabel(functionName), args));
-        currentClass = old_className;
-        return ret;
+
+        TRExp result = new Ex(IR.CALL(methodLabel(n.name), arguments));
+
+        // Restore current class.
+        currentClass = prevClass;
+
+        return result;
     }
 
     @Override
     public TRExp visit(MainClass n) {
         frame = newFrame(L_MAIN,0);
         TRExp st = n.statement.accept(this);
-        IRStm body = IR.SEQ(st.unNx());
-        body = frame.procEntryExit1(body);
-        frags.add(new ProcFragment(frame, body));
+        IRStm bd = frame.procEntryExit1(IR.SEQ(st.unNx()));
+        frags.add(new ProcFragment(frame, bd));
         return new Nx(NOP);
     }
 
     @Override
     public TRExp visit(ClassDecl n) {
-        FunTable<IRExp> oldEnv = currentEnv;
+        FunTable<IRExp> prevEnv = currentEnv;
         currentClass = n.name;
+
         NewObject ts = new NewObject("this");
-        IRExp ptr = ts.accept(this).unEx();
-        putEnv(currentClass,ptr);
+        putEnv(currentClass, ts.accept(this).unEx());
+
+//        if (n.superName != null) {
+//            currentEnv.merge(prevEnv);
+//        }
+
         n.vars.accept(this);
-        if(n.superName!=null){
-            currentEnv.merge(oldEnv);
+
+        if (n.superName != null) {
+            currentEnv.merge(prevEnv);
         }
+
         n.methods.accept(this);
+
         return new Nx(NOP);
     }
 
     @Override
     public TRExp visit(MethodDecl n) {
-        Frame oldFrame = frame;
-        frame = newFrame(methodLabel(n.name), n.formals.size()+1);
+        Frame prevFrame = frame;
+        frame = newFrame(methodLabel(n.name), n.formals.size() + 1);
 
         for (int i = 0; i < n.formals.size(); i++) {
             putEnv(n.formals.elementAt(i).name, frame.getFormal(i + 1));
         }
+
         n.vars.accept(this);
 
         TRExp stats = n.statements.accept(this);
         TRExp exp = n.returnExp.accept(this);
-
         type = n.returnType;
 
-        IRStm body = IR.SEQ(
-                stats.unNx(),
-                IR.MOVE(frame.RV(), exp.unEx()));
-        body = frame.procEntryExit1(body);
+        IRStm body = frame.procEntryExit1(IR.SEQ(stats.unNx(), IR.MOVE(frame.RV(), exp.unEx())));
         frags.add(new ProcFragment(frame, body));
 
-        frame = oldFrame;
+        frame = prevFrame;
         return new Nx(NOP);
     }
 
@@ -416,7 +387,6 @@ public class TranslateVisitor implements Visitor<TRExp> {
         Label tLabel = Label.gen();
         Label fLabel = Label.gen();
         Label endLabel = Label.gen();
-
         TRExp tst = n.tst.accept(this);
         TRExp thn = n.thn.accept(this);
         TRExp els = n.els.accept(this);
@@ -457,10 +427,39 @@ public class TranslateVisitor implements Visitor<TRExp> {
                 Op.MUL,
                 n.index.accept(this).unEx(),
                 CONST(frame.wordSize()));
-        IRExp ptr = IR.BINOP(Op.PLUS, base, offset);
-        IRStm res = IR.MOVE(IR.MEM(ptr), n.value.accept(this).unEx());
+        IRExp pointer = IR.BINOP(
+                Op.PLUS,
+                base,
+                offset);
+        IRStm result = IR.MOVE(
+                IR.MEM(pointer),
+                n.value.accept(this).unEx());
 
-        return new Nx(res);
+        return new Nx(result);
+    }
+
+    @Override
+    public TRExp visit(And n) {
+        IRExp e1 = n.e1.accept(this).unEx();
+        IRExp e2 = n.e2.accept(this).unEx();
+
+        Label l1 = Label.gen();
+        Label l2 = Label.gen();
+        Label and = Label.gen();
+
+        TEMP tmp = TEMP(new Temp());
+
+        TRExp res = new Ex(IR.ESEQ(SEQ(
+                        MOVE(tmp, FALSE),
+                        IR.CJUMP(RelOp.EQ, e1, IR.CONST(1), l1, and),
+                        LABEL(l1),
+                        IR.CJUMP(RelOp.EQ, e2, IR.CONST(1), l2, and),
+                        LABEL(l2),
+                        MOVE(tmp, TRUE),
+                        LABEL(and)
+                ), tmp));
+
+        return res;
     }
 
     @Override
@@ -468,22 +467,23 @@ public class TranslateVisitor implements Visitor<TRExp> {
         IRExp ptr = n.array.accept(this).unEx();
         IRExp idx = n.index.accept(this).unEx();
 
-        TRExp res = new Ex(IR.MEM(IR.BINOP(
+        return new Ex(IR.MEM(IR.BINOP(
                                 Op.PLUS,
                                 ptr,
                                 IR.BINOP(
                                         Op.MUL,
                                         idx,
                                         IR.CONST(frame.wordSize())))));
-
-        return res;
     }
 
     @Override
     public TRExp visit(ArrayLength n) {
         TRExp arr = n.array.accept(this);
-        TRExp res = new Ex(IR.MEM(IR.BINOP(Op.MINUS, arr.unEx(), IR.CONST(frame.wordSize()))));
-        return res;
+
+        return new Ex(IR.MEM(IR.BINOP(
+                Op.MINUS,
+                arr.unEx(),
+                IR.CONST(frame.wordSize()))));
     }
 
     @Override
@@ -504,19 +504,21 @@ public class TranslateVisitor implements Visitor<TRExp> {
     @Override
     public TRExp visit(NewArray n) {
         TRExp size = n.size.accept(this);
-        IRExp res = IR.CALL(L_NEW_ARRAY, List.list(size.unEx()));
-        return new Ex(res);
+        return new Ex(IR.CALL(L_NEW_ARRAY, List.list(size.unEx())));
     }
 
     @Override
     public TRExp visit(NewObject n) {
-        String t = currentClass;
+        String prevClass = currentClass;
         currentClass = n.typeName;
-        int i = Label.get(currentClass).toString().length();
-        int size = i*frame.wordSize();
-        TRExp ptr = new Ex(IR.CALL(L_NEW_OBJECT,List.list(CONST(size))));
-        currentClass = t;
-        return ptr;
+        int size = Label.get(currentClass).toString().length() * frame.wordSize();
+
+        TRExp result = new Ex(IR.CALL(
+                L_NEW_OBJECT,
+                List.list(CONST(size))));
+
+        currentClass = prevClass;
+        return result;
     }
 
     // Types & Not supported (implemented)
