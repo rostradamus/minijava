@@ -1,9 +1,12 @@
 package typechecker.implementation;
 
+import ast.ClassDecl;
 import ast.Type;
+import util.FunTable;
 import util.ImpTable;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 public class ClassEntry {
     public final String name;
@@ -23,11 +26,30 @@ public class ClassEntry {
     }
 
     public ImpTable<Type> getFields() {
-        return fields;
+
+        ImpTable<Type> mergedFields = new ImpTable<>();
+        if (superClass == null)
+            return fields;
+        for (Map.Entry<String, Type> t : superClass.getFields()) {
+            mergedFields.set(t.getKey(), t.getValue());
+        }
+        for (Map.Entry<String, Type> t : fields) {
+            mergedFields.set(t.getKey(), t.getValue());
+        }
+        return mergedFields;
     }
 
     public ImpTable<MethodEntry> getMethods() {
-        return methods;
+        ImpTable<MethodEntry> mergedMethods = new ImpTable<>();
+        if (superClass == null)
+            return methods;
+        for (Map.Entry<String, MethodEntry> t : superClass.getMethods()) {
+            mergedMethods.set(t.getKey(), t.getValue());
+        }
+        for (Map.Entry<String, MethodEntry> t : methods) {
+            mergedMethods.set(t.getKey(), t.getValue());
+        }
+        return mergedMethods;
     }
 
     public ClassEntry getSuperClass() {
@@ -39,7 +61,10 @@ public class ClassEntry {
     }
 
     public Type lookupField(String name) {
-        return fields.lookup(name);
+        Type field = fields.lookup(name);
+        if (field != null)
+            return field;
+        return superClass != null ? superClass.lookupField(name) : null;
     }
 
     public MethodEntry lookupMethod(String name) {

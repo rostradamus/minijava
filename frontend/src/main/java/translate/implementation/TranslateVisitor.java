@@ -344,26 +344,59 @@ public class TranslateVisitor implements Visitor<TRExp> {
         // Update current class and entry.
         currentClass = n.name;
         currentClassEntry = classTable.lookup(n.name);
+        ClassDecl superClassDecl = currentClassEntry.getSuperClass() != null ?
+                classDeclTable.lookup(currentClassEntry.getSuperClass().name) : null;
 
         // Input offset for fields in class.
         if (!offsetTable.containsKey(n.name)) {
             int offset = 0;
             Map<String, Integer> fieldOffsetTable = new HashMap<>();
 
-            ImpTable fields = currentClassEntry.getFields();
-            Iterator<Map.Entry<String, Type>> fieldsIter = fields.iterator();
-
-            while (fieldsIter.hasNext()) {
-                Map.Entry<String, Type> field = fieldsIter.next();
+            for (Map.Entry<String, Type> field : currentClassEntry.getFields()) {
                 fieldOffsetTable.put(field.getKey(), offset);
+                boolean isFieldFound = false;
+                for (int i = 0; i < n.vars.size(); i++) {
+                    if (n.vars.elementAt(i).name.equals(field.getKey())) {
+                        isFieldFound = true;
+                    }
+                }
+                if (!isFieldFound && superClassDecl != null) {
+                    for (int i = 0; i < superClassDecl.vars.size(); i++) {
+                        if (superClassDecl.vars.elementAt(i).name.equals(field.getKey())) {
+                            n.vars.add(superClassDecl.vars.elementAt(i));
+                        }
+                    }
+                }
                 offset += frame.wordSize();
             }
-
             offsetTable.put(n.name, fieldOffsetTable);
         }
-
         n.vars.accept(this);
+
+        for (Map.Entry<String, MethodEntry> methodEntry : currentClassEntry.getMethods()) {
+            boolean isMethodFound = false;
+            for (int i = 0; i < n.methods.size(); i++) {
+                if (n.methods.elementAt(i).name.equals(methodEntry.getKey())) {
+                    isMethodFound = true;
+                    break;
+                }
+            }
+            if (!isMethodFound && superClassDecl != null) {
+                for (int i = 0; i < superClassDecl.methods.size(); i++) {
+                    if (superClassDecl.methods.elementAt(i).name.equals(methodEntry.getKey())) {
+                        n.methods.add(superClassDecl.methods.elementAt(i));
+                    }
+                }
+            }
+        }
         n.methods.accept(this);
+
+        try {
+            classDeclTable.put(currentClass, n);
+        } catch(ImpTable.DuplicateException e) {
+            e.printStackTrace();
+        }
+
 
         return new Nx(NOP);
     }
@@ -381,8 +414,6 @@ public class TranslateVisitor implements Visitor<TRExp> {
         putEnv(THIS_IDENTIFIER, frame.getFormal(0));
 
         for (int i = 0; i < n.formals.size(); i++) {
-            System.out.println("DFDFDFD");
-            System.out.println(frame.getFormal(i + 1));
             putEnv(n.formals.elementAt(i).name, frame.getFormal(i + 1));
         }
 
@@ -459,6 +490,15 @@ public class TranslateVisitor implements Visitor<TRExp> {
         if (base == null) {
             base = getExpFromThis(n.name);
         }
+        Label checkLTArrSize = Label.gen();
+        Label tLabel = Label.gen();
+        Label fLabel = Label.gen();
+        IRStm outBoundError = EXP(IR.CALL(
+                L_ERROR,
+                IR.CONST(1)));
+
+        TRExp tstGEZero = relOp(RelOp.GE, n.index, new IntegerLiteral(0));
+        TRExp tstLTArrSize = relOp(RelOp.LT, n.index, new ArrayLength(new IdentifierExp(n.name)));
 
         IRExp offset = IR.BINOP(
                 Op.MUL,
@@ -468,11 +508,19 @@ public class TranslateVisitor implements Visitor<TRExp> {
                 Op.PLUS,
                 base,
                 offset);
-        IRStm result = IR.MOVE(
+        IRStm evalArray = IR.MOVE(
                 IR.MEM(pointer),
                 n.value.accept(this).unEx());
 
-        return new Nx(result);
+        IRStm res = IR.SEQ(
+                tstGEZero.unCx(checkLTArrSize, fLabel),
+                IR.LABEL(checkLTArrSize),
+                tstLTArrSize.unCx(tLabel, fLabel),
+                IR.LABEL(fLabel),
+                outBoundError,
+                IR.LABEL(tLabel),
+                evalArray);
+        return new Nx(res);
     }
 
     @Override
@@ -500,16 +548,36 @@ public class TranslateVisitor implements Visitor<TRExp> {
 
     @Override
     public TRExp visit(ArrayLookup n) {
+        Label checkLTArrSize = Label.gen();
+        Label tLabel = Label.gen();
+        Label fLabel = Label.gen();
+        IRStm outBoundError = EXP(IR.CALL(
+                L_ERROR,
+                IR.CONST(1)));
+        TRExp tstGEZero = relOp(RelOp.GE, n.index, new IntegerLiteral(0));
+        TRExp tstLTArrSize = relOp(RelOp.LT, n.index, new ArrayLength(n.array));
+
         IRExp ptr = n.array.accept(this).unEx();
         IRExp idx = n.index.accept(this).unEx();
-
-        return new Ex(IR.MEM(IR.BINOP(
+        IRExp evalArray = IR.MEM(IR.BINOP(
                 Op.PLUS,
                 ptr,
                 IR.BINOP(
                         Op.MUL,
                         idx,
-                        IR.CONST(frame.wordSize())))));
+                        IR.CONST(frame.wordSize()))));
+        IRExp finalres = IR.ESEQ(
+                IR.SEQ(
+                        tstGEZero.unCx(checkLTArrSize, fLabel),
+                        IR.LABEL(checkLTArrSize),
+                        tstLTArrSize.unCx(tLabel, fLabel),
+                        IR.LABEL(fLabel),
+                        outBoundError,
+                        IR.LABEL(tLabel)
+                        ),
+                evalArray);
+
+        return new Ex(finalres);
     }
 
     @Override
