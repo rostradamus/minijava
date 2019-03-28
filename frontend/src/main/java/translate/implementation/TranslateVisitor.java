@@ -616,7 +616,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
         ClassEntry ce = classTable.lookup(n.typeName);
         return new Ex(IR.CALL(
                 L_NEW_OBJECT,
-                IR.CONST(ce.fields.size() * frame.wordSize())));
+                IR.CONST(ce.getFields().size() * frame.wordSize())));
     }
 
     // Types & Not supported (implemented)
