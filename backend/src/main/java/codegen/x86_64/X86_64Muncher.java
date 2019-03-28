@@ -1,19 +1,6 @@
 package codegen.x86_64;
 
-import static codegen.patterns.IRPat.CALL;
-import static codegen.patterns.IRPat.CJUMP;
-import static codegen.patterns.IRPat.CMOVE;
-import static codegen.patterns.IRPat.CONST;
-import static codegen.patterns.IRPat.EXP;
-import static codegen.patterns.IRPat.JUMP;
-import static codegen.patterns.IRPat.LABEL;
-import static codegen.patterns.IRPat.MEM;
-import static codegen.patterns.IRPat.MINUS;
-import static codegen.patterns.IRPat.MOVE;
-import static codegen.patterns.IRPat.MUL;
-import static codegen.patterns.IRPat.NAME;
-import static codegen.patterns.IRPat.PLUS;
-import static codegen.patterns.IRPat.TEMP;
+import static codegen.patterns.IRPat.*;
 import static ir.frame.x86_64.X86_64Frame.RAX;
 import static ir.frame.x86_64.X86_64Frame.RDX;
 import static ir.frame.x86_64.X86_64Frame.RV;
@@ -282,6 +269,13 @@ public class X86_64Muncher extends Muncher {
                 m.emit(A_ADD(r, m.munch(c.get(_r_))));
                 m.emit(A_MOV_FROM_MEM(r, r));
                 return r;
+            }
+        });
+        sm.add(new MunchRule<IRStm, Void>(MOVE(TEMP(_t_), CONST(_i_))) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                m.emit(A_MOV(c.get(_t_), c.get(_i_)));
+                return null;
             }
         });
     }
