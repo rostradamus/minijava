@@ -497,6 +497,7 @@ public class X86_64Muncher extends Muncher {
                 Temp r = m.munch(c.get(_r_));
                 m.emit(A_CMP_TO_MEM(l, r));
                 m.emit(A_CMOV(c.get(_relOp_), c.get(_t_), m.munch(c.get(_e_))));
+                return null;
             }
         });
 
@@ -507,6 +508,7 @@ public class X86_64Muncher extends Muncher {
                 Temp r = m.munch(c.get(_r_));
                 m.emit(A_CMP_FROM_MEM(l, r));
                 m.emit(A_CMOV(c.get(_relOp_), c.get(_t_), m.munch(c.get(_e_))));
+                return null;
             }
         });
 
