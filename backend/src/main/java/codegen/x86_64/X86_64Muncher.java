@@ -443,6 +443,27 @@ public class X86_64Muncher extends Muncher {
                 return null;
             }
         });
+
+        sm.add(new MunchRule<IRStm, Void>(CMOVE(_relOp_, MEM(_l_), _r_, TEMP(_t_), _e_)) {
+            @Override
+            protected  Void trigger(Muncher m, Matched c) {
+                Temp l = m.munch(c.get(_l_));
+                Temp r = m.munch(c.get(_r_));
+                m.emit(A_CMP_TO_MEM(l, r));
+                m.emit(A_CMOV(c.get(_relOp_), c.get(_t_), m.munch(c.get(_e_))));
+            }
+        });
+
+        sm.add(new MunchRule<IRStm, Void>(CMOVE(_relOp_, _l_, MEM(_r_), TEMP(_t_), _e_)) {
+            @Override
+            protected  Void trigger(Muncher m, Matched c) {
+                Temp l = m.munch(c.get(_l_));
+                Temp r = m.munch(c.get(_r_));
+                m.emit(A_CMP_FROM_MEM(l, r));
+                m.emit(A_CMOV(c.get(_relOp_), c.get(_t_), m.munch(c.get(_e_))));
+            }
+        });
+
     }
 
     ///////// Helper methods to generate X86 assembly instructions //////////////////////////////////////
@@ -510,6 +531,14 @@ public class X86_64Muncher extends Muncher {
 
     private static Instr A_CMP(Temp l, Temp r) {
         return new A_OPER("cmpq    `s1, `s0", noTemps, list(l, r));
+    }
+
+    private static Instr A_CMP_TO_MEM(Temp l, Temp r) {
+        return new A_OPER("cmpq    `s1, (`s0)", noTemps, list(l, r));
+    }
+
+    private static Instr A_CMP_FROM_MEM(Temp l, Temp r) {
+        return new A_OPER("cmpq    (`s1), `s0", noTemps, list(l, r));
     }
 
     private static Instr A_IMUL(Temp dst, Temp src) {
