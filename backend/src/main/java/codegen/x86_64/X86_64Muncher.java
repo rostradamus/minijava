@@ -263,7 +263,6 @@ public class X86_64Muncher extends Muncher {
                 return sum;
             }
         });
-
         em.add(new MunchRule<IRExp, Temp>(MUL(MEM(_l_), _r_)) {
             @Override
             protected Temp trigger(Muncher m, Matched c) {
@@ -329,6 +328,31 @@ public class X86_64Muncher extends Muncher {
                 m.emit(A_ADD(res, c.get(_t_)));
                 m.emit(A_MOV_FROM_MEM(res, res));
                 return res;
+            }
+        });
+        em.add(new MunchRule<IRExp, Temp>(MEM(MINUS(_l_, CONST(_i_)))) {
+            @Override
+            protected Temp trigger(Muncher m, Matched c) {
+                Temp res = new Temp();
+                Temp tmp = new Temp();
+                m.emit(A_MOV(tmp, c.get(_i_)));
+                m.emit(A_MOV(res, m.munch(c.get(_l_))));
+                m.emit(A_SUB(res, tmp));
+                m.emit(A_MOV_FROM_MEM(res, res));
+                return res;
+            }
+        });
+        sm.add(new MunchRule<IRStm, Void>(MOVE(TEMP(_t_), MEM(MINUS(_l_, CONST(_i_))))) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                Temp res = new Temp();
+                Temp tmp = new Temp();
+                m.emit(A_MOV(tmp, c.get(_i_)));
+                m.emit(A_MOV(res, m.munch(c.get(_l_))));
+                m.emit(A_SUB(res, tmp));
+                m.emit(A_MOV_FROM_MEM(res, res));
+                m.emit(A_MOV(c.get(_t_), res));
+                return null;
             }
         });
     }
