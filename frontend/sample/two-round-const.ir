@@ -10,19 +10,19 @@ MethodFragment {
             SEQ(
                SEQ(
                   MOVE(
-                     t3243 <-
+                     t1816 <-
                      %rbx), 
                   MOVE(
-                     t3244 <-
+                     t1817 <-
                      %r12)), 
                MOVE(
-                  t3245 <-
+                  t1818 <-
                   %r13)), 
             MOVE(
-               t3246 <-
+               t1819 <-
                %r14)), 
          MOVE(
-            t3247 <-
+            t1820 <-
             %r15)), 
       SEQ(
          EXP(CALL(
@@ -37,28 +37,28 @@ MethodFragment {
                SEQ(
                   SEQ(
                      SEQ(
-                        LABEL bail_1345, 
+                        LABEL bail_813, 
                         MOVE(
                            %rbx <-
-                           t3243)), 
+                           t1816)), 
                      MOVE(
                         %r12 <-
-                        t3244)), 
+                        t1817)), 
                   MOVE(
                      %r13 <-
-                     t3245)), 
+                     t1818)), 
                MOVE(
                   %r14 <-
-                  t3246)), 
+                  t1819)), 
             MOVE(
                %r15 <-
-               t3247))))
+               t1820))))
 }
 MethodFragment {
    X86_64Frame { label = Test_go
       nextLocalOffset = -8
       formals = List {
-         t3248
+         t1821
       }
    }
    SEQ(
@@ -68,89 +68,89 @@ MethodFragment {
                SEQ(
                   SEQ(
                      MOVE(
-                        t3253 <-
+                        t1826 <-
                         %rbx), 
                      MOVE(
-                        t3254 <-
+                        t1827 <-
                         %r12)), 
                   MOVE(
-                     t3255 <-
+                     t1828 <-
                      %r13)), 
                MOVE(
-                  t3256 <-
+                  t1829 <-
                   %r14)), 
             MOVE(
-               t3257 <-
+               t1830 <-
                %r15)), 
          MOVE(
-            t3248 <-
+            t1821 <-
             %rdi)), 
       SEQ(
          SEQ(
             SEQ(
                SEQ(
                   MOVE(
-                     t3252 <-
+                     t1825 <-
                      CALL(
                         NAME(Test_something),
-                        t3248)), 
+                        t1821)), 
                   MOVE(
-                     t3251 <-
+                     t1824 <-
                      CONST 0)), 
                SEQ(
                   CJUMP(NE,
-                     t3251,
+                     t1824,
                      CONST 0,
-                     L_1346, L_1347), 
+                     L_814, L_815), 
                   SEQ(
-                     LABEL L_1346, 
+                     LABEL L_814, 
                      SEQ(
                         MOVE(
-                           t3252 <-
+                           t1825 <-
                            BINOP(PLUS,
-                              t3252, 
+                              t1825, 
                               CONST 1)), 
                         SEQ(
-                           JUMP(NAME(L_1348)), 
+                           JUMP(NAME(L_816)), 
                            SEQ(
-                              LABEL L_1347, 
+                              LABEL L_815, 
                               SEQ(
                                  MOVE(
-                                    t3252 <-
+                                    t1825 <-
                                     CONST 0), 
-                                 LABEL L_1348))))))), 
+                                 LABEL L_816))))))), 
             MOVE(
                %rax <-
                BINOP(PLUS,
-                  t3252, 
+                  t1825, 
                   CONST 2))), 
          SEQ(
             SEQ(
                SEQ(
                   SEQ(
                      SEQ(
-                        LABEL bail_1349, 
+                        LABEL bail_817, 
                         MOVE(
                            %rbx <-
-                           t3253)), 
+                           t1826)), 
                      MOVE(
                         %r12 <-
-                        t3254)), 
+                        t1827)), 
                   MOVE(
                      %r13 <-
-                     t3255)), 
+                     t1828)), 
                MOVE(
                   %r14 <-
-                  t3256)), 
+                  t1829)), 
             MOVE(
                %r15 <-
-               t3257))))
+               t1830))))
 }
 MethodFragment {
    X86_64Frame { label = Test_something
       nextLocalOffset = -8
       formals = List {
-         t3258
+         t1831
       }
    }
    SEQ(
@@ -160,22 +160,22 @@ MethodFragment {
                SEQ(
                   SEQ(
                      MOVE(
-                        t3259 <-
+                        t1832 <-
                         %rbx), 
                      MOVE(
-                        t3260 <-
+                        t1833 <-
                         %r12)), 
                   MOVE(
-                     t3261 <-
+                     t1834 <-
                      %r13)), 
                MOVE(
-                  t3262 <-
+                  t1835 <-
                   %r14)), 
             MOVE(
-               t3263 <-
+               t1836 <-
                %r15)), 
          MOVE(
-            t3258 <-
+            t1831 <-
             %rdi)), 
       SEQ(
          MOVE(
@@ -186,20 +186,20 @@ MethodFragment {
                SEQ(
                   SEQ(
                      SEQ(
-                        LABEL bail_1350, 
+                        LABEL bail_818, 
                         MOVE(
                            %rbx <-
-                           t3259)), 
+                           t1832)), 
                      MOVE(
                         %r12 <-
-                        t3260)), 
+                        t1833)), 
                   MOVE(
                      %r13 <-
-                     t3261)), 
+                     t1834)), 
                MOVE(
                   %r14 <-
-                  t3262)), 
+                  t1835)), 
             MOVE(
                %r15 <-
-               t3263))))
+               t1836))))
 }

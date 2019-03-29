@@ -31,10 +31,10 @@ public class Array extends Ptr {
 
         @Override
         public void set(Word newValue) {
-            System.out.println("DKFDJFKDJ");
+/*            System.out.println("DKFDJFKDJ");
             System.out.println(newValue);
             System.out.println(words.length);
-            System.out.println(wordsOffset);
+            System.out.println(wordsOffset);*/
             words[wordsOffset] = newValue;
         }
 

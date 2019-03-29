@@ -282,7 +282,7 @@ public class TranslateVisitor implements Visitor<TRExp> {
                 break;
             case FIELD:
                 IRData data = new IRData(functionLabel(currentClass, n.name), List.list(IR.CONST(0)));
-                frags.add(new DataFragment(frame, data));
+                //frags.add(new DataFragment(frame, data));
                 break;
         }
 

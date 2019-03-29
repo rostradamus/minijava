@@ -11,7 +11,7 @@ import translate.DataFragment;
 import util.IndentingWriter;
 import util.List;
 
-public class AssemData extends AssemFragment {
+public class  AssemData extends AssemFragment {
 
     private DataFragment dataIR;
     private List<Instr> asmBody;

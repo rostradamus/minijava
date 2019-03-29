@@ -1,684 +1,1002 @@
 MethodFragment {
-   X86_64Frame { label = _BBS_Start
+   X86_64Frame { label = cs411main
       nextLocalOffset = -8
       formals = List {
-         t1313
-         t1314
       }
    }
-   List {
-      LABEL _L_507
-      MOVE(
-         t1316 <-
-         %rbx:%rbx)
-      MOVE(
-         t1317 <-
-         %r12:%r12)
-      MOVE(
-         t1318 <-
-         %r13:%r13)
-      MOVE(
-         t1319 <-
-         %r14:%r14)
-      MOVE(
-         t1320 <-
-         %r15:%r15)
-      MOVE(
-         t1313 <-
-         %rdi:%rdi)
-      MOVE(
-         t1314 <-
-         %rsi:%rsi)
-      MOVE(
-         t1315 <-
-         CALL(
-            NAME(_BBS_Init),
-            t1313,
-            t1314))
-      MOVE(
-         t1315 <-
-         CALL(
-            NAME(_BBS_Print),
-            t1313))
-      EXP(CALL(
-         NAME(_cs411println),
-         CONST 99999))
-      MOVE(
-         t1315 <-
-         CALL(
-            NAME(_BBS_Sort),
-            t1313))
-      MOVE(
-         t1315 <-
-         CALL(
-            NAME(_BBS_Print),
-            t1313))
-      MOVE(
-         %rax:%rax <-
-         CONST 0)
-      LABEL _bail_470
-      MOVE(
-         %rbx:%rbx <-
-         t1316)
-      MOVE(
-         %r12:%r12 <-
-         t1317)
-      MOVE(
-         %r13:%r13 <-
-         t1318)
-      MOVE(
-         %r14:%r14 <-
-         t1319)
-      MOVE(
-         %r15:%r15 <-
-         t1320)
-      LABEL _DONE_508
-   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  MOVE(
+                     t1576 <-
+                     %rbx), 
+                  MOVE(
+                     t1577 <-
+                     %r12)), 
+               MOVE(
+                  t1578 <-
+                  %r13)), 
+            MOVE(
+               t1579 <-
+               %r14)), 
+         MOVE(
+            t1580 <-
+            %r15)), 
+      SEQ(
+         EXP(CALL(
+            NAME(cs411println),
+            CALL(
+               NAME(BBS_Start),
+               CALL(
+                  NAME(cs411newobject),
+                  CONST 16),
+               CONST 10))), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL bail_703, 
+                        MOVE(
+                           %rbx <-
+                           t1576)), 
+                     MOVE(
+                        %r12 <-
+                        t1577)), 
+                  MOVE(
+                     %r13 <-
+                     t1578)), 
+               MOVE(
+                  %r14 <-
+                  t1579)), 
+            MOVE(
+               %r15 <-
+               t1580))))
 }
 MethodFragment {
-   X86_64Frame { label = _BBS_Sort
+   X86_64Frame { label = BBS_Start
       nextLocalOffset = -8
       formals = List {
-         t1321
+         t1581
+         t1582
       }
    }
-   List {
-      LABEL _L_509
-      MOVE(
-         t1338 <-
-         %rbx:%rbx)
-      MOVE(
-         t1339 <-
-         %r12:%r12)
-      MOVE(
-         t1340 <-
-         %r13:%r13)
-      MOVE(
-         t1341 <-
-         %r14:%r14)
-      MOVE(
-         t1342 <-
-         %r15:%r15)
-      MOVE(
-         t1321 <-
-         %rdi:%rdi)
-      MOVE(
-         t1323 <-
-         BINOP(MINUS,
-            MEM(BINOP(PLUS,
-               t1321, 
-               CONST 8)), 
-            CONST 1))
-      MOVE(
-         t1324 <-
-         CONST -1)
-      CJUMP(GE,
-         t1324,
-         t1323,
-         _loopend_472, _loopbody_473)
-      LABEL _loopbody_473
-      MOVE(
-         t1329 <-
-         CONST 1)
-      CJUMP(GE,
-         t1329,
-         BINOP(PLUS,
-            t1323, 
-            CONST 1),
-         _loopend_475, _loopbody_476)
-      LABEL _loopbody_476
-      MOVE(
-         t1328 <-
-         BINOP(MINUS,
-            t1329, 
-            CONST 1))
-      MOVE(
-         t1331 <-
-         MEM(t1321))
-      CJUMP(UGE,
-         t1328,
-         MEM(BINOP(PLUS,
-            t1331, 
-            CONST -8)),
-         _boundsbad_479, _boundsok_478)
-      LABEL _boundsok_478
-      MOVE(
-         t1325 <-
-         MEM(BINOP(PLUS,
-            t1331, 
-            BINOP(MUL,
-               t1328, 
-               CONST 8))))
-      MOVE(
-         t1332 <-
-         MEM(t1321))
-      CJUMP(UGE,
-         t1329,
-         MEM(BINOP(PLUS,
-            t1332, 
-            CONST -8)),
-         _boundsbad_479, _boundsok_480)
-      LABEL _boundsok_480
-      MOVE(
-         t1326 <-
-         MEM(BINOP(PLUS,
-            t1332, 
-            BINOP(MUL,
-               t1329, 
-               CONST 8))))
-      CJUMP(GE,
-         t1326,
-         t1325,
-         _L_482, _L_481)
-      LABEL _L_481
-      MOVE(
-         t1327 <-
-         BINOP(MINUS,
-            t1329, 
-            CONST 1))
-      MOVE(
-         t1333 <-
-         MEM(t1321))
-      CJUMP(UGE,
-         t1327,
-         MEM(BINOP(PLUS,
-            t1333, 
-            CONST -8)),
-         _boundsbad_479, _boundsok_484)
-      LABEL _boundsok_484
-      MOVE(
-         t1330 <-
-         MEM(BINOP(PLUS,
-            t1333, 
-            BINOP(MUL,
-               t1327, 
-               CONST 8))))
-      MOVE(
-         t1335 <-
-         MEM(t1321))
-      CJUMP(UGE,
-         t1327,
-         MEM(BINOP(PLUS,
-            t1335, 
-            CONST -8)),
-         _boundsbad_479, _boundsok_486)
-      LABEL _boundsok_486
-      MOVE(
-         t1334 <-
-         MEM(t1321))
-      CJUMP(UGE,
-         t1329,
-         MEM(BINOP(PLUS,
-            t1334, 
-            CONST -8)),
-         _boundsbad_479, _boundsok_485)
-      LABEL _boundsok_485
-      MOVE(
-         t1336 <-
-         MEM(BINOP(PLUS,
-            t1334, 
-            BINOP(MUL,
-               t1329, 
-               CONST 8))))
-      MOVE(
-         MEM(BINOP(PLUS,
-            t1335, 
-            BINOP(MUL,
-               t1327, 
-               CONST 8))) <-
-         t1336)
-      MOVE(
-         t1337 <-
-         MEM(t1321))
-      CJUMP(UGE,
-         t1329,
-         MEM(BINOP(PLUS,
-            t1337, 
-            CONST -8)),
-         _boundsbad_479, _boundsok_487)
-      LABEL _boundsok_487
-      MOVE(
-         MEM(BINOP(PLUS,
-            t1337, 
-            BINOP(MUL,
-               t1329, 
-               CONST 8))) <-
-         t1330)
-      LABEL _L_483
-      MOVE(
-         t1329 <-
-         BINOP(PLUS,
-            t1329, 
-            CONST 1))
-      LABEL _looptest_477
-      CJUMP(LT,
-         t1329,
-         BINOP(PLUS,
-            t1323, 
-            CONST 1),
-         _loopbody_476, _loopend_475)
-      LABEL _loopend_475
-      MOVE(
-         t1323 <-
-         BINOP(MINUS,
-            t1323, 
-            CONST 1))
-      LABEL _looptest_474
-      CJUMP(LT,
-         t1324,
-         t1323,
-         _loopbody_473, _loopend_472)
-      LABEL _loopend_472
-      MOVE(
-         %rax:%rax <-
-         CONST 0)
-      LABEL _bail_471
-      MOVE(
-         %rbx:%rbx <-
-         t1338)
-      MOVE(
-         %r12:%r12 <-
-         t1339)
-      MOVE(
-         %r13:%r13 <-
-         t1340)
-      MOVE(
-         %r14:%r14 <-
-         t1341)
-      MOVE(
-         %r15:%r15 <-
-         t1342)
-      JUMP(NAME(_DONE_510))
-      LABEL _boundsbad_479
-      MOVE(
-         %rax:%rax <-
-         CALL(
-            NAME(_cs411error),
-            CONST 1))
-      JUMP(NAME(_bail_471))
-      LABEL _L_482
-      MOVE(
-         t1322 <-
-         CONST 0)
-      JUMP(NAME(_L_483))
-      LABEL _DONE_510
-   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        MOVE(
+                           t1585 <-
+                           %rbx), 
+                        MOVE(
+                           t1586 <-
+                           %r12)), 
+                     MOVE(
+                        t1587 <-
+                        %r13)), 
+                  MOVE(
+                     t1588 <-
+                     %r14)), 
+               MOVE(
+                  t1589 <-
+                  %r15)), 
+            MOVE(
+               t1581 <-
+               %rdi)), 
+         MOVE(
+            t1582 <-
+            %rsi)), 
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        MOVE(
+                           t1584 <-
+                           CALL(
+                              NAME(BBS_Init),
+                              t1581,
+                              t1582)), 
+                        MOVE(
+                           t1584 <-
+                           CALL(
+                              NAME(BBS_Print),
+                              t1581))), 
+                     EXP(CALL(
+                        NAME(cs411println),
+                        CONST 99999))), 
+                  MOVE(
+                     t1584 <-
+                     CALL(
+                        NAME(BBS_Sort),
+                        t1581))), 
+               MOVE(
+                  t1584 <-
+                  CALL(
+                     NAME(BBS_Print),
+                     t1581))), 
+            MOVE(
+               %rax <-
+               CONST 0)), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL bail_704, 
+                        MOVE(
+                           %rbx <-
+                           t1585)), 
+                     MOVE(
+                        %r12 <-
+                        t1586)), 
+                  MOVE(
+                     %r13 <-
+                     t1587)), 
+               MOVE(
+                  %r14 <-
+                  t1588)), 
+            MOVE(
+               %r15 <-
+               t1589))))
 }
 MethodFragment {
-   X86_64Frame { label = _BBS_Print
+   X86_64Frame { label = BBS_Sort
       nextLocalOffset = -8
       formals = List {
-         t1343
+         t1590
       }
    }
-   List {
-      LABEL _L_511
-      MOVE(
-         t1346 <-
-         %rbx:%rbx)
-      MOVE(
-         t1347 <-
-         %r12:%r12)
-      MOVE(
-         t1348 <-
-         %r13:%r13)
-      MOVE(
-         t1349 <-
-         %r14:%r14)
-      MOVE(
-         t1350 <-
-         %r15:%r15)
-      MOVE(
-         t1343 <-
-         %rdi:%rdi)
-      MOVE(
-         t1344 <-
-         CONST 0)
-      CJUMP(GE,
-         t1344,
-         MEM(BINOP(PLUS,
-            t1343, 
-            CONST 8)),
-         _loopend_489, _loopbody_490)
-      LABEL _loopbody_490
-      MOVE(
-         t1345 <-
-         MEM(t1343))
-      CJUMP(UGE,
-         t1344,
-         MEM(BINOP(PLUS,
-            t1345, 
-            CONST -8)),
-         _boundsbad_493, _boundsok_492)
-      LABEL _boundsok_492
-      EXP(CALL(
-         NAME(_cs411println),
-         MEM(BINOP(PLUS,
-            t1345, 
-            BINOP(MUL,
-               t1344, 
-               CONST 8)))))
-      MOVE(
-         t1344 <-
-         BINOP(PLUS,
-            t1344, 
-            CONST 1))
-      LABEL _looptest_491
-      CJUMP(LT,
-         t1344,
-         MEM(BINOP(PLUS,
-            t1343, 
-            CONST 8)),
-         _loopbody_490, _loopend_489)
-      LABEL _loopend_489
-      MOVE(
-         %rax:%rax <-
-         CONST 0)
-      LABEL _bail_488
-      MOVE(
-         %rbx:%rbx <-
-         t1346)
-      MOVE(
-         %r12:%r12 <-
-         t1347)
-      MOVE(
-         %r13:%r13 <-
-         t1348)
-      MOVE(
-         %r14:%r14 <-
-         t1349)
-      MOVE(
-         %r15:%r15 <-
-         t1350)
-      JUMP(NAME(_DONE_512))
-      LABEL _boundsbad_493
-      MOVE(
-         %rax:%rax <-
-         CALL(
-            NAME(_cs411error),
-            CONST 1))
-      JUMP(NAME(_bail_488))
-      LABEL _DONE_512
-   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     MOVE(
+                        t1609 <-
+                        %rbx), 
+                     MOVE(
+                        t1610 <-
+                        %r12)), 
+                  MOVE(
+                     t1611 <-
+                     %r13)), 
+               MOVE(
+                  t1612 <-
+                  %r14)), 
+            MOVE(
+               t1613 <-
+               %r15)), 
+         MOVE(
+            t1590 <-
+            %rdi)), 
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  MOVE(
+                     t1601 <-
+                     BINOP(MINUS,
+                        MEM(BINOP(PLUS,
+                           t1590, 
+                           CONST 8)), 
+                        CONST 1)), 
+                  MOVE(
+                     t1602 <-
+                     CONST -1)), 
+               SEQ(
+                  SEQ(
+                     LABEL L_729, 
+                     SEQ(
+                        CJUMP(LT,
+                           t1602,
+                           t1601,
+                           L_730, L_731), 
+                        SEQ(
+                           LABEL L_730, 
+                           SEQ(
+                              SEQ(
+                                 SEQ(
+                                    MOVE(
+                                       t1607 <-
+                                       CONST 1), 
+                                    SEQ(
+                                       SEQ(
+                                          LABEL L_726, 
+                                          SEQ(
+                                             CJUMP(LT,
+                                                t1607,
+                                                BINOP(PLUS,
+                                                   t1601, 
+                                                   CONST 1),
+                                                L_727, L_728), 
+                                             SEQ(
+                                                LABEL L_727, 
+                                                SEQ(
+                                                   SEQ(
+                                                      SEQ(
+                                                         SEQ(
+                                                            SEQ(
+                                                               MOVE(
+                                                                  t1606 <-
+                                                                  BINOP(MINUS,
+                                                                     t1607, 
+                                                                     CONST 1)), 
+                                                               MOVE(
+                                                                  t1603 <-
+                                                                  ESEQ(
+                                                                     SEQ(
+                                                                        CJUMP(GE,
+                                                                           t1606,
+                                                                           CONST 0,
+                                                                           L_705, L_707), 
+                                                                        SEQ(
+                                                                           LABEL L_705, 
+                                                                           SEQ(
+                                                                              CJUMP(LT,
+                                                                                 t1606,
+                                                                                 MEM(BINOP(MINUS,
+                                                                                    MEM(BINOP(PLUS,
+                                                                                       t1590, 
+                                                                                       CONST 0)), 
+                                                                                    CONST 8)),
+                                                                                 L_706, L_707), 
+                                                                              SEQ(
+                                                                                 LABEL L_707, 
+                                                                                 SEQ(
+                                                                                    EXP(CALL(
+                                                                                       NAME(cs411error),
+                                                                                       CONST 1)), 
+                                                                                    LABEL L_706))))),
+                                                                     MEM(BINOP(PLUS,
+                                                                        MEM(BINOP(PLUS,
+                                                                           t1590, 
+                                                                           CONST 0)), 
+                                                                        BINOP(MUL,
+                                                                           t1606, 
+                                                                           CONST 8)))))), 
+                                                            MOVE(
+                                                               t1604 <-
+                                                               ESEQ(
+                                                                  SEQ(
+                                                                     CJUMP(GE,
+                                                                        t1607,
+                                                                        CONST 0,
+                                                                        L_708, L_710), 
+                                                                     SEQ(
+                                                                        LABEL L_708, 
+                                                                        SEQ(
+                                                                           CJUMP(LT,
+                                                                              t1607,
+                                                                              MEM(BINOP(MINUS,
+                                                                                 MEM(BINOP(PLUS,
+                                                                                    t1590, 
+                                                                                    CONST 0)), 
+                                                                                 CONST 8)),
+                                                                              L_709, L_710), 
+                                                                           SEQ(
+                                                                              LABEL L_710, 
+                                                                              SEQ(
+                                                                                 EXP(CALL(
+                                                                                    NAME(cs411error),
+                                                                                    CONST 1)), 
+                                                                                 LABEL L_709))))),
+                                                                  MEM(BINOP(PLUS,
+                                                                     MEM(BINOP(PLUS,
+                                                                        t1590, 
+                                                                        CONST 0)), 
+                                                                     BINOP(MUL,
+                                                                        t1607, 
+                                                                        CONST 8)))))), 
+                                                         SEQ(
+                                                            CJUMP(LT,
+                                                               t1604,
+                                                               t1603,
+                                                               L_711, L_712), 
+                                                            SEQ(
+                                                               LABEL L_711, 
+                                                               SEQ(
+                                                                  SEQ(
+                                                                     SEQ(
+                                                                        SEQ(
+                                                                           MOVE(
+                                                                              t1605 <-
+                                                                              BINOP(MINUS,
+                                                                                 t1607, 
+                                                                                 CONST 1)), 
+                                                                           MOVE(
+                                                                              t1608 <-
+                                                                              ESEQ(
+                                                                                 SEQ(
+                                                                                    CJUMP(GE,
+                                                                                       t1605,
+                                                                                       CONST 0,
+                                                                                       L_714, L_716), 
+                                                                                    SEQ(
+                                                                                       LABEL L_714, 
+                                                                                       SEQ(
+                                                                                          CJUMP(LT,
+                                                                                             t1605,
+                                                                                             MEM(BINOP(MINUS,
+                                                                                                MEM(BINOP(PLUS,
+                                                                                                   t1590, 
+                                                                                                   CONST 0)), 
+                                                                                                CONST 8)),
+                                                                                             L_715, L_716), 
+                                                                                          SEQ(
+                                                                                             LABEL L_716, 
+                                                                                             SEQ(
+                                                                                                EXP(CALL(
+                                                                                                   NAME(cs411error),
+                                                                                                   CONST 1)), 
+                                                                                                LABEL L_715))))),
+                                                                                 MEM(BINOP(PLUS,
+                                                                                    MEM(BINOP(PLUS,
+                                                                                       t1590, 
+                                                                                       CONST 0)), 
+                                                                                    BINOP(MUL,
+                                                                                       t1605, 
+                                                                                       CONST 8)))))), 
+                                                                        SEQ(
+                                                                           CJUMP(GE,
+                                                                              t1605,
+                                                                              CONST 0,
+                                                                              L_717, L_719), 
+                                                                           SEQ(
+                                                                              LABEL L_717, 
+                                                                              SEQ(
+                                                                                 CJUMP(LT,
+                                                                                    t1605,
+                                                                                    MEM(BINOP(MINUS,
+                                                                                       MEM(BINOP(PLUS,
+                                                                                          t1590, 
+                                                                                          CONST 0)), 
+                                                                                       CONST 8)),
+                                                                                    L_718, L_719), 
+                                                                                 SEQ(
+                                                                                    LABEL L_719, 
+                                                                                    SEQ(
+                                                                                       EXP(CALL(
+                                                                                          NAME(cs411error),
+                                                                                          CONST 1)), 
+                                                                                       SEQ(
+                                                                                          LABEL L_718, 
+                                                                                          MOVE(
+                                                                                             MEM(BINOP(PLUS,
+                                                                                                MEM(BINOP(PLUS,
+                                                                                                   t1590, 
+                                                                                                   CONST 0)), 
+                                                                                                BINOP(MUL,
+                                                                                                   t1605, 
+                                                                                                   CONST 8))) <-
+                                                                                             ESEQ(
+                                                                                                SEQ(
+                                                                                                   CJUMP(GE,
+                                                                                                      t1607,
+                                                                                                      CONST 0,
+                                                                                                      L_720, L_722), 
+                                                                                                   SEQ(
+                                                                                                      LABEL L_720, 
+                                                                                                      SEQ(
+                                                                                                         CJUMP(LT,
+                                                                                                            t1607,
+                                                                                                            MEM(BINOP(MINUS,
+                                                                                                               MEM(BINOP(PLUS,
+                                                                                                                  t1590, 
+                                                                                                                  CONST 0)), 
+                                                                                                               CONST 8)),
+                                                                                                            L_721, L_722), 
+                                                                                                         SEQ(
+                                                                                                            LABEL L_722, 
+                                                                                                            SEQ(
+                                                                                                               EXP(CALL(
+                                                                                                                  NAME(cs411error),
+                                                                                                                  CONST 1)), 
+                                                                                                               LABEL L_721))))),
+                                                                                                MEM(BINOP(PLUS,
+                                                                                                   MEM(BINOP(PLUS,
+                                                                                                      t1590, 
+                                                                                                      CONST 0)), 
+                                                                                                   BINOP(MUL,
+                                                                                                      t1607, 
+                                                                                                      CONST 8)))))))))))), 
+                                                                     SEQ(
+                                                                        CJUMP(GE,
+                                                                           t1607,
+                                                                           CONST 0,
+                                                                           L_723, L_725), 
+                                                                        SEQ(
+                                                                           LABEL L_723, 
+                                                                           SEQ(
+                                                                              CJUMP(LT,
+                                                                                 t1607,
+                                                                                 MEM(BINOP(MINUS,
+                                                                                    MEM(BINOP(PLUS,
+                                                                                       t1590, 
+                                                                                       CONST 0)), 
+                                                                                    CONST 8)),
+                                                                                 L_724, L_725), 
+                                                                              SEQ(
+                                                                                 LABEL L_725, 
+                                                                                 SEQ(
+                                                                                    EXP(CALL(
+                                                                                       NAME(cs411error),
+                                                                                       CONST 1)), 
+                                                                                    SEQ(
+                                                                                       LABEL L_724, 
+                                                                                       MOVE(
+                                                                                          MEM(BINOP(PLUS,
+                                                                                             MEM(BINOP(PLUS,
+                                                                                                t1590, 
+                                                                                                CONST 0)), 
+                                                                                             BINOP(MUL,
+                                                                                                t1607, 
+                                                                                                CONST 8))) <-
+                                                                                          t1608)))))))), 
+                                                                  SEQ(
+                                                                     JUMP(NAME(L_713)), 
+                                                                     SEQ(
+                                                                        LABEL L_712, 
+                                                                        SEQ(
+                                                                           MOVE(
+                                                                              t1600 <-
+                                                                              CONST 0), 
+                                                                           LABEL L_713))))))), 
+                                                      MOVE(
+                                                         t1607 <-
+                                                         BINOP(PLUS,
+                                                            t1607, 
+                                                            CONST 1))), 
+                                                   JUMP(NAME(L_726)))))), 
+                                       LABEL L_728)), 
+                                 MOVE(
+                                    t1601 <-
+                                    BINOP(MINUS,
+                                       t1601, 
+                                       CONST 1))), 
+                              JUMP(NAME(L_729)))))), 
+                  LABEL L_731)), 
+            MOVE(
+               %rax <-
+               CONST 0)), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL bail_732, 
+                        MOVE(
+                           %rbx <-
+                           t1609)), 
+                     MOVE(
+                        %r12 <-
+                        t1610)), 
+                  MOVE(
+                     %r13 <-
+                     t1611)), 
+               MOVE(
+                  %r14 <-
+                  t1612)), 
+            MOVE(
+               %r15 <-
+               t1613))))
 }
 MethodFragment {
-   X86_64Frame { label = _BBS_Init
+   X86_64Frame { label = BBS_Print
       nextLocalOffset = -8
       formals = List {
-         t1351
-         t1352
+         t1614
       }
    }
-   List {
-      LABEL _L_513
-      MOVE(
-         t1363 <-
-         %rbx:%rbx)
-      MOVE(
-         t1364 <-
-         %r12:%r12)
-      MOVE(
-         t1365 <-
-         %r13:%r13)
-      MOVE(
-         t1366 <-
-         %r14:%r14)
-      MOVE(
-         t1367 <-
-         %r15:%r15)
-      MOVE(
-         t1351 <-
-         %rdi:%rdi)
-      MOVE(
-         t1352 <-
-         %rsi:%rsi)
-      MOVE(
-         MEM(BINOP(PLUS,
-            t1351, 
-            CONST 8)) <-
-         t1352)
-      MOVE(
-         t1374 <-
-         t1351)
-      MOVE(
-         t1373 <-
-         CALL(
-            NAME(_cs411newarray),
-            t1352))
-      MOVE(
-         MEM(t1374) <-
-         t1373)
-      MOVE(
-         t1353 <-
-         MEM(t1351))
-      CJUMP(UGE,
-         CONST 0,
-         MEM(BINOP(PLUS,
-            t1353, 
-            CONST -8)),
-         _boundsbad_496, _boundsok_495)
-      LABEL _boundsok_495
-      MOVE(
-         MEM(t1353) <-
-         CONST 20)
-      MOVE(
-         t1354 <-
-         MEM(t1351))
-      CJUMP(UGE,
-         CONST 1,
-         MEM(BINOP(PLUS,
-            t1354, 
-            CONST -8)),
-         _boundsbad_496, _boundsok_497)
-      LABEL _boundsok_497
-      MOVE(
-         MEM(BINOP(PLUS,
-            t1354, 
-            CONST 8)) <-
-         CONST 7)
-      MOVE(
-         t1355 <-
-         MEM(t1351))
-      CJUMP(UGE,
-         CONST 2,
-         MEM(BINOP(PLUS,
-            t1355, 
-            CONST -8)),
-         _boundsbad_496, _boundsok_498)
-      LABEL _boundsok_498
-      MOVE(
-         MEM(BINOP(PLUS,
-            t1355, 
-            CONST 16)) <-
-         CONST 12)
-      MOVE(
-         t1356 <-
-         MEM(t1351))
-      CJUMP(UGE,
-         CONST 3,
-         MEM(BINOP(PLUS,
-            t1356, 
-            CONST -8)),
-         _boundsbad_496, _boundsok_499)
-      LABEL _boundsok_499
-      MOVE(
-         MEM(BINOP(PLUS,
-            t1356, 
-            CONST 24)) <-
-         CONST 18)
-      MOVE(
-         t1357 <-
-         MEM(t1351))
-      CJUMP(UGE,
-         CONST 4,
-         MEM(BINOP(PLUS,
-            t1357, 
-            CONST -8)),
-         _boundsbad_496, _boundsok_500)
-      LABEL _boundsok_500
-      MOVE(
-         MEM(BINOP(PLUS,
-            t1357, 
-            CONST 32)) <-
-         CONST 2)
-      MOVE(
-         t1358 <-
-         MEM(t1351))
-      CJUMP(UGE,
-         CONST 5,
-         MEM(BINOP(PLUS,
-            t1358, 
-            CONST -8)),
-         _boundsbad_496, _boundsok_501)
-      LABEL _boundsok_501
-      MOVE(
-         MEM(BINOP(PLUS,
-            t1358, 
-            CONST 40)) <-
-         CONST 11)
-      MOVE(
-         t1359 <-
-         MEM(t1351))
-      CJUMP(UGE,
-         CONST 6,
-         MEM(BINOP(PLUS,
-            t1359, 
-            CONST -8)),
-         _boundsbad_496, _boundsok_502)
-      LABEL _boundsok_502
-      MOVE(
-         MEM(BINOP(PLUS,
-            t1359, 
-            CONST 48)) <-
-         CONST 6)
-      MOVE(
-         t1360 <-
-         MEM(t1351))
-      CJUMP(UGE,
-         CONST 7,
-         MEM(BINOP(PLUS,
-            t1360, 
-            CONST -8)),
-         _boundsbad_496, _boundsok_503)
-      LABEL _boundsok_503
-      MOVE(
-         MEM(BINOP(PLUS,
-            t1360, 
-            CONST 56)) <-
-         CONST 9)
-      MOVE(
-         t1361 <-
-         MEM(t1351))
-      CJUMP(UGE,
-         CONST 8,
-         MEM(BINOP(PLUS,
-            t1361, 
-            CONST -8)),
-         _boundsbad_496, _boundsok_504)
-      LABEL _boundsok_504
-      MOVE(
-         MEM(BINOP(PLUS,
-            t1361, 
-            CONST 64)) <-
-         CONST 19)
-      MOVE(
-         t1362 <-
-         MEM(t1351))
-      CJUMP(UGE,
-         CONST 9,
-         MEM(BINOP(PLUS,
-            t1362, 
-            CONST -8)),
-         _boundsbad_496, _boundsok_505)
-      LABEL _boundsok_505
-      MOVE(
-         MEM(BINOP(PLUS,
-            t1362, 
-            CONST 72)) <-
-         CONST 5)
-      MOVE(
-         %rax:%rax <-
-         CONST 0)
-      LABEL _bail_494
-      MOVE(
-         %rbx:%rbx <-
-         t1363)
-      MOVE(
-         %r12:%r12 <-
-         t1364)
-      MOVE(
-         %r13:%r13 <-
-         t1365)
-      MOVE(
-         %r14:%r14 <-
-         t1366)
-      MOVE(
-         %r15:%r15 <-
-         t1367)
-      JUMP(NAME(_DONE_514))
-      LABEL _boundsbad_496
-      MOVE(
-         %rax:%rax <-
-         CALL(
-            NAME(_cs411error),
-            CONST 1))
-      JUMP(NAME(_bail_494))
-      LABEL _DONE_514
-   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     MOVE(
+                        t1617 <-
+                        %rbx), 
+                     MOVE(
+                        t1618 <-
+                        %r12)), 
+                  MOVE(
+                     t1619 <-
+                     %r13)), 
+               MOVE(
+                  t1620 <-
+                  %r14)), 
+            MOVE(
+               t1621 <-
+               %r15)), 
+         MOVE(
+            t1614 <-
+            %rdi)), 
+      SEQ(
+         SEQ(
+            SEQ(
+               MOVE(
+                  t1616 <-
+                  CONST 0), 
+               SEQ(
+                  SEQ(
+                     LABEL L_736, 
+                     SEQ(
+                        CJUMP(LT,
+                           t1616,
+                           MEM(BINOP(PLUS,
+                              t1614, 
+                              CONST 8)),
+                           L_737, L_738), 
+                        SEQ(
+                           LABEL L_737, 
+                           SEQ(
+                              SEQ(
+                                 EXP(CALL(
+                                    NAME(cs411println),
+                                    ESEQ(
+                                       SEQ(
+                                          CJUMP(GE,
+                                             t1616,
+                                             CONST 0,
+                                             L_733, L_735), 
+                                          SEQ(
+                                             LABEL L_733, 
+                                             SEQ(
+                                                CJUMP(LT,
+                                                   t1616,
+                                                   MEM(BINOP(MINUS,
+                                                      MEM(BINOP(PLUS,
+                                                         t1614, 
+                                                         CONST 0)), 
+                                                      CONST 8)),
+                                                   L_734, L_735), 
+                                                SEQ(
+                                                   LABEL L_735, 
+                                                   SEQ(
+                                                      EXP(CALL(
+                                                         NAME(cs411error),
+                                                         CONST 1)), 
+                                                      LABEL L_734))))),
+                                       MEM(BINOP(PLUS,
+                                          MEM(BINOP(PLUS,
+                                             t1614, 
+                                             CONST 0)), 
+                                          BINOP(MUL,
+                                             t1616, 
+                                             CONST 8)))))), 
+                                 MOVE(
+                                    t1616 <-
+                                    BINOP(PLUS,
+                                       t1616, 
+                                       CONST 1))), 
+                              JUMP(NAME(L_736)))))), 
+                  LABEL L_738)), 
+            MOVE(
+               %rax <-
+               CONST 0)), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL bail_739, 
+                        MOVE(
+                           %rbx <-
+                           t1617)), 
+                     MOVE(
+                        %r12 <-
+                        t1618)), 
+                  MOVE(
+                     %r13 <-
+                     t1619)), 
+               MOVE(
+                  %r14 <-
+                  t1620)), 
+            MOVE(
+               %r15 <-
+               t1621))))
 }
 MethodFragment {
-   X86_64Frame { label = _cs411main
+   X86_64Frame { label = BBS_Init
       nextLocalOffset = -8
       formals = List {
+         t1622
+         t1623
       }
    }
-   List {
-      LABEL _L_515
-      MOVE(
-         t1368 <-
-         %rbx:%rbx)
-      MOVE(
-         t1369 <-
-         %r12:%r12)
-      MOVE(
-         t1370 <-
-         %r13:%r13)
-      MOVE(
-         t1371 <-
-         %r14:%r14)
-      MOVE(
-         t1372 <-
-         %r15:%r15)
-      MOVE(
-         t1376 <-
-         CALL(
-            NAME(_cs411newobject),
-            CONST 16))
-      MOVE(
-         t1375 <-
-         CALL(
-            NAME(_BBS_Start),
-            t1376,
-            CONST 10))
-      EXP(CALL(
-         NAME(_cs411println),
-         t1375))
-      LABEL _bail_506
-      MOVE(
-         %rbx:%rbx <-
-         t1368)
-      MOVE(
-         %r12:%r12 <-
-         t1369)
-      MOVE(
-         %r13:%r13 <-
-         t1370)
-      MOVE(
-         %r14:%r14 <-
-         t1371)
-      MOVE(
-         %r15:%r15 <-
-         t1372)
-      LABEL _DONE_516
-   }
+   SEQ(
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        MOVE(
+                           t1624 <-
+                           %rbx), 
+                        MOVE(
+                           t1625 <-
+                           %r12)), 
+                     MOVE(
+                        t1626 <-
+                        %r13)), 
+                  MOVE(
+                     t1627 <-
+                     %r14)), 
+               MOVE(
+                  t1628 <-
+                  %r15)), 
+            MOVE(
+               t1622 <-
+               %rdi)), 
+         MOVE(
+            t1623 <-
+            %rsi)), 
+      SEQ(
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        SEQ(
+                           SEQ(
+                              SEQ(
+                                 SEQ(
+                                    SEQ(
+                                       SEQ(
+                                          SEQ(
+                                             MOVE(
+                                                MEM(BINOP(PLUS,
+                                                   t1622, 
+                                                   CONST 8)) <-
+                                                t1623), 
+                                             MOVE(
+                                                MEM(BINOP(PLUS,
+                                                   t1622, 
+                                                   CONST 0)) <-
+                                                CALL(
+                                                   NAME(cs411newarray),
+                                                   t1623))), 
+                                          SEQ(
+                                             CJUMP(GE,
+                                                CONST 0,
+                                                CONST 0,
+                                                L_740, L_742), 
+                                             SEQ(
+                                                LABEL L_740, 
+                                                SEQ(
+                                                   CJUMP(LT,
+                                                      CONST 0,
+                                                      MEM(BINOP(MINUS,
+                                                         MEM(BINOP(PLUS,
+                                                            t1622, 
+                                                            CONST 0)), 
+                                                         CONST 8)),
+                                                      L_741, L_742), 
+                                                   SEQ(
+                                                      LABEL L_742, 
+                                                      SEQ(
+                                                         EXP(CALL(
+                                                            NAME(cs411error),
+                                                            CONST 1)), 
+                                                         SEQ(
+                                                            LABEL L_741, 
+                                                            MOVE(
+                                                               MEM(BINOP(PLUS,
+                                                                  MEM(BINOP(PLUS,
+                                                                     t1622, 
+                                                                     CONST 0)), 
+                                                                  CONST 0)) <-
+                                                               CONST 20)))))))), 
+                                       SEQ(
+                                          CJUMP(GE,
+                                             CONST 1,
+                                             CONST 0,
+                                             L_743, L_745), 
+                                          SEQ(
+                                             LABEL L_743, 
+                                             SEQ(
+                                                CJUMP(LT,
+                                                   CONST 1,
+                                                   MEM(BINOP(MINUS,
+                                                      MEM(BINOP(PLUS,
+                                                         t1622, 
+                                                         CONST 0)), 
+                                                      CONST 8)),
+                                                   L_744, L_745), 
+                                                SEQ(
+                                                   LABEL L_745, 
+                                                   SEQ(
+                                                      EXP(CALL(
+                                                         NAME(cs411error),
+                                                         CONST 1)), 
+                                                      SEQ(
+                                                         LABEL L_744, 
+                                                         MOVE(
+                                                            MEM(BINOP(PLUS,
+                                                               MEM(BINOP(PLUS,
+                                                                  t1622, 
+                                                                  CONST 0)), 
+                                                               CONST 8)) <-
+                                                            CONST 7)))))))), 
+                                    SEQ(
+                                       CJUMP(GE,
+                                          CONST 2,
+                                          CONST 0,
+                                          L_746, L_748), 
+                                       SEQ(
+                                          LABEL L_746, 
+                                          SEQ(
+                                             CJUMP(LT,
+                                                CONST 2,
+                                                MEM(BINOP(MINUS,
+                                                   MEM(BINOP(PLUS,
+                                                      t1622, 
+                                                      CONST 0)), 
+                                                   CONST 8)),
+                                                L_747, L_748), 
+                                             SEQ(
+                                                LABEL L_748, 
+                                                SEQ(
+                                                   EXP(CALL(
+                                                      NAME(cs411error),
+                                                      CONST 1)), 
+                                                   SEQ(
+                                                      LABEL L_747, 
+                                                      MOVE(
+                                                         MEM(BINOP(PLUS,
+                                                            MEM(BINOP(PLUS,
+                                                               t1622, 
+                                                               CONST 0)), 
+                                                            CONST 16)) <-
+                                                         CONST 12)))))))), 
+                                 SEQ(
+                                    CJUMP(GE,
+                                       CONST 3,
+                                       CONST 0,
+                                       L_749, L_751), 
+                                    SEQ(
+                                       LABEL L_749, 
+                                       SEQ(
+                                          CJUMP(LT,
+                                             CONST 3,
+                                             MEM(BINOP(MINUS,
+                                                MEM(BINOP(PLUS,
+                                                   t1622, 
+                                                   CONST 0)), 
+                                                CONST 8)),
+                                             L_750, L_751), 
+                                          SEQ(
+                                             LABEL L_751, 
+                                             SEQ(
+                                                EXP(CALL(
+                                                   NAME(cs411error),
+                                                   CONST 1)), 
+                                                SEQ(
+                                                   LABEL L_750, 
+                                                   MOVE(
+                                                      MEM(BINOP(PLUS,
+                                                         MEM(BINOP(PLUS,
+                                                            t1622, 
+                                                            CONST 0)), 
+                                                         CONST 24)) <-
+                                                      CONST 18)))))))), 
+                              SEQ(
+                                 CJUMP(GE,
+                                    CONST 4,
+                                    CONST 0,
+                                    L_752, L_754), 
+                                 SEQ(
+                                    LABEL L_752, 
+                                    SEQ(
+                                       CJUMP(LT,
+                                          CONST 4,
+                                          MEM(BINOP(MINUS,
+                                             MEM(BINOP(PLUS,
+                                                t1622, 
+                                                CONST 0)), 
+                                             CONST 8)),
+                                          L_753, L_754), 
+                                       SEQ(
+                                          LABEL L_754, 
+                                          SEQ(
+                                             EXP(CALL(
+                                                NAME(cs411error),
+                                                CONST 1)), 
+                                             SEQ(
+                                                LABEL L_753, 
+                                                MOVE(
+                                                   MEM(BINOP(PLUS,
+                                                      MEM(BINOP(PLUS,
+                                                         t1622, 
+                                                         CONST 0)), 
+                                                      CONST 32)) <-
+                                                   CONST 2)))))))), 
+                           SEQ(
+                              CJUMP(GE,
+                                 CONST 5,
+                                 CONST 0,
+                                 L_755, L_757), 
+                              SEQ(
+                                 LABEL L_755, 
+                                 SEQ(
+                                    CJUMP(LT,
+                                       CONST 5,
+                                       MEM(BINOP(MINUS,
+                                          MEM(BINOP(PLUS,
+                                             t1622, 
+                                             CONST 0)), 
+                                          CONST 8)),
+                                       L_756, L_757), 
+                                    SEQ(
+                                       LABEL L_757, 
+                                       SEQ(
+                                          EXP(CALL(
+                                             NAME(cs411error),
+                                             CONST 1)), 
+                                          SEQ(
+                                             LABEL L_756, 
+                                             MOVE(
+                                                MEM(BINOP(PLUS,
+                                                   MEM(BINOP(PLUS,
+                                                      t1622, 
+                                                      CONST 0)), 
+                                                   CONST 40)) <-
+                                                CONST 11)))))))), 
+                        SEQ(
+                           CJUMP(GE,
+                              CONST 6,
+                              CONST 0,
+                              L_758, L_760), 
+                           SEQ(
+                              LABEL L_758, 
+                              SEQ(
+                                 CJUMP(LT,
+                                    CONST 6,
+                                    MEM(BINOP(MINUS,
+                                       MEM(BINOP(PLUS,
+                                          t1622, 
+                                          CONST 0)), 
+                                       CONST 8)),
+                                    L_759, L_760), 
+                                 SEQ(
+                                    LABEL L_760, 
+                                    SEQ(
+                                       EXP(CALL(
+                                          NAME(cs411error),
+                                          CONST 1)), 
+                                       SEQ(
+                                          LABEL L_759, 
+                                          MOVE(
+                                             MEM(BINOP(PLUS,
+                                                MEM(BINOP(PLUS,
+                                                   t1622, 
+                                                   CONST 0)), 
+                                                CONST 48)) <-
+                                             CONST 6)))))))), 
+                     SEQ(
+                        CJUMP(GE,
+                           CONST 7,
+                           CONST 0,
+                           L_761, L_763), 
+                        SEQ(
+                           LABEL L_761, 
+                           SEQ(
+                              CJUMP(LT,
+                                 CONST 7,
+                                 MEM(BINOP(MINUS,
+                                    MEM(BINOP(PLUS,
+                                       t1622, 
+                                       CONST 0)), 
+                                    CONST 8)),
+                                 L_762, L_763), 
+                              SEQ(
+                                 LABEL L_763, 
+                                 SEQ(
+                                    EXP(CALL(
+                                       NAME(cs411error),
+                                       CONST 1)), 
+                                    SEQ(
+                                       LABEL L_762, 
+                                       MOVE(
+                                          MEM(BINOP(PLUS,
+                                             MEM(BINOP(PLUS,
+                                                t1622, 
+                                                CONST 0)), 
+                                             CONST 56)) <-
+                                          CONST 9)))))))), 
+                  SEQ(
+                     CJUMP(GE,
+                        CONST 8,
+                        CONST 0,
+                        L_764, L_766), 
+                     SEQ(
+                        LABEL L_764, 
+                        SEQ(
+                           CJUMP(LT,
+                              CONST 8,
+                              MEM(BINOP(MINUS,
+                                 MEM(BINOP(PLUS,
+                                    t1622, 
+                                    CONST 0)), 
+                                 CONST 8)),
+                              L_765, L_766), 
+                           SEQ(
+                              LABEL L_766, 
+                              SEQ(
+                                 EXP(CALL(
+                                    NAME(cs411error),
+                                    CONST 1)), 
+                                 SEQ(
+                                    LABEL L_765, 
+                                    MOVE(
+                                       MEM(BINOP(PLUS,
+                                          MEM(BINOP(PLUS,
+                                             t1622, 
+                                             CONST 0)), 
+                                          CONST 64)) <-
+                                       CONST 19)))))))), 
+               SEQ(
+                  CJUMP(GE,
+                     CONST 9,
+                     CONST 0,
+                     L_767, L_769), 
+                  SEQ(
+                     LABEL L_767, 
+                     SEQ(
+                        CJUMP(LT,
+                           CONST 9,
+                           MEM(BINOP(MINUS,
+                              MEM(BINOP(PLUS,
+                                 t1622, 
+                                 CONST 0)), 
+                              CONST 8)),
+                           L_768, L_769), 
+                        SEQ(
+                           LABEL L_769, 
+                           SEQ(
+                              EXP(CALL(
+                                 NAME(cs411error),
+                                 CONST 1)), 
+                              SEQ(
+                                 LABEL L_768, 
+                                 MOVE(
+                                    MEM(BINOP(PLUS,
+                                       MEM(BINOP(PLUS,
+                                          t1622, 
+                                          CONST 0)), 
+                                       CONST 72)) <-
+                                    CONST 5)))))))), 
+            MOVE(
+               %rax <-
+               CONST 0)), 
+         SEQ(
+            SEQ(
+               SEQ(
+                  SEQ(
+                     SEQ(
+                        LABEL bail_770, 
+                        MOVE(
+                           %rbx <-
+                           t1624)), 
+                     MOVE(
+                        %r12 <-
+                        t1625)), 
+                  MOVE(
+                     %r13 <-
+                     t1626)), 
+               MOVE(
+                  %r14 <-
+                  t1627)), 
+            MOVE(
+               %r15 <-
+               t1628))))
 }
