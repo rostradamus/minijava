@@ -1,5 +1,5 @@
 MethodFragment {
-   X86_64Frame { label = _cs411main
+   X86_64Frame { label = cs411main
       nextLocalOffset = -8
       formals = List {
       }
@@ -10,27 +10,27 @@ MethodFragment {
             SEQ(
                SEQ(
                   MOVE(
-                     t5177 <-
+                     t1638 <-
                      %rbx), 
                   MOVE(
-                     t5178 <-
+                     t1639 <-
                      %r12)), 
                MOVE(
-                  t5179 <-
+                  t1640 <-
                   %r13)), 
             MOVE(
-               t5180 <-
+               t1641 <-
                %r14)), 
          MOVE(
-            t5181 <-
+            t1642 <-
             %r15)), 
       SEQ(
          EXP(CALL(
-            NAME(_cs411println),
+            NAME(cs411println),
             CALL(
-               NAME(__Test$go),
+               NAME(Test_go),
                CALL(
-                  NAME(_cs411newobject),
+                  NAME(cs411newobject),
                   CONST 0),
                CONST 6))), 
          SEQ(
@@ -38,29 +38,29 @@ MethodFragment {
                SEQ(
                   SEQ(
                      SEQ(
-                        LABEL _bail_3034, 
+                        LABEL bail_773, 
                         MOVE(
                            %rbx <-
-                           t5177)), 
+                           t1638)), 
                      MOVE(
                         %r12 <-
-                        t5178)), 
+                        t1639)), 
                   MOVE(
                      %r13 <-
-                     t5179)), 
+                     t1640)), 
                MOVE(
                   %r14 <-
-                  t5180)), 
+                  t1641)), 
             MOVE(
                %r15 <-
-               t5181))))
+               t1642))))
 }
 MethodFragment {
-   X86_64Frame { label = __Test$go
+   X86_64Frame { label = Test_go
       nextLocalOffset = -8
       formals = List {
-         t5182
-         t5183
+         t1643
+         t1644
       }
    }
    SEQ(
@@ -71,53 +71,53 @@ MethodFragment {
                   SEQ(
                      SEQ(
                         MOVE(
-                           t5184 <-
+                           t1645 <-
                            %rbx), 
                         MOVE(
-                           t5185 <-
+                           t1646 <-
                            %r12)), 
                      MOVE(
-                        t5186 <-
+                        t1647 <-
                         %r13)), 
                   MOVE(
-                     t5187 <-
+                     t1648 <-
                      %r14)), 
                MOVE(
-                  t5188 <-
+                  t1649 <-
                   %r15)), 
             MOVE(
-               t5182 <-
+               t1643 <-
                %rdi)), 
          MOVE(
-            t5183 <-
+            t1644 <-
             %rsi)), 
       SEQ(
          SEQ(
             EXP(CALL(
-               NAME(_cs411println),
-               t5183)), 
+               NAME(cs411println),
+               t1644)), 
             MOVE(
                %rax <-
-               t5183)), 
+               t1644)), 
          SEQ(
             SEQ(
                SEQ(
                   SEQ(
                      SEQ(
-                        LABEL _bail_3035, 
+                        LABEL bail_774, 
                         MOVE(
                            %rbx <-
-                           t5184)), 
+                           t1645)), 
                      MOVE(
                         %r12 <-
-                        t5185)), 
+                        t1646)), 
                   MOVE(
                      %r13 <-
-                     t5186)), 
+                     t1647)), 
                MOVE(
                   %r14 <-
-                  t5187)), 
+                  t1648)), 
             MOVE(
                %r15 <-
-               t5188))))
+               t1649))))
 }
