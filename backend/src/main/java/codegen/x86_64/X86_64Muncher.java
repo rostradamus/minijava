@@ -320,6 +320,13 @@ public class X86_64Muncher extends Muncher {
                 return null;
             }
         });
+        sm.add(new MunchRule<IRStm, Void>(MOVE(MEM(_e_), TEMP(_t_))) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                m.emit(A_MOV_TO_MEM(m.munch(c.get(_e_)), c.get(_t_)));
+                return null;
+            }
+        });
         em.add(new MunchRule<IRExp, Temp>(MEM(PLUS(TEMP(_t_), CONST(_i_)))) {
             @Override
             protected Temp trigger(Muncher m, Matched c) {
