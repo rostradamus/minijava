@@ -425,10 +425,11 @@ public class X86_64Muncher extends Muncher {
         em.add(new MunchRule<IRExp, Temp>(MEM(MUL(TEMP(_t_), CONST(_i_)))) {
             @Override
             protected Temp trigger(Muncher m, Matched c) {
-                Temp sum = new Temp();
-                m.emit(A_MOV(sum, c.get(_i_)));
-                m.emit(A_IMUL(sum, c.get(_t_)));
-                return sum;
+                Temp res = new Temp();
+                m.emit(A_MOV(res, c.get(_i_)));
+                m.emit(A_IMUL(res, c.get(_t_)));
+                m.emit(A_MOV_FROM_MEM(res, res));
+                return res;
             }
         });
         em.add(new MunchRule<IRExp, Temp>(PLUS(MEM(_e_), CONST(_i_))) {
