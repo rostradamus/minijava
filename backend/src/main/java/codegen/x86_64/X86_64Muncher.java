@@ -272,6 +272,15 @@ public class X86_64Muncher extends Muncher {
                 return sum;
             }
         });
+        em.add(new MunchRule<IRExp, Temp>(MINUS(MEM(_l_), _r_)) {
+            @Override
+            protected Temp trigger(Muncher m, Matched c) {
+                Temp sum = new Temp();
+                m.emit(A_MOV_FROM_MEM(sum, m.munch(c.get(_l_))));
+                m.emit(A_SUB(sum, m.munch(c.get(_r_))));
+                return sum;
+            }
+        });
         em.add(new MunchRule<IRExp, Temp>(DIV(MEM(_l_), _r_)) {
             @Override
             protected Temp trigger(Muncher m, Matched c) {
@@ -281,20 +290,256 @@ public class X86_64Muncher extends Muncher {
                 return sum;
             }
         });
-        em.add(new MunchRule<IRExp, Temp>(MEM(PLUS(MEM(_l_), _r_))) {
-            @Override
-            protected Temp trigger(Muncher m, Matched c) {
-                Temp r = new Temp();
-                m.emit(A_MOV_FROM_MEM(r, m.munch(c.get(_l_))));
-                m.emit(A_ADD(r, m.munch(c.get(_r_))));
-                m.emit(A_MOV_FROM_MEM(r, r));
-                return r;
-            }
-        });
         sm.add(new MunchRule<IRStm, Void>(MOVE(TEMP(_t_), CONST(_i_))) {
             @Override
             protected Void trigger(Muncher m, Matched c) {
                 m.emit(A_MOV(c.get(_t_), c.get(_i_)));
+                return null;
+            }
+        });
+        sm.add(new MunchRule<IRStm, Void>(MOVE(TEMP(_t_), MEM(_e_))) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                m.emit(A_MOV_FROM_MEM(c.get(_t_), m.munch(c.get(_e_))));
+                return null;
+            }
+        });
+        sm.add(new MunchRule<IRStm, Void>(MOVE(MEM(_l_), MEM(_r_))) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                Temp t = new Temp();
+                m.emit(A_MOV_FROM_MEM(t, m.munch(c.get(_r_))));
+                m.emit(A_MOV_TO_MEM(m.munch(c.get(_l_)), t));
+                return null;
+            }
+        });
+        sm.add(new MunchRule<IRStm, Void>(MOVE(MEM(_e_), TEMP(_t_))) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                m.emit(A_MOV_TO_MEM(m.munch(c.get(_e_)), c.get(_t_)));
+                return null;
+            }
+        });
+        em.add(new MunchRule<IRExp, Temp>(PLUS(TEMP(_t_), CONST(_i_))) {
+            @Override
+            protected Temp trigger(Muncher m, Matched c) {
+                Temp res = new Temp();
+                m.emit(A_MOV(res, c.get(_i_)));
+                m.emit(A_ADD(res, c.get(_t_)));
+                return res;
+            }
+        });
+
+
+        em.add(new MunchRule<IRExp, Temp>(MEM(MINUS(_l_, CONST(_i_)))) {
+            @Override
+            protected Temp trigger(Muncher m, Matched c) {
+                Temp res = new Temp();
+                Temp tmp = new Temp();
+                m.emit(A_MOV(tmp, c.get(_i_)));
+                m.emit(A_MOV(res, m.munch(c.get(_l_))));
+                m.emit(A_SUB(res, tmp));
+                m.emit(A_MOV_FROM_MEM(res, res));
+                return res;
+            }
+        });
+        em.add(new MunchRule<IRExp, Temp>(MEM(PLUS(MEM(_l_), CONST(_i_)))) {
+            @Override
+            protected Temp trigger(Muncher m, Matched c) {
+                Temp res = new Temp();
+                Temp tmp = new Temp();
+                m.emit(A_MOV(tmp, c.get(_i_)));
+                m.emit(A_MOV_FROM_MEM(res, m.munch(c.get(_l_))));
+                m.emit(A_ADD(res, tmp));
+                m.emit(A_MOV_FROM_MEM(res, res));
+                return res;
+            }
+        });
+        em.add(new MunchRule<IRExp, Temp>(MEM(MINUS(MEM(_l_), CONST(_i_)))) {
+            @Override
+            protected Temp trigger(Muncher m, Matched c) {
+                Temp res = new Temp();
+                Temp tmp = new Temp();
+                m.emit(A_MOV(tmp, c.get(_i_)));
+                m.emit(A_MOV_FROM_MEM(res, m.munch(c.get(_l_))));
+                m.emit(A_SUB(res, tmp));
+                m.emit(A_MOV_FROM_MEM(res, res));
+                return res;
+            }
+        });
+        sm.add(new MunchRule<IRStm, Void>(MOVE(TEMP(_t_), MEM(MINUS(_l_, CONST(_i_))))) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                Temp res = new Temp();
+                Temp tmp = new Temp();
+                m.emit(A_MOV(tmp, c.get(_i_)));
+                m.emit(A_MOV(res, m.munch(c.get(_l_))));
+                m.emit(A_SUB(res, tmp));
+                m.emit(A_MOV_FROM_MEM(res, res));
+                m.emit(A_MOV(c.get(_t_), res));
+                return null;
+            }
+        });
+        sm.add(new MunchRule<IRStm, Void>(MOVE(MEM(TEMP(_t_)), CONST(_i_))) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                Temp tmp = new Temp();
+                m.emit(A_MOV(tmp, c.get(_i_)));
+                m.emit(A_MOV_TO_MEM(c.get(_t_), tmp));
+                return null;
+            }
+        });
+        sm.add(new MunchRule<IRStm, Void>(MOVE(MEM(PLUS(_l_, CONST(_i_))), _r_)) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                Temp tmp = new Temp();
+                m.emit(A_MOV(tmp, c.get(_i_)));
+                m.emit(A_ADD(tmp, m.munch(c.get(_l_))));
+                m.emit(A_MOV_TO_MEM(tmp, m.munch(c.get(_r_))));
+                return null;
+            }
+        });
+        sm.add(new MunchRule<IRStm, Void>(MOVE(MEM(MINUS(_l_, CONST(_i_))), _r_)) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                Temp tmp = new Temp();
+                m.emit(A_MOV(tmp, c.get(_i_)));
+                m.emit(A_SUB(tmp, m.munch(c.get(_l_))));
+                m.emit(A_MOV_TO_MEM(tmp, m.munch(c.get(_r_))));
+                return null;
+            }
+        });
+        sm.add(new MunchRule<IRStm, Void>(MOVE(MEM(MUL(_l_, CONST(_i_))), _r_)) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                Temp tmp = new Temp();
+                m.emit(A_MOV(tmp, c.get(_i_)));
+                m.emit(A_IMUL(tmp, m.munch(c.get(_l_))));
+                m.emit(A_MOV_TO_MEM(tmp, m.munch(c.get(_r_))));
+                return null;
+            }
+        });
+        sm.add(new MunchRule<IRStm, Void>(MOVE(MEM(DIV(_l_, CONST(_i_))), _r_)) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                Temp tmp = new Temp();
+                m.emit(A_MOV(tmp, c.get(_i_)));
+                m.emit(A_IDIV(tmp, m.munch(c.get(_l_))));
+                m.emit(A_MOV_TO_MEM(tmp, m.munch(c.get(_r_))));
+                return null;
+            }
+        });
+        em.add(new MunchRule<IRExp, Temp>(MEM(PLUS(TEMP(_t_), CONST(_i_)))) {
+            @Override
+            protected Temp trigger(Muncher m, Matched c) {
+                Temp res = new Temp();
+                m.emit(A_MOV(res, c.get(_i_)));
+                m.emit(A_ADD(res, c.get(_t_)));
+                m.emit(A_MOV_FROM_MEM(res, res));
+                return res;
+            }
+        });
+        em.add(new MunchRule<IRExp, Temp>(MUL(TEMP(_t_), CONST(_i_))) {
+            @Override
+            protected Temp trigger(Muncher m, Matched c) {
+                Temp res = new Temp();
+                m.emit(A_MOV(res, c.get(_i_)));
+                m.emit(A_IMUL(res, c.get(_t_)));
+                return res;
+            }
+        });
+        em.add(new MunchRule<IRExp, Temp>(MEM(MUL(TEMP(_t_), CONST(_i_)))) {
+            @Override
+            protected Temp trigger(Muncher m, Matched c) {
+                Temp res = new Temp();
+                m.emit(A_MOV(res, c.get(_i_)));
+                m.emit(A_IMUL(res, c.get(_t_)));
+                m.emit(A_MOV_FROM_MEM(res, res));
+                return res;
+            }
+        });
+        em.add(new MunchRule<IRExp, Temp>(PLUS(MEM(_e_), CONST(_i_))) {
+            @Override
+            protected Temp trigger(Muncher m, Matched c) {
+                Temp sum = new Temp();
+                Temp tmp = new Temp();
+                m.emit(A_MOV(tmp, c.get(_i_)));
+                m.emit(A_MOV_FROM_MEM(sum, m.munch(c.get(_e_))));
+                m.emit(A_ADD(sum, tmp));
+                return sum;
+            }
+        });
+        sm.add(new MunchRule<IRStm, Void>(CJUMP(_relOp_, TEMP(_t_), MEM(_e_), _thn_, _els_)) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                Temp tmp = new Temp();
+                m.emit(A_MOV_FROM_MEM(tmp, m.munch(c.get(_e_))));
+                m.emit(A_CMP(c.get(_t_), tmp));
+                m.emit(A_CJUMP(c.get(_relOp_), c.get(_thn_), c.get(_els_)));
+                return null;
+            }
+        });
+        sm.add(new MunchRule<IRStm, Void>(CJUMP(_relOp_, TEMP(_t_), CONST(_i_), _thn_, _els_)) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                Temp tmp = new Temp();
+                m.emit(A_MOV(tmp, c.get(_i_)));
+                m.emit(A_CMP(c.get(_t_), tmp));
+                m.emit(A_CJUMP(c.get(_relOp_), c.get(_thn_), c.get(_els_)));
+                return null;
+            }
+        });
+
+        sm.add(new MunchRule<IRStm, Void>(CMOVE(_relOp_, MEM(_l_), _r_, TEMP(_t_), _e_)) {
+            @Override
+            protected  Void trigger(Muncher m, Matched c) {
+                Temp l = m.munch(c.get(_l_));
+                Temp r = m.munch(c.get(_r_));
+                m.emit(A_CMP_TO_MEM(l, r));
+                m.emit(A_CMOV(c.get(_relOp_), c.get(_t_), m.munch(c.get(_e_))));
+                return null;
+            }
+        });
+
+        sm.add(new MunchRule<IRStm, Void>(CMOVE(_relOp_, _l_, MEM(_r_), TEMP(_t_), _e_)) {
+            @Override
+            protected  Void trigger(Muncher m, Matched c) {
+                Temp l = m.munch(c.get(_l_));
+                Temp r = m.munch(c.get(_r_));
+                m.emit(A_CMP_FROM_MEM(l, r));
+                m.emit(A_CMOV(c.get(_relOp_), c.get(_t_), m.munch(c.get(_e_))));
+                return null;
+            }
+        });
+
+        sm.add(new MunchRule<IRStm, Void>(CMOVE(_relOp_, TEMP(_t_), MEM(_e_), _l_, _r_)) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                Temp tmp = new Temp();
+                m.emit(A_MOV_FROM_MEM(tmp, m.munch(c.get(_e_))));
+                m.emit(A_CMP(c.get(_t_), tmp));
+                m.emit(A_CMOV(c.get(_relOp_), m.munch(c.get(_l_)), m.munch(c.get(_r_))));
+                return null;
+            }
+        });
+        em.add(new MunchRule<IRExp, Temp>(MEM(PLUS(MEM(_l_), _r_))) {
+            @Override
+            protected Temp trigger(Muncher m, Matched c) {
+                Temp res = new Temp();
+                m.emit(A_MOV_FROM_MEM(res, m.munch(c.get(_l_))));
+                m.emit(A_ADD(res, m.munch(c.get(_r_))));
+                m.emit(A_MOV_FROM_MEM(res, res));
+                return res;
+            }
+        });
+        sm.add(new MunchRule<IRStm, Void>(MOVE(MEM(TEMP(_t_)), PLUS(_l_, _r_))) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                Temp res = new Temp();
+                m.emit(A_ADD(res, m.munch(c.get(_l_))));
+                m.emit(A_ADD(res, m.munch(c.get(_r_))));
+                m.emit(A_MOV_TO_MEM(c.get(_t_), res));
+
                 return null;
             }
         });
@@ -365,6 +610,14 @@ public class X86_64Muncher extends Muncher {
 
     private static Instr A_CMP(Temp l, Temp r) {
         return new A_OPER("cmpq    `s1, `s0", noTemps, list(l, r));
+    }
+
+    private static Instr A_CMP_TO_MEM(Temp l, Temp r) {
+        return new A_OPER("cmpq    `s1, (`s0)", noTemps, list(l, r));
+    }
+
+    private static Instr A_CMP_FROM_MEM(Temp l, Temp r) {
+        return new A_OPER("cmpq    (`s1), `s0", noTemps, list(l, r));
     }
 
     private static Instr A_IMUL(Temp dst, Temp src) {
