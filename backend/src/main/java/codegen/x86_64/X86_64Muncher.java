@@ -272,6 +272,15 @@ public class X86_64Muncher extends Muncher {
                 return sum;
             }
         });
+        em.add(new MunchRule<IRExp, Temp>(DIV(MEM(_l_), _r_)) {
+            @Override
+            protected Temp trigger(Muncher m, Matched c) {
+                Temp sum = new Temp();
+                m.emit(A_MOV_FROM_MEM(sum, m.munch(c.get(_l_))));
+                m.emit(A_IDIV(sum, m.munch(c.get(_r_))));
+                return sum;
+            }
+        });
         em.add(new MunchRule<IRExp, Temp>(MEM(PLUS(MEM(_l_), _r_))) {
             @Override
             protected Temp trigger(Muncher m, Matched c) {
