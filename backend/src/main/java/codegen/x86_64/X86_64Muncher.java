@@ -423,6 +423,16 @@ public class X86_64Muncher extends Muncher {
                 return sum;
             }
         });
+        sm.add(new MunchRule<IRStm, Void>(CJUMP(_relOp_, TEMP(_t_), MEM(_e_), _thn_, _els_)) {
+            @Override
+            protected Void trigger(Muncher m, Matched c) {
+                Temp tmp = new Temp();
+                m.emit(A_MOV_FROM_MEM(tmp, m.munch(c.get(_e_))));
+                m.emit(A_CMP(c.get(_t_), tmp));
+                m.emit(A_CJUMP(c.get(_relOp_), c.get(_thn_), c.get(_els_)));
+                return null;
+            }
+        });
     }
 
     ///////// Helper methods to generate X86 assembly instructions //////////////////////////////////////
