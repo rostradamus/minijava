@@ -305,6 +305,15 @@ public class X86_64Muncher extends Muncher {
                 return null;
             }
         });
+        em.add(new MunchRule<IRExp, Temp>(MEM(PLUS(MEM(TEMP(_t_)), _r_))) {
+            @Override
+            protected Temp trigger(Muncher m, Matched c) {
+                m.emit(A_MOV_FROM_MEM(c.get(_t_),c.get(_t_)));
+                m.emit(A_ADD(c.get(_t_), m.munch(c.get(_r_))));
+                m.emit(A_MOV_FROM_MEM(c.get(_t_), c.get(_t_)));
+                return c.get(_t_);
+            }
+        });
     }
 
     ///////// Helper methods to generate X86 assembly instructions //////////////////////////////////////
