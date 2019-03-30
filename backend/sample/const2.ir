@@ -10,19 +10,19 @@ MethodFragment {
             SEQ(
                SEQ(
                   MOVE(
-                     t1907 <-
+                     t1573 <-
                      %rbx), 
                   MOVE(
-                     t1908 <-
+                     t1574 <-
                      %r12)), 
                MOVE(
-                  t1909 <-
+                  t1575 <-
                   %r13)), 
             MOVE(
-               t1910 <-
+               t1576 <-
                %r14)), 
          MOVE(
-            t1911 <-
+            t1577 <-
             %r15)), 
       SEQ(
          EXP(CALL(
@@ -37,28 +37,28 @@ MethodFragment {
                SEQ(
                   SEQ(
                      SEQ(
-                        LABEL bail_820, 
+                        LABEL bail_673, 
                         MOVE(
                            %rbx <-
-                           t1907)), 
+                           t1573)), 
                      MOVE(
                         %r12 <-
-                        t1908)), 
+                        t1574)), 
                   MOVE(
                      %r13 <-
-                     t1909)), 
+                     t1575)), 
                MOVE(
                   %r14 <-
-                  t1910)), 
+                  t1576)), 
             MOVE(
                %r15 <-
-               t1911))))
+               t1577))))
 }
 MethodFragment {
    X86_64Frame { label = Test_go
       nextLocalOffset = -8
       formals = List {
-         t1912
+         t1578
       }
    }
    SEQ(
@@ -68,22 +68,22 @@ MethodFragment {
                SEQ(
                   SEQ(
                      MOVE(
-                        t1921 <-
+                        t1587 <-
                         %rbx), 
                      MOVE(
-                        t1922 <-
+                        t1588 <-
                         %r12)), 
                   MOVE(
-                     t1923 <-
+                     t1589 <-
                      %r13)), 
                MOVE(
-                  t1924 <-
+                  t1590 <-
                   %r14)), 
             MOVE(
-               t1925 <-
+               t1591 <-
                %r15)), 
          MOVE(
-            t1912 <-
+            t1578 <-
             %rdi)), 
       SEQ(
          SEQ(
@@ -93,108 +93,108 @@ MethodFragment {
                      SEQ(
                         SEQ(
                            MOVE(
-                              t1917 <-
+                              t1583 <-
                               CONST 0), 
                            MOVE(
-                              t1918 <-
+                              t1584 <-
                               CONST 6)), 
                         MOVE(
-                           t1920 <-
+                           t1586 <-
                            BINOP(PLUS,
-                              t1917, 
-                              t1918))), 
+                              t1583, 
+                              t1584))), 
                      SEQ(
                         SEQ(
-                           LABEL L_821, 
+                           LABEL L_674, 
                            SEQ(
                               CJUMP(LT,
-                                 t1917,
+                                 t1583,
                                  CONST 10,
-                                 L_822, L_823), 
+                                 L_675, L_676), 
                               SEQ(
-                                 LABEL L_822, 
+                                 LABEL L_675, 
                                  SEQ(
                                     SEQ(
                                        MOVE(
-                                          t1917 <-
+                                          t1583 <-
                                           BINOP(PLUS,
-                                             t1917, 
+                                             t1583, 
                                              CONST 1)), 
                                        MOVE(
-                                          t1919 <-
+                                          t1585 <-
                                           BINOP(MUL,
-                                             t1917, 
-                                             t1917))), 
-                                    JUMP(NAME(L_821)))))), 
-                        LABEL L_823)), 
+                                             t1583, 
+                                             t1583))), 
+                                    JUMP(NAME(L_674)))))), 
+                        LABEL L_676)), 
                   SEQ(
                      CJUMP(LT,
-                        t1918,
+                        t1584,
                         CONST 7,
-                        L_824, L_825), 
+                        L_677, L_678), 
                      SEQ(
-                        LABEL L_824, 
+                        LABEL L_677, 
                         SEQ(
                            MOVE(
-                              t1917 <-
+                              t1583 <-
                               CONST 10), 
                            SEQ(
-                              JUMP(NAME(L_826)), 
+                              JUMP(NAME(L_679)), 
                               SEQ(
-                                 LABEL L_825, 
+                                 LABEL L_678, 
                                  SEQ(
                                     MOVE(
-                                       t1917 <-
-                                       t1917), 
-                                    LABEL L_826))))))), 
+                                       t1583 <-
+                                       t1583), 
+                                    LABEL L_679))))))), 
                SEQ(
                   CJUMP(LT,
-                     t1918,
+                     t1584,
                      CONST 3,
-                     L_827, L_828), 
+                     L_680, L_681), 
                   SEQ(
-                     LABEL L_827, 
+                     LABEL L_680, 
                      SEQ(
                         MOVE(
-                           t1917 <-
+                           t1583 <-
                            CONST 10), 
                         SEQ(
-                           JUMP(NAME(L_829)), 
+                           JUMP(NAME(L_682)), 
                            SEQ(
-                              LABEL L_828, 
+                              LABEL L_681, 
                               SEQ(
                                  MOVE(
-                                    t1917 <-
-                                    t1917), 
-                                 LABEL L_829))))))), 
+                                    t1583 <-
+                                    t1583), 
+                                 LABEL L_682))))))), 
             MOVE(
                %rax <-
                BINOP(PLUS,
                   BINOP(MINUS,
-                     t1918, 
+                     t1584, 
                      BINOP(MUL,
-                        t1920, 
-                        t1918)), 
-                  t1920))), 
+                        t1586, 
+                        t1584)), 
+                  t1586))), 
          SEQ(
             SEQ(
                SEQ(
                   SEQ(
                      SEQ(
-                        LABEL bail_830, 
+                        LABEL bail_683, 
                         MOVE(
                            %rbx <-
-                           t1921)), 
+                           t1587)), 
                      MOVE(
                         %r12 <-
-                        t1922)), 
+                        t1588)), 
                   MOVE(
                      %r13 <-
-                     t1923)), 
+                     t1589)), 
                MOVE(
                   %r14 <-
-                  t1924)), 
+                  t1590)), 
             MOVE(
                %r15 <-
-               t1925))))
+               t1591))))
 }
