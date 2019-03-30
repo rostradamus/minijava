@@ -3,7 +3,10 @@ package analysis.implementation;
 import ir.temp.Temp;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+import util.ActiveSet;
 import util.List;
 
 import analysis.FlowGraph;
@@ -13,19 +16,51 @@ import util.graph.Node;
 
 public class LivenessImplementation<N> extends Liveness<N> {
 
+    private Map<Node<N>, ActiveSet<Temp>> liveIns;
+    private Map<Node<N>, ActiveSet<Temp>> liveOuts;
+
     public LivenessImplementation(FlowGraph<N> graph) {
         super(graph);
+
+        //initialize
+        liveIns = new HashMap<Node<N>, ActiveSet<Temp>>();
+        liveOuts = new HashMap<>();
+
+        //each instruction associate with an active set
+        for (Node<N> node : graph.nodes()) {
+            liveIns.put(node, new ActiveSet<>());
+            liveOuts.put(node, new ActiveSet<>());
+        }
+
+
+        for (Node<N> node : graph.nodes()) {
+            livenessInImpl(node);
+            livenessOutImpl(node);
+        }
+    }
+
+    private void livenessInImpl(Node<N> node) {
+        //in[n] = use[n] U (out[n] – def[n])
+        ActiveSet<Temp> in = liveIns.get(node);
+        in.addAll(g.use(node));
+        in.addAll(liveOuts.get(node).remove(g.def(node)));
+    }
+
+    private void livenessOutImpl(Node<N> node) {
+        //out[n] = U { in[s] | s ε succ[n] }
+        ActiveSet<Temp> out = liveOuts.get(node);
+        for (Node<N> s : node.succ()) {
+            out.addAll(liveIns.get(s));
+        }
     }
 
     @Override
     public List<Temp> liveOut(Node<N> node) {
-        // This dummy implementation says that nothing is live
-        return List.empty();
+        return liveOuts.get(node).getElements();
     }
 
     private List<Temp> liveIn(Node<N> node) {
-        // This dummy implementation says that nothing is live
-        return List.empty();
+        return liveIns.get(node).getElements();
     }
 
     private String shortList(List<Temp> l) {

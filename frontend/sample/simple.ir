@@ -10,19 +10,19 @@ MethodFragment {
             SEQ(
                SEQ(
                   MOVE(
-                     t1638 <-
+                     t1404 <-
                      %rbx), 
                   MOVE(
-                     t1639 <-
+                     t1405 <-
                      %r12)), 
                MOVE(
-                  t1640 <-
+                  t1406 <-
                   %r13)), 
             MOVE(
-               t1641 <-
+               t1407 <-
                %r14)), 
          MOVE(
-            t1642 <-
+            t1408 <-
             %r15)), 
       SEQ(
          EXP(CALL(
@@ -38,29 +38,29 @@ MethodFragment {
                SEQ(
                   SEQ(
                      SEQ(
-                        LABEL bail_773, 
+                        LABEL bail_679, 
                         MOVE(
                            %rbx <-
-                           t1638)), 
+                           t1404)), 
                      MOVE(
                         %r12 <-
-                        t1639)), 
+                        t1405)), 
                   MOVE(
                      %r13 <-
-                     t1640)), 
+                     t1406)), 
                MOVE(
                   %r14 <-
-                  t1641)), 
+                  t1407)), 
             MOVE(
                %r15 <-
-               t1642))))
+               t1408))))
 }
 MethodFragment {
    X86_64Frame { label = Test_go
       nextLocalOffset = -8
       formals = List {
-         t1643
-         t1644
+         t1409
+         t1410
       }
    }
    SEQ(
@@ -71,53 +71,53 @@ MethodFragment {
                   SEQ(
                      SEQ(
                         MOVE(
-                           t1645 <-
+                           t1411 <-
                            %rbx), 
                         MOVE(
-                           t1646 <-
+                           t1412 <-
                            %r12)), 
                      MOVE(
-                        t1647 <-
+                        t1413 <-
                         %r13)), 
                   MOVE(
-                     t1648 <-
+                     t1414 <-
                      %r14)), 
                MOVE(
-                  t1649 <-
+                  t1415 <-
                   %r15)), 
             MOVE(
-               t1643 <-
+               t1409 <-
                %rdi)), 
          MOVE(
-            t1644 <-
+            t1410 <-
             %rsi)), 
       SEQ(
          SEQ(
             EXP(CALL(
                NAME(cs411println),
-               t1644)), 
+               t1410)), 
             MOVE(
                %rax <-
-               t1644)), 
+               t1410)), 
          SEQ(
             SEQ(
                SEQ(
                   SEQ(
                      SEQ(
-                        LABEL bail_774, 
+                        LABEL bail_680, 
                         MOVE(
                            %rbx <-
-                           t1645)), 
+                           t1411)), 
                      MOVE(
                         %r12 <-
-                        t1646)), 
+                        t1412)), 
                   MOVE(
                      %r13 <-
-                     t1647)), 
+                     t1413)), 
                MOVE(
                   %r14 <-
-                  t1648)), 
+                  t1414)), 
             MOVE(
                %r15 <-
-               t1649))))
+               t1415))))
 }

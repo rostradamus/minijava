@@ -10,19 +10,19 @@ MethodFragment {
             SEQ(
                SEQ(
                   MOVE(
-                     t1536 <-
+                     t1302 <-
                      %rbx), 
                   MOVE(
-                     t1537 <-
+                     t1303 <-
                      %r12)), 
                MOVE(
-                  t1538 <-
+                  t1304 <-
                   %r13)), 
             MOVE(
-               t1539 <-
+               t1305 <-
                %r14)), 
          MOVE(
-            t1540 <-
+            t1306 <-
             %r15)), 
       SEQ(
          EXP(CALL(
@@ -37,28 +37,28 @@ MethodFragment {
                SEQ(
                   SEQ(
                      SEQ(
-                        LABEL bail_665, 
+                        LABEL bail_571, 
                         MOVE(
                            %rbx <-
-                           t1536)), 
+                           t1302)), 
                      MOVE(
                         %r12 <-
-                        t1537)), 
+                        t1303)), 
                   MOVE(
                      %r13 <-
-                     t1538)), 
+                     t1304)), 
                MOVE(
                   %r14 <-
-                  t1539)), 
+                  t1305)), 
             MOVE(
                %r15 <-
-               t1540))))
+               t1306))))
 }
 MethodFragment {
    X86_64Frame { label = Test_go
       nextLocalOffset = -8
       formals = List {
-         t1541
+         t1307
       }
    }
    SEQ(
@@ -68,22 +68,22 @@ MethodFragment {
                SEQ(
                   SEQ(
                      MOVE(
-                        t1550 <-
+                        t1316 <-
                         %rbx), 
                      MOVE(
-                        t1551 <-
+                        t1317 <-
                         %r12)), 
                   MOVE(
-                     t1552 <-
+                     t1318 <-
                      %r13)), 
                MOVE(
-                  t1553 <-
+                  t1319 <-
                   %r14)), 
             MOVE(
-               t1554 <-
+               t1320 <-
                %r15)), 
          MOVE(
-            t1541 <-
+            t1307 <-
             %rdi)), 
       SEQ(
          SEQ(
@@ -93,78 +93,78 @@ MethodFragment {
                      SEQ(
                         SEQ(
                            MOVE(
-                              t1546 <-
+                              t1312 <-
                               CONST 0), 
                            MOVE(
-                              t1547 <-
+                              t1313 <-
                               CONST 6)), 
                         MOVE(
-                           t1548 <-
+                           t1314 <-
                            BINOP(PLUS,
-                              t1547, 
+                              t1313, 
                               CONST 1))), 
                      MOVE(
-                        t1548 <-
+                        t1314 <-
                         BINOP(MINUS,
-                           t1547, 
+                           t1313, 
                            CONST 1))), 
                   MOVE(
-                     t1549 <-
+                     t1315 <-
                      BINOP(PLUS,
-                        t1546, 
-                        t1547))), 
+                        t1312, 
+                        t1313))), 
                SEQ(
                   SEQ(
-                     LABEL L_666, 
+                     LABEL L_572, 
                      SEQ(
                         CJUMP(LT,
-                           t1546,
+                           t1312,
                            CONST 10,
-                           L_667, L_668), 
+                           L_573, L_574), 
                         SEQ(
-                           LABEL L_667, 
+                           LABEL L_573, 
                            SEQ(
                               SEQ(
                                  MOVE(
-                                    t1546 <-
+                                    t1312 <-
                                     BINOP(PLUS,
-                                       t1546, 
+                                       t1312, 
                                        CONST 1)), 
                                  MOVE(
-                                    t1548 <-
+                                    t1314 <-
                                     BINOP(MUL,
-                                       t1546, 
-                                       t1546))), 
-                              JUMP(NAME(L_666)))))), 
-                  LABEL L_668)), 
+                                       t1312, 
+                                       t1312))), 
+                              JUMP(NAME(L_572)))))), 
+                  LABEL L_574)), 
             MOVE(
                %rax <-
                BINOP(PLUS,
                   BINOP(MINUS,
-                     t1547, 
+                     t1313, 
                      BINOP(MUL,
-                        t1549, 
-                        t1547)), 
-                  t1549))), 
+                        t1315, 
+                        t1313)), 
+                  t1315))), 
          SEQ(
             SEQ(
                SEQ(
                   SEQ(
                      SEQ(
-                        LABEL bail_669, 
+                        LABEL bail_575, 
                         MOVE(
                            %rbx <-
-                           t1550)), 
+                           t1316)), 
                      MOVE(
                         %r12 <-
-                        t1551)), 
+                        t1317)), 
                   MOVE(
                      %r13 <-
-                     t1552)), 
+                     t1318)), 
                MOVE(
                   %r14 <-
-                  t1553)), 
+                  t1319)), 
             MOVE(
                %r15 <-
-               t1554))))
+               t1320))))
 }
