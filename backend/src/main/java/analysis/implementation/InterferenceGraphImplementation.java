@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import codegen.assem.A_MOVE;
 import util.IndentingWriter;
 import util.List;
 import ir.temp.Color;
@@ -22,7 +23,7 @@ public class InterferenceGraphImplementation<N> extends InterferenceGraph {
     public InterferenceGraphImplementation(FlowGraph<N> fg) {
         this.fg = fg;
         this.liveness = new LivenessImplementation<N>(fg);
-        // This "dummy" implementation just adds nodes, but no edges
+        // Add nodes
         for (Node<N> node : fg.nodes()) {
             for (Temp def : fg.def(node)) {
                 Node<Temp> n = nodeFor(def);
@@ -31,6 +32,45 @@ public class InterferenceGraphImplementation<N> extends InterferenceGraph {
                 Node<Temp> n = nodeFor(use);
             }
         }
+
+        for (Node<N> node : fg.nodes()) {
+            if (isMove(node)) {
+//                At a move instruction a c, where variables b1, , bj are live-out,
+//                add interference edges (a, b1), ,(a, bj) for
+//                any bi that is not the same as c.
+                A_MOVE move = (A_MOVE) node.wrappee();
+                Move toAddMove = new Move(nodeFor(move.dst), nodeFor(move.src));
+                moves.add(toAddMove);
+                for (Temp liveOut : liveness.liveOut(node)) {
+                    if (!liveOut.equals(move.src) &&
+                        !liveOut.equals(move.dst)) {
+                        Node<Temp> liveOutT = nodeFor(liveOut);
+                        Node<Temp> movDstT = nodeFor(move.dst);
+                        addEdge(liveOutT, movDstT);
+                        addEdge(movDstT, liveOutT);
+                    }
+                }
+            } else { //non move direction
+                //At any nonmove instruction that defines a variable a,
+                // where the live-out variables are b1, , bj, add
+                //interference edges (a, b1), ,(a, bj).
+                for (Temp def : fg.def(node)) {
+                    for (Temp liveOut : liveness.liveOut(node)) {
+                        if (!def.equals(liveOut)) {
+                            Node<Temp> defT = nodeFor(def);
+                            Node<Temp> liveOutT = nodeFor(liveOut);
+                            addEdge(defT, liveOutT);
+                            addEdge(liveOutT, defT);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean isMove(Node<N> node) {
+        boolean isMove = node.wrappee() instanceof A_MOVE;
+        return isMove;
     }
 
     @Override
